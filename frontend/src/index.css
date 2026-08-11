@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Olive base + Violet accent theme */
+    --background: 60 9% 97%;
+    --foreground: 60 10% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 60 10% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 60 10% 8%;
+
+    /* Violet primary */
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Olive secondary */
+    --secondary: 82 28% 90%;
+    --secondary-foreground: 82 28% 25%;
+
+    --muted: 60 6% 93%;
+    --muted-foreground: 60 5% 44%;
+
+    --accent: 82 28% 88%;
+    --accent-foreground: 82 28% 18%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 60 8% 88%;
+    --input: 60 8% 88%;
+    --ring: 262 83% 58%;
+
+    /* Yellow chart colors */
+    --chart-1: 48 96% 53%;
+    --chart-2: 262 83% 58%;
+    --chart-3: 82 40% 45%;
+    --chart-4: 24 94% 53%;
+    --chart-5: 142 71% 45%;
+
+    --radius: 0.75rem;
+
+    /* Custom olive palette */
+    --olive-50: 82 43% 96%;
+    --olive-100: 82 38% 90%;
+    --olive-200: 82 32% 80%;
+    --olive-300: 82 28% 65%;
+    --olive-400: 82 28% 50%;
+    --olive-500: 82 35% 38%;
+    --olive-600: 82 38% 28%;
+    --olive-700: 82 40% 20%;
+    --olive-800: 82 38% 14%;
+    --olive-900: 82 35% 9%;
+
+    /* sidebar */
+    --sidebar: 60 10% 8%;
+    --sidebar-foreground: 60 6% 85%;
+    --sidebar-accent: 82 38% 28%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 60 8% 15%;
+    --sidebar-primary: 262 83% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-ring: 262 83% 65%;
+  }
+
+  .dark {
+    --background: 60 10% 6%;
+    --foreground: 60 6% 92%;
+
+    --card: 60 10% 9%;
+    --card-foreground: 60 6% 92%;
+
+    --popover: 60 10% 9%;
+    --popover-foreground: 60 6% 92%;
+
+    --primary: 262 83% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 82 20% 18%;
+    --secondary-foreground: 82 20% 88%;
+
+    --muted: 60 8% 16%;
+    --muted-foreground: 60 5% 55%;
+
+    --accent: 82 22% 20%;
+    --accent-foreground: 82 22% 90%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 60 8% 18%;
+    --input: 60 8% 18%;
+    --ring: 262 83% 65%;
+
+    --chart-1: 48 96% 53%;
+    --chart-2: 262 83% 65%;
+    --chart-3: 82 40% 55%;
+    --chart-4: 24 94% 53%;
+    --chart-5: 142 71% 45%;
+
+    --sidebar: 60 12% 5%;
+    --sidebar-foreground: 60 6% 80%;
+    --sidebar-accent: 82 30% 22%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 60 8% 12%;
+    --sidebar-primary: 262 83% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-ring: 262 83% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto', system-ui, sans-serif;
+    line-height: 1.2;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--border));
+    border-radius: 20px;
+  }
+}
+
+/* Sidebar variables for shadcn sidebar */
+@layer base {
+  :root {
+    --sidebar-background: 60 10% 8%;
+    --sidebar-foreground: 60 6% 85%;
+    --sidebar-primary: 262 83% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 82 38% 28%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 60 8% 15%;
+    --sidebar-ring: 262 83% 65%;
+  }
+}

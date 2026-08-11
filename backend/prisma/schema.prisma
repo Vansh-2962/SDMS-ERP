@@ -1,0 +1,40 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                String            @id       @default(uuid())
+  name              String  
+  email             String            @unique
+  passwordHash      String
+  isActive          Boolean           @default(true)
+  isEmailVerified   Boolean           @default(false)
+  lastLoginAt       DateTime?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  refreshSessions   RefreshSession[]
+  
+  @@map("users")          
+}
+
+model RefreshSession {
+  id                String            @id         @default(uuid())
+  userId            String
+  familyId          String
+  tokenHash         String            @unique
+  expiresAt         DateTime
+  revokedAt         DateTime?
+  createdAt         DateTime          @default(now())
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([familyId])
+  @@index([expiresAt])
+  @@map("refresh_sessions")
+}
