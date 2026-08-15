@@ -6,6 +6,7 @@ import { createAuthRouter } from "@/modules/auth/routes/auth.routes.js";
 import { RefreshSessionRepository } from "@/modules/auth/repositories/refresh-session.repository.js";
 import { TokenService } from "@/modules/auth/services/token.service.js";
 import { RefreshTokenService } from "@/modules/auth/services/refresh-token.service.js";
+import { createAuthenticateMiddleware } from "@/middlewares/authenticate.middleware.js";
 
 const authRepository = new AuthRepository(prisma);
 const refreshSessionRepository = new RefreshSessionRepository(prisma);
@@ -20,5 +21,6 @@ const authService = new AuthService(
   refreshTokenService,
 );
 const authController = new AuthController(authService);
+const authenticate = createAuthenticateMiddleware(tokenService);
 
-export const authRouter = createAuthRouter(authController);
+export const authRouter = createAuthRouter(authController, authenticate);

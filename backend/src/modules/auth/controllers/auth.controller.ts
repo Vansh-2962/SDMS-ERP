@@ -48,4 +48,13 @@ export class AuthController {
     await this.authService.logout(refreshToken);
     return res.status(204).send();
   });
+
+  me = asyncHandler(async (req: Request, res: Response) => {
+    const user = await this.authService.getCurrentUser(req.user?.id);
+    return res.status(200).json({
+      success: true,
+      message: "Current user fetched successfully",
+      data: user,
+    });
+  });
 }

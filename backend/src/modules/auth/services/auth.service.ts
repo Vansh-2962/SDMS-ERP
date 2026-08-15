@@ -87,4 +87,23 @@ export class AuthService {
   async logout(refreshToken: string): Promise<void> {
     await this.refreshTokenService.revoke(refreshToken);
   }
+
+  async getCurrentUser(userId: string) {
+    const user = await this.authRepository.findUserById(userId);
+    if (!user) {
+      throw new AuthenticationError(
+        "User account no longer exists",
+        "USER_NOT_FOUND",
+      );
+    }
+
+    if (!user.isActive) {
+      throw new AuthenticationError(
+        "User account is inactive",
+        "ACCOUNT_INACTIVE",
+      );
+    }
+
+    return AuthMapper.toUserResponse(user);
+  }
 }
