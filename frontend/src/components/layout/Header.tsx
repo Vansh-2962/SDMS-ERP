@@ -176,7 +176,7 @@ export default function Header() {
                     </p>
                   </div>
                 </div>
-                {user?.role && (
+                {/* {user?.role && (
                   <div>
                     <Badge
                       variant="secondary"
@@ -185,7 +185,7 @@ export default function Header() {
                       <IconUserFilled className="h-3 w-3" />
                     </Badge>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
 
