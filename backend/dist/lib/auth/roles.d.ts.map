@@ -1,0 +1,1 @@
+{"version":3,"file":"roles.d.ts","sourceRoot":"","sources":["../../../src/lib/auth/roles.ts"],"names":[],"mappings":"AAAA,eAAO,MAAM,UAAU;aACrB,KAAK,EAAE,OAAO;aACd,UAAU,EAAE,YAAY;aACxB,aAAa,EAAE,eAAe;aAC9B,QAAQ,EAAE,UAAU;aACpB,SAAS,EAAE,WAAW;aACtB,UAAU,EAAE,YAAY;aACxB,QAAQ,EAAE,UAAU;CACZ,CAAC;AAEX,MAAM,MAAM,QAAQ,GAAG,CAAC,OAAO,UAAU,CAAC,CAAC,MAAM,OAAO,UAAU,CAAC,CAAC"}

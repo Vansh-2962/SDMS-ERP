@@ -1,0 +1,10 @@
+export const USER_ROLES = {
+    OWNER: "OWNER",
+    ACCOUNTANT: "ACCOUNTANT",
+    SALES_MANAGER: "SALES_MANAGER",
+    SALESMAN: "SALESMAN",
+    WAREHOUSE: "WAREHOUSE",
+    PRODUCTION: "PRODUCTION",
+    DISPATCH: "DISPATCH",
+};
+//# sourceMappingURL=roles.js.map

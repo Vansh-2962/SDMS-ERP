@@ -8,6 +8,7 @@ declare global {
     interface Request {
       auth?: AuthSession;
       authorization?: AuthorizationContext;
+      validated?: ValidatedRequest;
     }
   }
 }
