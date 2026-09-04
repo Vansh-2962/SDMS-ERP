@@ -20,6 +20,13 @@ export const auth = betterAuth({
   }),
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
+  advanced: {
+    defaultCookieAttributes: {
+      secure: true,
+      httpOnly: true,
+      sameSite: "none",
+    },
+  },
   trustedOrigins: [env.CLIENT_URL, "http://localhost:5173"],
   emailAndPassword: {
     enabled: true,
