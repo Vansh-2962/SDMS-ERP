@@ -20,8 +20,6 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
 
-    /* for ShadCN */
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }

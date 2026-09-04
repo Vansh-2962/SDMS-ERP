@@ -9,7 +9,7 @@ const startServer = () => {
         port: env.PORT,
         environment: env.NODE_ENV,
       },
-      "🚀 SDMS Backend Started",
+      "SDMS Backend Started",
     );
   });
 };

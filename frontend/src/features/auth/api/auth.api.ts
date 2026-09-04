@@ -1,38 +1,31 @@
-import {
-  AuthResponse,
-  LoginRequest,
-  RegisterRequest,
-} from "@/features/auth/types/auth.types";
-import { apiClient } from "@/lib/api/client";
-import { ApiResponse } from "@/lib/api/types";
+import { authClient } from "@/lib/auth.client";
 
-export async function login(data: LoginRequest): Promise<AuthResponse> {
-  const response = await apiClient.post<ApiResponse<AuthResponse>>(
-    "/auth/login",
-    data,
-  );
-  return response.data.data;
+export interface SignUpInput {
+  name: string;
+  email: string;
+  password: string;
 }
 
-export async function register(data: RegisterRequest): Promise<AuthResponse> {
-  const response = await apiClient.post<ApiResponse<AuthResponse>>(
-    "/auth/register",
-    data,
-  );
-  return response.data.data;
+export interface SignInInput {
+  email: string;
+  password: string;
 }
 
-export async function refreshToken(
-  refreshToken: string,
-): Promise<AuthResponse> {
-  const response = await apiClient.post<ApiResponse<AuthResponse>>(
-    "/auth/refresh",
-    refreshToken,
-  );
-  return response.data.data;
+export async function signUp(input: SignUpInput) {
+  return authClient.signUp.email({
+    name: input.name,
+    email: input.email,
+    password: input.password,
+  });
 }
 
-export async function getCurrentUser() {
-  const response = await apiClient.get<ApiResponse<AuthResponse>>("/auth/me");
-  return response.data.data;
+export async function signIn(input: SignInInput) {
+  return authClient.signIn.email({
+    email: input.email,
+    password: input.password,
+  });
+}
+
+export async function signOut() {
+  return authClient.signOut();
 }

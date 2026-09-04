@@ -1,0 +1,11 @@
+export const USER_ROLES = {
+  OWNER: "OWNER",
+  ACCOUNTANT: "ACCOUNTANT",
+  SALES_MANAGER: "SALES_MANAGER",
+  SALESMAN: "SALESMAN",
+  WAREHOUSE: "WAREHOUSE",
+  PRODUCTION: "PRODUCTION",
+  DISPATCH: "DISPATCH",
+} as const;
+
+export type UserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];

@@ -12,6 +12,8 @@ import {
   IconArrowLeft,
   IconArrowRight,
 } from "@tabler/icons-react";
+import { toast } from "sonner";
+import { signIn } from "@/features/auth/api/auth.api";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -21,13 +23,31 @@ export default function Login() {
   const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const { data, error } = await signIn({
+        email,
+        password,
+      });
+
+      if (error) {
+        toast.error(error.message ?? "Invalid email or password");
+        return;
+      }
+
+      if (!data) {
+        toast.error("Invalid email or password");
+        return;
+      }
+
       navigate("/");
-    }, 600);
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

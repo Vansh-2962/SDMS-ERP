@@ -6,13 +6,18 @@ import cookieParser from "cookie-parser";
 import { requestContextMiddleware } from "@/infrastructure/context/request-context.middleware.js";
 import { getLogger } from "@/infrastructure/context/request-context.js";
 import { errorMiddleware } from "@/middlewares/error.middleware.js";
-import { authRouter } from "@/modules/auth/auth.module.js";
+import { authRouter } from "@/route/auth.js";
 
 const app: Application = express();
 
 app.use(helmet());
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    credentials: true,
+  }),
+);
 
 app.use(compression());
 
@@ -22,6 +27,8 @@ app.use(cookieParser());
 
 app.use(express.json());
 
+app.all("/api/auth/{*any}", authRouter);
+
 app.get("/health", (_, res) => {
   const logger = getLogger();
   logger.info("Testing request context");
@@ -30,8 +37,6 @@ app.get("/health", (_, res) => {
     message: "SDMS Backend Running",
   });
 });
-
-app.use("/api/v1/auth", authRouter);
 
 app.use(errorMiddleware);
 export default app;

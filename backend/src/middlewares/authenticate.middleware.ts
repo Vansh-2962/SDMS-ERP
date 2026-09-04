@@ -1,48 +1,26 @@
-import type { TokenService } from "@/modules/auth/services/token.service.js";
+import { auth } from "@/lib/auth/auth.js";
 import { AuthenticationError } from "@/shared/errors/authentication.error.js";
+import { fromNodeHeaders } from "better-auth/node";
 import type { NextFunction, Request, Response } from "express";
 
-export function createAuthenticateMiddleware(tokenService: TokenService) {
-  return async (
-    req: Request,
-    _res: Response,
-    next: NextFunction,
-  ): Promise<void> => {
-    const authorization = req.headers.authorization;
+export async function authenticate(
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
 
-    if (!authorization) {
-      return next(
-        new AuthenticationError(
-          "Authenticaion required",
-          "AUTHENTICATION_REQUIRED",
-        ),
-      );
+    if (!session) {
+      throw new AuthenticationError("Authentication required");
     }
 
-    const [scheme, token] = authorization.split(" ");
+    req.auth = session;
 
-    if (scheme !== "Bearer" || !token) {
-      return next(
-        new AuthenticationError(
-          "Invalid authorization header",
-          "INVALID_AUTHORIZATION_HEADER",
-        ),
-      );
-    }
-
-    try {
-      const payload = await tokenService.verifyAccessToken(token);
-      req.user = {
-        id: payload.sub,
-      };
-      next();
-    } catch (error) {
-      next(
-        new AuthenticationError(
-          "Invalid or expired access token",
-          "INVALID_ACCESS_TOKEN",
-        ),
-      );
-    }
-  };
+    next();
+  } catch (error) {
+    next(error);
+  }
 }

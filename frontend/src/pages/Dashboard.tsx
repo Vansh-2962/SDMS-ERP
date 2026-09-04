@@ -32,7 +32,15 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAppStore } from "@/store/appStore";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useAuth } from "@/features/auth/hooks/use-auth";
 
 const formatINR = (val: number) => "₹" + val.toLocaleString("en-IN");
 
@@ -104,7 +112,6 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function Dashboard() {
   const { inventory, salesmen } = useAppStore();
   const lowStockItems = inventory.filter((i) => i.status === "Low");
-
   return (
     <div className="p-6 space-y-6 animate-fade-in">
       {/* Header */}

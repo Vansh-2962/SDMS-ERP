@@ -12,6 +12,8 @@ import {
   IconCircleCheck,
   IconArrowRight,
 } from "@tabler/icons-react";
+import { signUp } from "@/features/auth/api/auth.api";
+import { toast } from "sonner";
 
 type PwState = {
   length: boolean;
@@ -48,13 +50,32 @@ export default function Signup() {
   ];
   const pwLabels = ["Too weak", "Weak", "Fair", "Good", "Strong"];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const { data, error } = await signUp({
+        name,
+        email,
+        password,
+      });
+
+      if (error) {
+        toast.error(error.message || "Unable to create account");
+        return;
+      }
+
+      if (!data) {
+        toast.error("Unable to create account");
+        return;
+      }
+
       navigate("/");
-    }, 600);
+    } catch {
+      toast.error("Something went wrong. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

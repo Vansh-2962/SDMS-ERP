@@ -2,7 +2,15 @@ import { ValidationError } from "@/shared/errors/validation.error.js";
 import type { RequestHandler } from "express";
 import type { ZodType } from "zod";
 
-export function validate(schema: ZodType): RequestHandler {
+type ValidatedRequest = {
+  body: unknown;
+  params: unknown;
+  query: unknown;
+};
+
+type ValidationSchema = ZodType<ValidatedRequest>;
+
+export function validate(schema: ValidationSchema): RequestHandler {
   return (req, _res, next) => {
     const result = schema.safeParse({
       body: req.body,
@@ -17,9 +25,7 @@ export function validate(schema: ZodType): RequestHandler {
       );
     }
 
-    req.body = result.data.body;
-    req.params = result.data.params;
-    req.query = result.data.query;
+    req.validated = result.data;
 
     next();
   };

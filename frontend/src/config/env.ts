@@ -2,6 +2,9 @@ import { z } from "zod";
 
 const envSchema = z.object({
   VITE_API_URL: z.string().url("VITE_API_URL must be a valid url"),
+  VITE_BETTER_AUTH_URL: z
+    .string()
+    .url("VITE_BETTER_AUTH_URL must be a valid url"),
 });
 
 const parsedEnv = envSchema.safeParse(import.meta.env);
