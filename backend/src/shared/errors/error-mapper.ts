@@ -11,7 +11,11 @@ export function mapToAppError(error: unknown): AppError {
   }
 
   if (error instanceof ZodError) {
-    return new ValidationError("Validation failed", "VALIDATION_FAILED");
+    return new ValidationError(
+      "Validation failed",
+      "VALIDATION_FAILED",
+      error.flatten().fieldErrors,
+    );
   }
 
   return new InternalServerError();

@@ -38,6 +38,7 @@ export const errorMiddleware: ErrorRequestHandler = (
     error: {
       code: appError.code,
       message: appError.message,
+      details: appError.details,
     },
     requestId,
   });

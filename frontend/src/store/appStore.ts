@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 import {
   customers as initialCustomers,
   products as initialProducts,
@@ -10,18 +10,18 @@ import {
   manufacturing as initialManufacturing,
   expenses as initialExpenses,
   complaints as initialComplaints,
-} from '../lib/mock-data';
+} from "../lib/mock-data";
 
-export type Customer = typeof initialCustomers[0];
-export type Product = typeof initialProducts[0];
-export type SalesOrder = typeof initialSalesOrders[0];
-export type Payment = typeof initialPayments[0];
-export type Salesman = typeof initialSalesmen[0];
-export type Employee = typeof initialEmployees[0];
-export type InventoryItem = typeof initialInventory[0];
-export type ManufacturingBatch = typeof initialManufacturing[0];
-export type Expense = typeof initialExpenses[0];
-export type Complaint = typeof initialComplaints[0];
+export type Customer = (typeof initialCustomers)[0];
+export type Product = (typeof initialProducts)[0];
+export type SalesOrder = (typeof initialSalesOrders)[0];
+export type Payment = (typeof initialPayments)[0];
+export type Salesman = (typeof initialSalesmen)[0];
+export type Employee = (typeof initialEmployees)[0];
+export type InventoryItem = (typeof initialInventory)[0];
+export type ManufacturingBatch = (typeof initialManufacturing)[0];
+export type Expense = (typeof initialExpenses)[0];
+export type Complaint = (typeof initialComplaints)[0];
 
 interface AppState {
   customers: Customer[];
@@ -53,7 +53,20 @@ interface AppState {
   updatePayment: (id: string, p: Partial<Payment>) => void;
 
   addExpense: (e: Expense) => void;
-  updateComplaintStatus: (id: string, status: string, resolution: string) => void;
+  updateComplaintStatus: (
+    id: string,
+    status: string,
+    resolution: string,
+  ) => void;
+
+  addInventoryItem: (i: InventoryItem) => void;
+  updateInventoryItem: (id: string, i: Partial<InventoryItem>) => void;
+
+  salesmanAssignments: Record<string, { productId: string; qty: number }[]>;
+  assignInventory: (
+    salesmanId: string,
+    items: { productId: string; qty: number }[],
+  ) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -73,27 +86,63 @@ export const useAppStore = create<AppState>((set) => ({
 
   addCustomer: (c) => set((s) => ({ customers: [...s.customers, c] })),
   updateCustomer: (id, c) =>
-    set((s) => ({ customers: s.customers.map((x) => (x.id === id ? { ...x, ...c } : x)) })),
+    set((s) => ({
+      customers: s.customers.map((x) => (x.id === id ? { ...x, ...c } : x)),
+    })),
   deleteCustomer: (id) =>
     set((s) => ({ customers: s.customers.filter((x) => x.id !== id) })),
 
   addProduct: (p) => set((s) => ({ products: [...s.products, p] })),
   updateProduct: (id, p) =>
-    set((s) => ({ products: s.products.map((x) => (x.id === id ? { ...x, ...p } : x)) })),
+    set((s) => ({
+      products: s.products.map((x) => (x.id === id ? { ...x, ...p } : x)),
+    })),
   deleteProduct: (id) =>
     set((s) => ({ products: s.products.filter((x) => x.id !== id) })),
 
   addOrder: (o) => set((s) => ({ salesOrders: [...s.salesOrders, o] })),
   updateOrderStatus: (id, status) =>
-    set((s) => ({ salesOrders: s.salesOrders.map((x) => (x.id === id ? { ...x, status } : x)) })),
+    set((s) => ({
+      salesOrders: s.salesOrders.map((x) =>
+        x.id === id ? { ...x, status } : x,
+      ),
+    })),
 
   addPayment: (p) => set((s) => ({ payments: [...s.payments, p] })),
   updatePayment: (id, p) =>
-    set((s) => ({ payments: s.payments.map((x) => (x.id === id ? { ...x, ...p } : x)) })),
+    set((s) => ({
+      payments: s.payments.map((x) => (x.id === id ? { ...x, ...p } : x)),
+    })),
 
   addExpense: (e) => set((s) => ({ expenses: [...s.expenses, e] })),
   updateComplaintStatus: (id, status, resolution) =>
     set((s) => ({
-      complaints: s.complaints.map((x) => (x.id === id ? { ...x, status, resolution } : x)),
+      complaints: s.complaints.map((x) =>
+        x.id === id ? { ...x, status, resolution } : x,
+      ),
     })),
+
+  addInventoryItem: (i) => set((s) => ({ inventory: [...s.inventory, i] })),
+  updateInventoryItem: (id, i) =>
+    set((s) => ({
+      inventory: s.inventory.map((x) => (x.id === id ? { ...x, ...i } : x)),
+    })),
+
+  salesmanAssignments: {},
+  assignInventory: (salesmanId, items) =>
+    set((s) => {
+      const existing = s.salesmanAssignments[salesmanId] || [];
+      const merged = [...existing];
+      for (const item of items) {
+        const idx = merged.findIndex((m) => m.productId === item.productId);
+        if (idx >= 0) {
+          merged[idx] = { ...merged[idx], qty: merged[idx].qty + item.qty };
+        } else {
+          merged.push(item);
+        }
+      }
+      return {
+        salesmanAssignments: { ...s.salesmanAssignments, [salesmanId]: merged },
+      };
+    }),
 }));

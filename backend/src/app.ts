@@ -7,6 +7,7 @@ import { requestContextMiddleware } from "@/infrastructure/context/request-conte
 import { getLogger } from "@/infrastructure/context/request-context.js";
 import { errorMiddleware } from "@/middlewares/error.middleware.js";
 import { authRouter } from "@/route/auth.js";
+import { employeeRouter } from "./modules/employee/employee.routes.js";
 
 const app: Application = express();
 
@@ -28,6 +29,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.all("/api/auth/{*any}", authRouter);
+app.use("/api/v1/employees", employeeRouter);
 
 app.get("/health", (_, res) => {
   const logger = getLogger();

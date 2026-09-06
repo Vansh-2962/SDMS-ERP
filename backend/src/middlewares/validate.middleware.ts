@@ -1,17 +1,12 @@
+import { logger } from "@/config/logger/index.js";
 import { ValidationError } from "@/shared/errors/validation.error.js";
-import type { RequestHandler } from "express";
-import type { ZodType } from "zod";
+import type { NextFunction, Request, RequestHandler, Response } from "express";
+import { z } from "zod";
 
-type ValidatedRequest = {
-  body: unknown;
-  params: unknown;
-  query: unknown;
-};
-
-type ValidationSchema = ZodType<ValidatedRequest>;
+type ValidationSchema = z.ZodType;
 
 export function validate(schema: ValidationSchema): RequestHandler {
-  return (req, _res, next) => {
+  return (req: Request, _res: Response, next: NextFunction) => {
     const result = schema.safeParse({
       body: req.body,
       params: req.params,
@@ -22,6 +17,7 @@ export function validate(schema: ValidationSchema): RequestHandler {
       throw new ValidationError(
         "Request validation failed",
         "VALIDATION_ERROR",
+        result.error.flatten().fieldErrors,
       );
     }
 

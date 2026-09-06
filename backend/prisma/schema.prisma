@@ -9,7 +9,7 @@ datasource db {
 }
 
 model User {
- id            String    @id @default(uuid())
+ id             String    @id @default(uuid())
   name          String
   email         String    @unique
   emailVerified Boolean   @default(false)
@@ -22,6 +22,7 @@ model User {
   banExpires    DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  employee      Employee?
   sessions      Session[]
   accounts      Account[]
   @@map("users")
@@ -88,3 +89,41 @@ model Verification {
   @@index([identifier])
   @@map("verification")
 }
+
+model Employee {
+  id              String      @id         @default(uuid())
+  empCode         Int      @unique @default(autoincrement())
+  
+  fullName        String
+  role            String
+  
+  department      String?
+  territory       String?
+  
+  mobile          String
+  email           String?     
+  
+  pan             String?     
+  aadhar          String?     
+  
+  bankAccNo       String?
+  IFSC            String?
+  
+  salary          Decimal?     @db.Decimal(12, 2)
+
+  isActive        Boolean     @default(true)
+  userId          String?     @unique
+  user            User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  joinDate        DateTime
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([empCode])
+  @@index([email])
+  @@index([role])
+  @@index([department])
+  @@index([territory])
+  @@map("employees")
+}
+

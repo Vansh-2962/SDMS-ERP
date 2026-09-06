@@ -1,3 +1,4 @@
+import { logger } from "@/config/logger/index.js";
 import { auth } from "@/lib/auth/auth.js";
 import { AuthenticationError } from "@/shared/errors/authentication.error.js";
 import { fromNodeHeaders } from "better-auth/node";
