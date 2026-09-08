@@ -9,7 +9,32 @@
 * 🟢 You can import this file directly.
 */
 
+export const ProductType = {
+  FINISHED_GOOD: 'FINISHED_GOOD',
+  RAW_MATERIAL: 'RAW_MATERIAL',
+  PACKAGING_MATERIAL: 'PACKAGING_MATERIAL',
+  SEMI_FINISHED_GOOD: 'SEMI_FINISHED_GOOD'
+} as const
+
+export type ProductType = (typeof ProductType)[keyof typeof ProductType]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const ProductForm = {
+  POWDER: 'POWDER',
+  WHOLE: 'WHOLE',
+  CRUSHED: 'CRUSHED',
+  GRANULES: 'GRANULES',
+  PASTE: 'PASTE',
+  LIQUID: 'LIQUID',
+  OTHER: 'OTHER'
+} as const
+
+export type ProductForm = (typeof ProductForm)[keyof typeof ProductForm]
+
+
+export const VegNonVeg = {
+  VEG: 'VEG',
+  NON_VEG: 'NON_VEG'
+} as const
+
+export type VegNonVeg = (typeof VegNonVeg)[keyof typeof VegNonVeg]

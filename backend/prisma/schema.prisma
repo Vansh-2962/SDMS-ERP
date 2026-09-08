@@ -22,6 +22,8 @@ model User {
   banExpires    DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  products      Product[]
   employee      Employee?
   sessions      Session[]
   accounts      Account[]
@@ -127,3 +129,198 @@ model Employee {
   @@map("employees")
 }
 
+enum ProductType {
+  FINISHED_GOOD
+  RAW_MATERIAL
+  PACKAGING_MATERIAL
+  SEMI_FINISHED_GOOD
+}
+
+enum ProductForm {
+  POWDER
+  WHOLE
+  CRUSHED
+  GRANULES
+  PASTE
+  LIQUID
+  OTHER
+}
+
+enum VegNonVeg {
+  VEG
+  NON_VEG
+}
+
+model Product {
+  id          String          @id         @default(cuid())
+  code        String          @unique
+  barcode     String?         @unique
+  name        String
+  commonName  String?
+  botanicalName String?
+  brand         String?
+  category    String
+  type        ProductType     @default(FINISHED_GOOD)
+  grade       String?
+  form        ProductForm?
+
+  hsn         String?
+  unit        String
+
+  packagingType  String?
+  packSize     String?
+  netWeight   String?
+
+  shelfLife Int?
+
+  processingMethod String?
+  rawMaterialSource String?
+  plantId String?
+
+  moistureContent Decimal? @db.Decimal(5, 2)
+  purityTest String?
+  adulterationTest String?
+  pesticideTestRef String?
+
+  ingredients String? @db.Text
+  allergenInfo String? @db.Text
+  storageInstructions String? @db.Text
+  vegNonVeg VegNonVeg @default(VEG)
+  countryOfOrigin String?
+
+  createdById String
+  createdBy   User   @relation(fields: [createdById], references: [id])
+
+  batches ProductBatch[]
+  prices ProductPrice[]
+  inventories Inventory[]
+  certifications ProductCertification[]
+  productManufacturer ProductManufacturer[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([name])
+  @@index([category])
+  @@index([brand])
+  @@map("products")
+}
+
+model ProductBatch {
+  id String @id @default(uuid())
+
+  productId String
+  product Product @relation(fields: [productId],references: [id],onDelete: Cascade)
+
+  batchNo String
+  productionDate DateTime?
+  mfgDate DateTime?
+  expiryDate DateTime?
+  bestBefore String?
+
+  plantId String?
+  processingMethod String?
+
+  moistureContent Decimal? @db.Decimal(5, 2)
+  purityTest String?
+  adulterationTest String?
+  pesticideTestRef String?
+
+  inventories Inventory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([productId, batchNo])
+  @@index([batchNo])
+  @@index([expiryDate])
+  @@map("product_batches")
+}
+
+model ProductPrice {
+  id String @id @default(uuid())
+
+  productId String
+  product Product @relation(fields: [productId], references: [id],onDelete: Cascade)
+
+  mrp Decimal? @db.Decimal(12, 2)
+  distributorPrice Decimal? @db.Decimal(12, 2)
+  retailerPrice Decimal? @db.Decimal(12, 2)
+  dealerPrice Decimal? @db.Decimal(12, 2)
+  purchaseCost Decimal? @db.Decimal(12, 2)
+  manufacturingCost Decimal? @db.Decimal(12, 2)
+  gst Decimal? @db.Decimal(5, 2)
+  discountScheme String?
+  effectiveFrom DateTime @default(now())
+  effectiveTo DateTime?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@map("product_prices")
+}
+
+model Inventory {
+  id String @id @default(uuid())
+
+  productId String
+  product Product @relation(fields: [productId],references: [id],onDelete: Cascade)
+
+  batchId String?
+
+  batch ProductBatch? @relation( fields: [batchId],references: [id])
+  warehouseLocation String
+  currentStock Decimal @default(0) @db.Decimal(14, 3)
+  reorderLevel Decimal? @db.Decimal(14, 3)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@index([batchId])
+  @@index([warehouseLocation])
+  @@map("inventory")
+}
+
+model Manufacturer {
+  id String @id @default(uuid())
+  name String
+  fssaiLicense String?
+  address String?
+  countryOfOrigin String?
+  customerCarePhone String?
+  customerCareEmail String?
+
+  products ProductManufacturer[]
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+  @@map("manufacturers")
+}
+
+model ProductManufacturer {
+  id String @id @default(uuid())
+
+  productId String
+  manufacturerId String
+  product Product @relation(fields: [productId],references: [id],onDelete: Cascade)
+  manufacturer Manufacturer @relation(fields: [manufacturerId],references: [id],onDelete: Cascade)
+
+  @@unique([productId, manufacturerId])
+  @@map("product_manufacturers")
+}
+
+model ProductCertification {
+  id String @id @default(uuid())
+
+  productId String
+  product Product @relation(fields: [productId],references: [id],onDelete: Cascade)
+
+  name String
+  certificateNumber String?
+  issuedAt DateTime?
+  expiresAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@map("product_certifications")
+}

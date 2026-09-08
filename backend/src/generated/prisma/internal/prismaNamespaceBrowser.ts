@@ -55,7 +55,14 @@ export const ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
-  Employee: 'Employee'
+  Employee: 'Employee',
+  Product: 'Product',
+  ProductBatch: 'ProductBatch',
+  ProductPrice: 'ProductPrice',
+  Inventory: 'Inventory',
+  Manufacturer: 'Manufacturer',
+  ProductManufacturer: 'ProductManufacturer',
+  ProductCertification: 'ProductCertification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -162,6 +169,137 @@ export const EmployeeScalarFieldEnum = {
 } as const
 
 export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
+
+
+export const ProductScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  barcode: 'barcode',
+  name: 'name',
+  commonName: 'commonName',
+  botanicalName: 'botanicalName',
+  brand: 'brand',
+  category: 'category',
+  type: 'type',
+  grade: 'grade',
+  form: 'form',
+  hsn: 'hsn',
+  unit: 'unit',
+  packagingType: 'packagingType',
+  packSize: 'packSize',
+  netWeight: 'netWeight',
+  shelfLife: 'shelfLife',
+  processingMethod: 'processingMethod',
+  rawMaterialSource: 'rawMaterialSource',
+  plantId: 'plantId',
+  moistureContent: 'moistureContent',
+  purityTest: 'purityTest',
+  adulterationTest: 'adulterationTest',
+  pesticideTestRef: 'pesticideTestRef',
+  ingredients: 'ingredients',
+  allergenInfo: 'allergenInfo',
+  storageInstructions: 'storageInstructions',
+  vegNonVeg: 'vegNonVeg',
+  countryOfOrigin: 'countryOfOrigin',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const ProductBatchScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  batchNo: 'batchNo',
+  productionDate: 'productionDate',
+  mfgDate: 'mfgDate',
+  expiryDate: 'expiryDate',
+  bestBefore: 'bestBefore',
+  plantId: 'plantId',
+  processingMethod: 'processingMethod',
+  moistureContent: 'moistureContent',
+  purityTest: 'purityTest',
+  adulterationTest: 'adulterationTest',
+  pesticideTestRef: 'pesticideTestRef',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductBatchScalarFieldEnum = (typeof ProductBatchScalarFieldEnum)[keyof typeof ProductBatchScalarFieldEnum]
+
+
+export const ProductPriceScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  mrp: 'mrp',
+  distributorPrice: 'distributorPrice',
+  retailerPrice: 'retailerPrice',
+  dealerPrice: 'dealerPrice',
+  purchaseCost: 'purchaseCost',
+  manufacturingCost: 'manufacturingCost',
+  gst: 'gst',
+  discountScheme: 'discountScheme',
+  effectiveFrom: 'effectiveFrom',
+  effectiveTo: 'effectiveTo',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductPriceScalarFieldEnum = (typeof ProductPriceScalarFieldEnum)[keyof typeof ProductPriceScalarFieldEnum]
+
+
+export const InventoryScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  batchId: 'batchId',
+  warehouseLocation: 'warehouseLocation',
+  currentStock: 'currentStock',
+  reorderLevel: 'reorderLevel',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InventoryScalarFieldEnum = (typeof InventoryScalarFieldEnum)[keyof typeof InventoryScalarFieldEnum]
+
+
+export const ManufacturerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  fssaiLicense: 'fssaiLicense',
+  address: 'address',
+  countryOfOrigin: 'countryOfOrigin',
+  customerCarePhone: 'customerCarePhone',
+  customerCareEmail: 'customerCareEmail',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ManufacturerScalarFieldEnum = (typeof ManufacturerScalarFieldEnum)[keyof typeof ManufacturerScalarFieldEnum]
+
+
+export const ProductManufacturerScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  manufacturerId: 'manufacturerId'
+} as const
+
+export type ProductManufacturerScalarFieldEnum = (typeof ProductManufacturerScalarFieldEnum)[keyof typeof ProductManufacturerScalarFieldEnum]
+
+
+export const ProductCertificationScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  name: 'name',
+  certificateNumber: 'certificateNumber',
+  issuedAt: 'issuedAt',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductCertificationScalarFieldEnum = (typeof ProductCertificationScalarFieldEnum)[keyof typeof ProductCertificationScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "products" ALTER COLUMN "packSize" SET DATA TYPE TEXT,
+ALTER COLUMN "netWeight" SET DATA TYPE TEXT;

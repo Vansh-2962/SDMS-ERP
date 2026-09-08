@@ -1,5 +1,6 @@
 import { logger } from "@/config/logger/index.js";
 import { auth } from "@/lib/auth/auth.js";
+import type { UserRole } from "@/lib/auth/roles.js";
 import { AuthenticationError } from "@/shared/errors/authentication.error.js";
 import { fromNodeHeaders } from "better-auth/node";
 import type { NextFunction, Request, Response } from "express";
@@ -19,6 +20,10 @@ export async function authenticate(
     }
 
     req.auth = session;
+    req.authorization = {
+      userId: session.user.id,
+      role: session.user.role as UserRole,
+    };
 
     next();
   } catch (error) {

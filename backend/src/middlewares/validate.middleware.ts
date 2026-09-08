@@ -14,10 +14,25 @@ export function validate(schema: ValidationSchema): RequestHandler {
     });
 
     if (!result.success) {
+      const fieldErrors = result.error.issues.reduce(
+        (acc, issue) => {
+          const path = issue.path.join(".");
+
+          if (!acc[path]) {
+            acc[path] = [];
+          }
+
+          acc[path].push(issue.message);
+
+          return acc;
+        },
+        {} as Record<string, string[]>,
+      );
+
       throw new ValidationError(
         "Request validation failed",
         "VALIDATION_ERROR",
-        result.error.flatten().fieldErrors,
+        fieldErrors,
       );
     }
 

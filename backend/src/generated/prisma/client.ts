@@ -66,3 +66,38 @@ export type Verification = Prisma.VerificationModel
  * 
  */
 export type Employee = Prisma.EmployeeModel
+/**
+ * Model Product
+ * 
+ */
+export type Product = Prisma.ProductModel
+/**
+ * Model ProductBatch
+ * 
+ */
+export type ProductBatch = Prisma.ProductBatchModel
+/**
+ * Model ProductPrice
+ * 
+ */
+export type ProductPrice = Prisma.ProductPriceModel
+/**
+ * Model Inventory
+ * 
+ */
+export type Inventory = Prisma.InventoryModel
+/**
+ * Model Manufacturer
+ * 
+ */
+export type Manufacturer = Prisma.ManufacturerModel
+/**
+ * Model ProductManufacturer
+ * 
+ */
+export type ProductManufacturer = Prisma.ProductManufacturerModel
+/**
+ * Model ProductCertification
+ * 
+ */
+export type ProductCertification = Prisma.ProductCertificationModel
