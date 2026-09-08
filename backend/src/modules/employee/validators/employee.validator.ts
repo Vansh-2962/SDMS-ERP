@@ -42,7 +42,8 @@ export const createEmployeeSchema = z.object({
         .trim()
         .min(2, "Territory must contain at least 2 characters")
         .max(100, "Territory cannot exceed 100 characters")
-        .optional(),
+        .optional()
+        .or(z.literal("")),
 
       email: z
         .string()
