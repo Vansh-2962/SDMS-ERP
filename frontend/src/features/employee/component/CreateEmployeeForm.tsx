@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { CreateEmployeeInput } from "../types/employee.types";
 import { useCreateEmployee } from "../hooks/useCreateEmployee";
-import { useEffect } from "react";
 import { IconLoader2 } from "@tabler/icons-react";
 
 interface Props {
@@ -23,7 +22,6 @@ const CreateEmployeeForm = ({ addOpen, setAddOpen }: Props) => {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
   } = useForm<CreateEmployeeInput>({
@@ -39,18 +37,15 @@ const CreateEmployeeForm = ({ addOpen, setAddOpen }: Props) => {
     },
   });
 
-  const createLogin = watch("createLogin");
-
   const onSubmit = (data: CreateEmployeeInput) => {
-    mutate(data);
+    mutate(data, {
+      onSuccess: () => {
+        setAddOpen(false);
+        reset();
+      },
+    });
     reset();
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      setAddOpen(false);
-    }
-  }, [isSuccess, setAddOpen]);
 
   return (
     <Dialog open={addOpen} onOpenChange={setAddOpen}>
