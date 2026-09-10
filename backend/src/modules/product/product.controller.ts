@@ -1,6 +1,9 @@
 import type { Request, Response } from "express";
 import type { ProductService } from "./product.service.js";
-import type { CreateProductInput } from "./validators/product.schema.js";
+import type {
+  CreateProductInput,
+  DeleteProductInput,
+} from "./validators/product.schema.js";
 import { ProductMapper } from "./mappers/product.mapper.js";
 
 export class ProductController {
@@ -31,6 +34,18 @@ export class ProductController {
       success: true,
       message: "Products fetched successfully",
       data: ProductMapper.allProductsResponse(products),
+    });
+  };
+
+  deleteProduct = async (req: Request, res: Response) => {
+    const { params } = req.validated as DeleteProductInput;
+    const deleted = await this.productService.deleteProduct(
+      params.id as string,
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Product deleted successfully",
+      data: ProductMapper.deleteResponse(deleted),
     });
   };
 }

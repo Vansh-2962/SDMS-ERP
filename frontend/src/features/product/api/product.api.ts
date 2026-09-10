@@ -10,3 +10,8 @@ export const getAllProducts = async () => {
   const res = await axiosInstance.get("/products");
   return res.data;
 };
+
+export const deleteProduct = async (id: string) => {
+  const res = await axiosInstance.delete(`/products/${id}`);
+  return res.data;
+};

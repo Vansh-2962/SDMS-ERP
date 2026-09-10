@@ -1,7 +1,7 @@
 import { authenticate } from "@/middlewares/authenticate.middleware.js";
 import { validate } from "@/middlewares/validate.middleware.js";
 import { Router } from "express";
-import { createProductSchema } from "./validators/product.schema.js";
+import { createProductSchema, deleteProductSchema } from "./validators/product.schema.js";
 import { asyncHandler } from "@/middlewares/asyncHandler.middleware.js";
 import { ProductController } from "./product.controller.js";
 import { ProductRepository } from "./product.repository.js";
@@ -37,6 +37,13 @@ productRouter.post(
   authenticate,
   validate(createProductSchema),
   asyncHandler(productController.create),
+);
+
+productRouter.delete(
+  "/:id",
+  authenticate,
+  validate(deleteProductSchema),
+  asyncHandler(productController.deleteProduct),
 );
 
 productRouter.get("/", authenticate, asyncHandler(productController.getAll));

@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { CreateEmployeeInput } from "../types/employee.types";
 import { useCreateEmployee } from "../hooks/useCreateEmployee";
 import { IconLoader2 } from "@tabler/icons-react";
+import ButtonLoader from "@/components/ButtonLoader";
 
 interface Props {
   addOpen: boolean;
@@ -219,14 +220,7 @@ const CreateEmployeeForm = ({ addOpen, setAddOpen }: Props) => {
               Cancel
             </Button>
             <Button type="submit" disabled={isPending}>
-              {isPending ? (
-                <div className="flex items-center gap-2">
-                  <IconLoader2 className="animate-spin w-4 h-4" />
-                  <span className="text-sm">Adding...</span>
-                </div>
-              ) : (
-                "Add Salesman"
-              )}
+              {isPending ? <ButtonLoader text="Adding..." /> : "Add Salesman"}
             </Button>
           </div>
         </form>

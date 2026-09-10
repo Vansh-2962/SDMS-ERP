@@ -57,4 +57,8 @@ export class ProductMapper {
       };
     });
   }
+
+  static deleteResponse(product: Product): string {
+    return product.id;
+  }
 }

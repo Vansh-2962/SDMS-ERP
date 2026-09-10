@@ -12,6 +12,7 @@ import type { InventoryRepository } from "./inventory/inventory.repository.js";
 import type { CertificationRepository } from "./certifications/certifications.repository.js";
 import type { ManufacturerRepository } from "./manufacturer/manufacturer.repository.js";
 import type { ProductWithRelations } from "./product.types.js";
+import { NotFoundError } from "@/shared/errors/not-found.error.js";
 
 export class ProductService {
   constructor(
@@ -412,5 +413,16 @@ export class ProductService {
 
   async getAll(userId: string): Promise<ProductWithRelations[]> {
     return this.productRepository.findAll(userId);
+  }
+
+  async deleteProduct(id: string): Promise<Product> {
+    if (!id) {
+      throw new Error("Please provide a valid product ID");
+    }
+    const response = await this.productRepository.deleteProduct(id);
+    if (!response) {
+      throw new NotFoundError("Product not found");
+    }
+    return response;
   }
 }

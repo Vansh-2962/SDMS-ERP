@@ -28,9 +28,11 @@ import {
   IconCircleCheck,
   IconChevronDown,
   IconChevronUp,
+  IconLoader2,
 } from "@tabler/icons-react";
 import { ProductFormData } from "@/features/product/types/product.types";
 import { useCreateProduct } from "@/features/product/hooks/useCreateProduct";
+import ButtonLoader from "@/components/ButtonLoader";
 
 function Field({
   label,
@@ -118,7 +120,7 @@ export default function ProductForm() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { mutate, isPending } = useCreateProduct();
-  const { products, addProduct, updateProduct } = useAppStore();
+  const { products } = useAppStore();
   const existing = products.find((p) => p.id === id);
 
   const {
@@ -142,7 +144,6 @@ export default function ProductForm() {
   });
 
   const onSubmit = (data: ProductFormData) => {
-    console.log(data);
     mutate(data);
   };
 
@@ -785,9 +786,19 @@ export default function ProductForm() {
           >
             Cancel
           </Button>
-          <Button type="submit" className="px-8 gap-1.5">
-            <IconCircleCheck size={16} />
-            {existing ? "Update Product" : "Add Product"}
+          <Button
+            type="submit"
+            className={`px-8 gap-1.5 ${isPending && "cursor-not-allowed"} `}
+            disabled={isPending}
+          >
+            {isPending ? (
+              <ButtonLoader text="Adding..." />
+            ) : (
+              <div className="px-8 gap-1.5 flex items-center">
+                <IconCircleCheck size={16} />
+                {existing ? "Update Product" : "Add Product"}
+              </div>
+            )}
           </Button>
         </div>
       </form>

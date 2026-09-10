@@ -64,4 +64,12 @@ export class ProductRepository {
     const client = tx ? tx : this.prisma;
     return client.product.create({ data });
   }
+
+  async deleteProduct(id: string): Promise<Product> {
+    return this.prisma.product.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }
