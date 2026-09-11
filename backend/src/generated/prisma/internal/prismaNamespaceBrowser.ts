@@ -62,7 +62,10 @@ export const ModelName = {
   Inventory: 'Inventory',
   Manufacturer: 'Manufacturer',
   ProductManufacturer: 'ProductManufacturer',
-  ProductCertification: 'ProductCertification'
+  ProductCertification: 'ProductCertification',
+  Profile: 'Profile',
+  BankDetails: 'BankDetails',
+  BillingSettings: 'BillingSettings'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -300,6 +303,49 @@ export const ProductCertificationScalarFieldEnum = {
 } as const
 
 export type ProductCertificationScalarFieldEnum = (typeof ProductCertificationScalarFieldEnum)[keyof typeof ProductCertificationScalarFieldEnum]
+
+
+export const ProfileScalarFieldEnum = {
+  id: 'id',
+  companyName: 'companyName',
+  GSTIN: 'GSTIN',
+  pan: 'pan',
+  fssai: 'fssai',
+  mobile: 'mobile',
+  email: 'email',
+  website: 'website',
+  address: 'address',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
+
+
+export const BankDetailsScalarFieldEnum = {
+  id: 'id',
+  bankName: 'bankName',
+  accountNumber: 'accountNumber',
+  ifsc: 'ifsc',
+  accountType: 'accountType',
+  upiId: 'upiId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BankDetailsScalarFieldEnum = (typeof BankDetailsScalarFieldEnum)[keyof typeof BankDetailsScalarFieldEnum]
+
+
+export const BillingSettingsScalarFieldEnum = {
+  id: 'id',
+  invPrefix: 'invPrefix',
+  finYearStart: 'finYearStart',
+  paymentTerms: 'paymentTerms',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BillingSettingsScalarFieldEnum = (typeof BillingSettingsScalarFieldEnum)[keyof typeof BillingSettingsScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -38,3 +38,11 @@ export const VegNonVeg = {
 } as const
 
 export type VegNonVeg = (typeof VegNonVeg)[keyof typeof VegNonVeg]
+
+
+export const BankType = {
+  SAVINGS: 'SAVINGS',
+  CURRENT: 'CURRENT'
+} as const
+
+export type BankType = (typeof BankType)[keyof typeof BankType]

@@ -324,3 +324,46 @@ model ProductCertification {
   @@index([productId])
   @@map("product_certifications")
 }
+
+model Profile {
+  id             String                     @id                            @default(uuid())
+  companyName    String                     
+  GSTIN          String
+  pan            String?
+  fssai          String?
+  mobile         String?
+  email          String?
+  website        String?
+  address        String?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum BankType {
+  SAVINGS
+  CURRENT
+}
+
+model BankDetails {
+  id            String                     @id                            @default(uuid())
+  bankName      String 
+  accountNumber BigInt
+  ifsc          String
+  accountType   BankType                    @default(CURRENT)
+  upiId         String?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model BillingSettings {
+  id             String                     @id                            @default(uuid())
+  invPrefix      String                     @default("INV")
+  finYearStart   DateTime
+  paymentTerms   Int?                        @default(30)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+

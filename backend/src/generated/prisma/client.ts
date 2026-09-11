@@ -101,3 +101,18 @@ export type ProductManufacturer = Prisma.ProductManufacturerModel
  * 
  */
 export type ProductCertification = Prisma.ProductCertificationModel
+/**
+ * Model Profile
+ * 
+ */
+export type Profile = Prisma.ProfileModel
+/**
+ * Model BankDetails
+ * 
+ */
+export type BankDetails = Prisma.BankDetailsModel
+/**
+ * Model BillingSettings
+ * 
+ */
+export type BillingSettings = Prisma.BillingSettingsModel
