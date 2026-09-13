@@ -11,6 +11,11 @@ export const getAllProducts = async () => {
   return res.data;
 };
 
+export const getProduct = async (id: string) => {
+  const res = await axiosInstance.get(`/product/:id`);
+  return res.data;
+};
+
 export const deleteProduct = async (id: string) => {
   const res = await axiosInstance.delete(`/products/${id}`);
   return res.data;

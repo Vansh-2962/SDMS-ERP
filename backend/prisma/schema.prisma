@@ -348,7 +348,7 @@ enum BankType {
 model BankDetails {
   id            String                     @id                            @default(uuid())
   bankName      String 
-  accountNumber BigInt
+  accountNumber String
   ifsc          String
   accountType   BankType                    @default(CURRENT)
   upiId         String?

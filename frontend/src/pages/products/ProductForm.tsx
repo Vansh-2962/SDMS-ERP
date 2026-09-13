@@ -33,6 +33,7 @@ import {
 import { ProductFormData } from "@/features/product/types/product.types";
 import { useCreateProduct } from "@/features/product/hooks/useCreateProduct";
 import ButtonLoader from "@/components/ButtonLoader";
+import { useGetProductById } from "@/features/product/hooks/useGetProduct";
 
 function Field({
   label,

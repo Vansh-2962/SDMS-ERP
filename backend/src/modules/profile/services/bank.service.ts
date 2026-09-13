@@ -9,12 +9,10 @@ export class BankService {
     const existingData = await this.bankRepository.getDetails();
     let response;
     if (existingData) {
-      response = await this.bankRepository.createOrUpdate(
-        data,
-        existingData.id,
-      );
+      response = await this.bankRepository.update(data, existingData.id);
+    } else {
+      response = await this.bankRepository.create(data);
     }
-    response = await this.bankRepository.createOrUpdate(data);
     return response;
   }
 

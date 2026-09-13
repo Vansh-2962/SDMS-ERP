@@ -9,12 +9,10 @@ export class ProfileService {
     const existingData = await this.profileRepository.getDetails();
     let response;
     if (existingData) {
-      response = await this.profileRepository.createOrUpdate(
-        data,
-        existingData.id,
-      );
+      response = await this.profileRepository.update(data, existingData.id);
+    } else {
+      response = await this.profileRepository.create(data);
     }
-    response = await this.profileRepository.createOrUpdate(data);
     return response;
   }
 

@@ -11,12 +11,10 @@ export class SettingsService {
     const existingData = await this.settingsRepository.getDetails();
     let response;
     if (existingData) {
-      response = await this.settingsRepository.createOrUpdate(
-        data,
-        existingData.id,
-      );
+      response = await this.settingsRepository.update(data, existingData.id);
+    } else {
+      response = await this.settingsRepository.create(data);
     }
-    response = await this.settingsRepository.createOrUpdate(data);
     return response;
   }
 

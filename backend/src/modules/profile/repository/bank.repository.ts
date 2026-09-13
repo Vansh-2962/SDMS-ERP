@@ -4,22 +4,26 @@ import type { CreateBankInput } from "../validators/bank.validator.js";
 export class BankRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async createOrUpdate(
+  async create(data: CreateBankInput["body"]): Promise<BankDetails> {
+    return await this.prisma.bankDetails.create({
+      data: {
+        ...data,
+        upiId: data.upiId ?? "",
+      },
+    });
+  }
+
+  async update(
     data: CreateBankInput["body"],
-    id?: string,
+    id: string,
   ): Promise<BankDetails> {
-    return await this.prisma.bankDetails.upsert({
+    return await this.prisma.bankDetails.update({
       where: {
-        id: id ?? "",
+        id,
       },
-      create: {
+      data: {
         ...data,
         upiId: data.upiId ?? "",
-      },
-      update: {
-        ...data,
-        upiId: data.upiId ?? "",
-        updatedAt: new Date(),
       },
     });
   }

@@ -20,24 +20,14 @@ export type BankDetailsModel = runtime.Types.Result.DefaultSelection<Prisma.$Ban
 
 export type AggregateBankDetails = {
   _count: BankDetailsCountAggregateOutputType | null
-  _avg: BankDetailsAvgAggregateOutputType | null
-  _sum: BankDetailsSumAggregateOutputType | null
   _min: BankDetailsMinAggregateOutputType | null
   _max: BankDetailsMaxAggregateOutputType | null
-}
-
-export type BankDetailsAvgAggregateOutputType = {
-  accountNumber: number | null
-}
-
-export type BankDetailsSumAggregateOutputType = {
-  accountNumber: bigint | null
 }
 
 export type BankDetailsMinAggregateOutputType = {
   id: string | null
   bankName: string | null
-  accountNumber: bigint | null
+  accountNumber: string | null
   ifsc: string | null
   accountType: $Enums.BankType | null
   upiId: string | null
@@ -48,7 +38,7 @@ export type BankDetailsMinAggregateOutputType = {
 export type BankDetailsMaxAggregateOutputType = {
   id: string | null
   bankName: string | null
-  accountNumber: bigint | null
+  accountNumber: string | null
   ifsc: string | null
   accountType: $Enums.BankType | null
   upiId: string | null
@@ -68,14 +58,6 @@ export type BankDetailsCountAggregateOutputType = {
   _all: number
 }
 
-
-export type BankDetailsAvgAggregateInputType = {
-  accountNumber?: true
-}
-
-export type BankDetailsSumAggregateInputType = {
-  accountNumber?: true
-}
 
 export type BankDetailsMinAggregateInputType = {
   id?: true
@@ -149,18 +131,6 @@ export type BankDetailsAggregateArgs<ExtArgs extends runtime.Types.Extensions.In
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: BankDetailsAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: BankDetailsSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: BankDetailsMinAggregateInputType
@@ -191,8 +161,6 @@ export type BankDetailsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   _count?: BankDetailsCountAggregateInputType | true
-  _avg?: BankDetailsAvgAggregateInputType
-  _sum?: BankDetailsSumAggregateInputType
   _min?: BankDetailsMinAggregateInputType
   _max?: BankDetailsMaxAggregateInputType
 }
@@ -200,15 +168,13 @@ export type BankDetailsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type BankDetailsGroupByOutputType = {
   id: string
   bankName: string
-  accountNumber: bigint
+  accountNumber: string
   ifsc: string
   accountType: $Enums.BankType
   upiId: string | null
   createdAt: Date
   updatedAt: Date
   _count: BankDetailsCountAggregateOutputType | null
-  _avg: BankDetailsAvgAggregateOutputType | null
-  _sum: BankDetailsSumAggregateOutputType | null
   _min: BankDetailsMinAggregateOutputType | null
   _max: BankDetailsMaxAggregateOutputType | null
 }
@@ -234,7 +200,7 @@ export type BankDetailsWhereInput = {
   NOT?: Prisma.BankDetailsWhereInput | Prisma.BankDetailsWhereInput[]
   id?: Prisma.StringFilter<"BankDetails"> | string
   bankName?: Prisma.StringFilter<"BankDetails"> | string
-  accountNumber?: Prisma.BigIntFilter<"BankDetails"> | bigint | number
+  accountNumber?: Prisma.StringFilter<"BankDetails"> | string
   ifsc?: Prisma.StringFilter<"BankDetails"> | string
   accountType?: Prisma.EnumBankTypeFilter<"BankDetails"> | $Enums.BankType
   upiId?: Prisma.StringNullableFilter<"BankDetails"> | string | null
@@ -259,7 +225,7 @@ export type BankDetailsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.BankDetailsWhereInput[]
   NOT?: Prisma.BankDetailsWhereInput | Prisma.BankDetailsWhereInput[]
   bankName?: Prisma.StringFilter<"BankDetails"> | string
-  accountNumber?: Prisma.BigIntFilter<"BankDetails"> | bigint | number
+  accountNumber?: Prisma.StringFilter<"BankDetails"> | string
   ifsc?: Prisma.StringFilter<"BankDetails"> | string
   accountType?: Prisma.EnumBankTypeFilter<"BankDetails"> | $Enums.BankType
   upiId?: Prisma.StringNullableFilter<"BankDetails"> | string | null
@@ -277,10 +243,8 @@ export type BankDetailsOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.BankDetailsCountOrderByAggregateInput
-  _avg?: Prisma.BankDetailsAvgOrderByAggregateInput
   _max?: Prisma.BankDetailsMaxOrderByAggregateInput
   _min?: Prisma.BankDetailsMinOrderByAggregateInput
-  _sum?: Prisma.BankDetailsSumOrderByAggregateInput
 }
 
 export type BankDetailsScalarWhereWithAggregatesInput = {
@@ -289,7 +253,7 @@ export type BankDetailsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.BankDetailsScalarWhereWithAggregatesInput | Prisma.BankDetailsScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"BankDetails"> | string
   bankName?: Prisma.StringWithAggregatesFilter<"BankDetails"> | string
-  accountNumber?: Prisma.BigIntWithAggregatesFilter<"BankDetails"> | bigint | number
+  accountNumber?: Prisma.StringWithAggregatesFilter<"BankDetails"> | string
   ifsc?: Prisma.StringWithAggregatesFilter<"BankDetails"> | string
   accountType?: Prisma.EnumBankTypeWithAggregatesFilter<"BankDetails"> | $Enums.BankType
   upiId?: Prisma.StringNullableWithAggregatesFilter<"BankDetails"> | string | null
@@ -300,7 +264,7 @@ export type BankDetailsScalarWhereWithAggregatesInput = {
 export type BankDetailsCreateInput = {
   id?: string
   bankName: string
-  accountNumber: bigint | number
+  accountNumber: string
   ifsc: string
   accountType?: $Enums.BankType
   upiId?: string | null
@@ -311,7 +275,7 @@ export type BankDetailsCreateInput = {
 export type BankDetailsUncheckedCreateInput = {
   id?: string
   bankName: string
-  accountNumber: bigint | number
+  accountNumber: string
   ifsc: string
   accountType?: $Enums.BankType
   upiId?: string | null
@@ -322,7 +286,7 @@ export type BankDetailsUncheckedCreateInput = {
 export type BankDetailsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNumber?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
   ifsc?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.EnumBankTypeFieldUpdateOperationsInput | $Enums.BankType
   upiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -333,7 +297,7 @@ export type BankDetailsUpdateInput = {
 export type BankDetailsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNumber?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
   ifsc?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.EnumBankTypeFieldUpdateOperationsInput | $Enums.BankType
   upiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -344,7 +308,7 @@ export type BankDetailsUncheckedUpdateInput = {
 export type BankDetailsCreateManyInput = {
   id?: string
   bankName: string
-  accountNumber: bigint | number
+  accountNumber: string
   ifsc: string
   accountType?: $Enums.BankType
   upiId?: string | null
@@ -355,7 +319,7 @@ export type BankDetailsCreateManyInput = {
 export type BankDetailsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNumber?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
   ifsc?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.EnumBankTypeFieldUpdateOperationsInput | $Enums.BankType
   upiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -366,7 +330,7 @@ export type BankDetailsUpdateManyMutationInput = {
 export type BankDetailsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNumber?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
   ifsc?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.EnumBankTypeFieldUpdateOperationsInput | $Enums.BankType
   upiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -383,10 +347,6 @@ export type BankDetailsCountOrderByAggregateInput = {
   upiId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type BankDetailsAvgOrderByAggregateInput = {
-  accountNumber?: Prisma.SortOrder
 }
 
 export type BankDetailsMaxOrderByAggregateInput = {
@@ -409,18 +369,6 @@ export type BankDetailsMinOrderByAggregateInput = {
   upiId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type BankDetailsSumOrderByAggregateInput = {
-  accountNumber?: Prisma.SortOrder
-}
-
-export type BigIntFieldUpdateOperationsInput = {
-  set?: bigint | number
-  increment?: bigint | number
-  decrement?: bigint | number
-  multiply?: bigint | number
-  divide?: bigint | number
 }
 
 export type EnumBankTypeFieldUpdateOperationsInput = {
@@ -481,7 +429,7 @@ export type $BankDetailsPayload<ExtArgs extends runtime.Types.Extensions.Interna
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     bankName: string
-    accountNumber: bigint
+    accountNumber: string
     ifsc: string
     accountType: $Enums.BankType
     upiId: string | null
@@ -912,7 +860,7 @@ export interface Prisma__BankDetailsClient<T, Null = never, ExtArgs extends runt
 export interface BankDetailsFieldRefs {
   readonly id: Prisma.FieldRef<"BankDetails", 'String'>
   readonly bankName: Prisma.FieldRef<"BankDetails", 'String'>
-  readonly accountNumber: Prisma.FieldRef<"BankDetails", 'BigInt'>
+  readonly accountNumber: Prisma.FieldRef<"BankDetails", 'String'>
   readonly ifsc: Prisma.FieldRef<"BankDetails", 'String'>
   readonly accountType: Prisma.FieldRef<"BankDetails", 'BankType'>
   readonly upiId: Prisma.FieldRef<"BankDetails", 'String'>
