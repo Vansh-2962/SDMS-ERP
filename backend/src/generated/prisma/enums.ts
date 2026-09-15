@@ -46,3 +46,22 @@ export const BankType = {
 } as const
 
 export type BankType = (typeof BankType)[keyof typeof BankType]
+
+
+export const CustomerType = {
+  DISTRIBUTOR: 'DISTRIBUTOR',
+  SUPER_STOCKIST: 'SUPER_STOCKIST',
+  RETAILER: 'RETAILER',
+  WHOLESALER: 'WHOLESALER',
+  MODERN_TRADE: 'MODERN_TRADE'
+} as const
+
+export type CustomerType = (typeof CustomerType)[keyof typeof CustomerType]
+
+
+export const CustomerStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type CustomerStatus = (typeof CustomerStatus)[keyof typeof CustomerStatus]

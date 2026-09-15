@@ -92,3 +92,8 @@ export type BankDetails = Prisma.BankDetailsModel
  * 
  */
 export type BillingSettings = Prisma.BillingSettingsModel
+/**
+ * Model Customer
+ * 
+ */
+export type Customer = Prisma.CustomerModel

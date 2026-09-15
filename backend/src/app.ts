@@ -10,6 +10,7 @@ import { authRouter } from "@/route/auth.js";
 import { employeeRouter } from "./modules/employee/employee.routes.js";
 import { productRouter } from "./modules/product/product.routes.js";
 import { profileRouter } from "./modules/profile/routes.js";
+import { customerRouter } from "./modules/customer/customer.routes.js";
 
 const app: Application = express();
 
@@ -34,6 +35,7 @@ app.all("/api/auth/{*any}", authRouter);
 app.use("/api/v1/employees", employeeRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/profile", profileRouter);
+app.use("/api/v1/customer", customerRouter)
 
 app.get("/health", (_, res) => {
   const logger = getLogger();

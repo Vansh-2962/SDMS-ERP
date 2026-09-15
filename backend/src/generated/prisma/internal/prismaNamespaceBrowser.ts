@@ -65,7 +65,8 @@ export const ModelName = {
   ProductCertification: 'ProductCertification',
   Profile: 'Profile',
   BankDetails: 'BankDetails',
-  BillingSettings: 'BillingSettings'
+  BillingSettings: 'BillingSettings',
+  Customer: 'Customer'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -346,6 +347,37 @@ export const BillingSettingsScalarFieldEnum = {
 } as const
 
 export type BillingSettingsScalarFieldEnum = (typeof BillingSettingsScalarFieldEnum)[keyof typeof BillingSettingsScalarFieldEnum]
+
+
+export const CustomerScalarFieldEnum = {
+  id: 'id',
+  shopName: 'shopName',
+  ownerName: 'ownerName',
+  type: 'type',
+  gstNumber: 'gstNumber',
+  pan: 'pan',
+  fssai: 'fssai',
+  status: 'status',
+  mobile: 'mobile',
+  whatsapp: 'whatsapp',
+  email: 'email',
+  street: 'street',
+  state: 'state',
+  stateCode: 'stateCode',
+  district: 'district',
+  pincode: 'pincode',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  salesTerritory: 'salesTerritory',
+  assignedSalesmanId: 'assignedSalesmanId',
+  creditLimit: 'creditLimit',
+  paymentTerms: 'paymentTerms',
+  openingBal: 'openingBal',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
 
 
 export const SortOrder = {

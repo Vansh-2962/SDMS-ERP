@@ -25,6 +25,7 @@ model User {
 
   products      Product[]
   employee      Employee?
+  customer      Customer?
   sessions      Session[]
   accounts      Account[]
   @@map("users")
@@ -367,3 +368,55 @@ model BillingSettings {
   updatedAt     DateTime  @updatedAt
 }
 
+
+enum CustomerType {
+  DISTRIBUTOR
+  SUPER_STOCKIST
+  RETAILER
+  WHOLESALER
+  MODERN_TRADE
+}
+
+enum CustomerStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model Customer {
+  id                String                    @id                                 @default(uuid())
+
+  shopName          String
+  ownerName         String
+  type              CustomerType
+  gstNumber         String?                   @unique
+  pan               String?                   @unique
+  fssai             String?
+  status            CustomerStatus            @default(ACTIVE)
+
+  mobile            String
+  whatsapp          String?
+  email             String?
+
+  street            String?
+  state             String?
+  stateCode         String?
+  district          String?
+  pincode           String?
+  latitude          String?
+  longitude         String?
+
+  salesTerritory     String?
+  assignedSalesmanId String?                   @unique
+  assignedSalesman   User?                     @relation(fields: [assignedSalesmanId], references: [id])
+
+  creditLimit       Decimal                    @default(0)
+  paymentTerms      Int                        @default(0)
+  openingBal        Decimal                    @default(0)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([gstNumber])
+  @@index([pan])
+  
+}
