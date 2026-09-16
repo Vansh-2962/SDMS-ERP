@@ -1,6 +1,7 @@
 import type { CustomerStatus, CustomerType } from "@/generated/prisma/enums.js";
 
 export interface CreateCustomerDto {
+  body: {
     shopName: string;
     ownerName: string;
     type: CustomerType;
@@ -28,4 +29,5 @@ export interface CreateCustomerDto {
     creditLimit?: number;
     paymentTerms?: number;
     openingBal?: number;
+  };
 }

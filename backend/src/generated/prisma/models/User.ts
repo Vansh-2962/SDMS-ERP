@@ -248,7 +248,6 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   products?: Prisma.ProductListRelationFilter
   employee?: Prisma.XOR<Prisma.EmployeeNullableScalarRelationFilter, Prisma.EmployeeWhereInput> | null
-  customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
 }
@@ -269,7 +268,6 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   products?: Prisma.ProductOrderByRelationAggregateInput
   employee?: Prisma.EmployeeOrderByWithRelationInput
-  customer?: Prisma.CustomerOrderByWithRelationInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
 }
@@ -293,7 +291,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   products?: Prisma.ProductListRelationFilter
   employee?: Prisma.XOR<Prisma.EmployeeNullableScalarRelationFilter, Prisma.EmployeeWhereInput> | null
-  customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
 }, "id" | "email">
@@ -352,7 +349,6 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   products?: Prisma.ProductCreateNestedManyWithoutCreatedByInput
   employee?: Prisma.EmployeeCreateNestedOneWithoutUserInput
-  customer?: Prisma.CustomerCreateNestedOneWithoutAssignedSalesmanInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
 }
@@ -373,7 +369,6 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutCreatedByInput
   employee?: Prisma.EmployeeUncheckedCreateNestedOneWithoutUserInput
-  customer?: Prisma.CustomerUncheckedCreateNestedOneWithoutAssignedSalesmanInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
 }
@@ -394,7 +389,6 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUpdateManyWithoutCreatedByNestedInput
   employee?: Prisma.EmployeeUpdateOneWithoutUserNestedInput
-  customer?: Prisma.CustomerUpdateOneWithoutAssignedSalesmanNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
 }
@@ -415,7 +409,6 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutCreatedByNestedInput
   employee?: Prisma.EmployeeUncheckedUpdateOneWithoutUserNestedInput
-  customer?: Prisma.CustomerUncheckedUpdateOneWithoutAssignedSalesmanNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -608,22 +601,6 @@ export type UserUpdateOneRequiredWithoutProductsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProductsInput, Prisma.UserUpdateWithoutProductsInput>, Prisma.UserUncheckedUpdateWithoutProductsInput>
 }
 
-export type UserCreateNestedOneWithoutCustomerInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutCustomerInput, Prisma.UserUncheckedCreateWithoutCustomerInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCustomerInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneWithoutCustomerNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutCustomerInput, Prisma.UserUncheckedCreateWithoutCustomerInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCustomerInput
-  upsert?: Prisma.UserUpsertWithoutCustomerInput
-  disconnect?: Prisma.UserWhereInput | boolean
-  delete?: Prisma.UserWhereInput | boolean
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCustomerInput, Prisma.UserUpdateWithoutCustomerInput>, Prisma.UserUncheckedUpdateWithoutCustomerInput>
-}
-
 export type UserCreateWithoutSessionsInput = {
   id?: string
   name: string
@@ -640,7 +617,6 @@ export type UserCreateWithoutSessionsInput = {
   updatedAt?: Date | string
   products?: Prisma.ProductCreateNestedManyWithoutCreatedByInput
   employee?: Prisma.EmployeeCreateNestedOneWithoutUserInput
-  customer?: Prisma.CustomerCreateNestedOneWithoutAssignedSalesmanInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
 }
 
@@ -660,7 +636,6 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   updatedAt?: Date | string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutCreatedByInput
   employee?: Prisma.EmployeeUncheckedCreateNestedOneWithoutUserInput
-  customer?: Prisma.CustomerUncheckedCreateNestedOneWithoutAssignedSalesmanInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -696,7 +671,6 @@ export type UserUpdateWithoutSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUpdateManyWithoutCreatedByNestedInput
   employee?: Prisma.EmployeeUpdateOneWithoutUserNestedInput
-  customer?: Prisma.CustomerUpdateOneWithoutAssignedSalesmanNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
 }
 
@@ -716,7 +690,6 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutCreatedByNestedInput
   employee?: Prisma.EmployeeUncheckedUpdateOneWithoutUserNestedInput
-  customer?: Prisma.CustomerUncheckedUpdateOneWithoutAssignedSalesmanNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -736,7 +709,6 @@ export type UserCreateWithoutAccountsInput = {
   updatedAt?: Date | string
   products?: Prisma.ProductCreateNestedManyWithoutCreatedByInput
   employee?: Prisma.EmployeeCreateNestedOneWithoutUserInput
-  customer?: Prisma.CustomerCreateNestedOneWithoutAssignedSalesmanInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
@@ -756,7 +728,6 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   updatedAt?: Date | string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutCreatedByInput
   employee?: Prisma.EmployeeUncheckedCreateNestedOneWithoutUserInput
-  customer?: Prisma.CustomerUncheckedCreateNestedOneWithoutAssignedSalesmanInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -792,7 +763,6 @@ export type UserUpdateWithoutAccountsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUpdateManyWithoutCreatedByNestedInput
   employee?: Prisma.EmployeeUpdateOneWithoutUserNestedInput
-  customer?: Prisma.CustomerUpdateOneWithoutAssignedSalesmanNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
@@ -812,7 +782,6 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutCreatedByNestedInput
   employee?: Prisma.EmployeeUncheckedUpdateOneWithoutUserNestedInput
-  customer?: Prisma.CustomerUncheckedUpdateOneWithoutAssignedSalesmanNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -831,7 +800,6 @@ export type UserCreateWithoutEmployeeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   products?: Prisma.ProductCreateNestedManyWithoutCreatedByInput
-  customer?: Prisma.CustomerCreateNestedOneWithoutAssignedSalesmanInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
 }
@@ -851,7 +819,6 @@ export type UserUncheckedCreateWithoutEmployeeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutCreatedByInput
-  customer?: Prisma.CustomerUncheckedCreateNestedOneWithoutAssignedSalesmanInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
 }
@@ -887,7 +854,6 @@ export type UserUpdateWithoutEmployeeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUpdateManyWithoutCreatedByNestedInput
-  customer?: Prisma.CustomerUpdateOneWithoutAssignedSalesmanNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
 }
@@ -907,7 +873,6 @@ export type UserUncheckedUpdateWithoutEmployeeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutCreatedByNestedInput
-  customer?: Prisma.CustomerUncheckedUpdateOneWithoutAssignedSalesmanNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -927,7 +892,6 @@ export type UserCreateWithoutProductsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   employee?: Prisma.EmployeeCreateNestedOneWithoutUserInput
-  customer?: Prisma.CustomerCreateNestedOneWithoutAssignedSalesmanInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
 }
@@ -947,7 +911,6 @@ export type UserUncheckedCreateWithoutProductsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   employee?: Prisma.EmployeeUncheckedCreateNestedOneWithoutUserInput
-  customer?: Prisma.CustomerUncheckedCreateNestedOneWithoutAssignedSalesmanInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
 }
@@ -983,7 +946,6 @@ export type UserUpdateWithoutProductsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeUpdateOneWithoutUserNestedInput
-  customer?: Prisma.CustomerUpdateOneWithoutAssignedSalesmanNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
 }
@@ -1002,103 +964,6 @@ export type UserUncheckedUpdateWithoutProductsInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employee?: Prisma.EmployeeUncheckedUpdateOneWithoutUserNestedInput
-  customer?: Prisma.CustomerUncheckedUpdateOneWithoutAssignedSalesmanNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutCustomerInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerified?: boolean
-  image?: string | null
-  isActive?: boolean
-  lastLoginAt?: Date | string | null
-  role?: string | null
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  products?: Prisma.ProductCreateNestedManyWithoutCreatedByInput
-  employee?: Prisma.EmployeeCreateNestedOneWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutCustomerInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerified?: boolean
-  image?: string | null
-  isActive?: boolean
-  lastLoginAt?: Date | string | null
-  role?: string | null
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  products?: Prisma.ProductUncheckedCreateNestedManyWithoutCreatedByInput
-  employee?: Prisma.EmployeeUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutCustomerInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutCustomerInput, Prisma.UserUncheckedCreateWithoutCustomerInput>
-}
-
-export type UserUpsertWithoutCustomerInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutCustomerInput, Prisma.UserUncheckedUpdateWithoutCustomerInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutCustomerInput, Prisma.UserUncheckedCreateWithoutCustomerInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutCustomerInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutCustomerInput, Prisma.UserUncheckedUpdateWithoutCustomerInput>
-}
-
-export type UserUpdateWithoutCustomerInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  products?: Prisma.ProductUpdateManyWithoutCreatedByNestedInput
-  employee?: Prisma.EmployeeUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutCustomerInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  products?: Prisma.ProductUncheckedUpdateManyWithoutCreatedByNestedInput
   employee?: Prisma.EmployeeUncheckedUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -1169,7 +1034,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   products?: boolean | Prisma.User$productsArgs<ExtArgs>
   employee?: boolean | Prisma.User$employeeArgs<ExtArgs>
-  customer?: boolean | Prisma.User$customerArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1227,7 +1091,6 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | Prisma.User$productsArgs<ExtArgs>
   employee?: boolean | Prisma.User$employeeArgs<ExtArgs>
-  customer?: boolean | Prisma.User$customerArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1240,7 +1103,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     products: Prisma.$ProductPayload<ExtArgs>[]
     employee: Prisma.$EmployeePayload<ExtArgs> | null
-    customer: Prisma.$CustomerPayload<ExtArgs> | null
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     accounts: Prisma.$AccountPayload<ExtArgs>[]
   }
@@ -1654,7 +1516,6 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   products<T extends Prisma.User$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   employee<T extends Prisma.User$employeeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$employeeArgs<ExtArgs>>): Prisma.Prisma__EmployeeClient<runtime.Types.Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  customer<T extends Prisma.User$customerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$customerArgs<ExtArgs>>): Prisma.Prisma__CustomerClient<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2132,25 +1993,6 @@ export type User$employeeArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.EmployeeInclude<ExtArgs> | null
   where?: Prisma.EmployeeWhereInput
-}
-
-/**
- * User.customer
- */
-export type User$customerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Customer
-   */
-  select?: Prisma.CustomerSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Customer
-   */
-  omit?: Prisma.CustomerOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CustomerInclude<ExtArgs> | null
-  where?: Prisma.CustomerWhereInput
 }
 
 /**

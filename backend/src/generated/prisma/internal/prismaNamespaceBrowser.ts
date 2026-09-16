@@ -351,6 +351,7 @@ export type BillingSettingsScalarFieldEnum = (typeof BillingSettingsScalarFieldE
 
 export const CustomerScalarFieldEnum = {
   id: 'id',
+  customerCode: 'customerCode',
   shopName: 'shopName',
   ownerName: 'ownerName',
   type: 'type',

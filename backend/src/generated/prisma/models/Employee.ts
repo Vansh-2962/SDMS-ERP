@@ -325,6 +325,7 @@ export type EmployeeWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  assignedCustomers?: Prisma.CustomerListRelationFilter
 }
 
 export type EmployeeOrderByWithRelationInput = {
@@ -347,6 +348,7 @@ export type EmployeeOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  assignedCustomers?: Prisma.CustomerOrderByRelationAggregateInput
 }
 
 export type EmployeeWhereUniqueInput = Prisma.AtLeast<{
@@ -372,6 +374,7 @@ export type EmployeeWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  assignedCustomers?: Prisma.CustomerListRelationFilter
 }, "id" | "empCode" | "userId">
 
 export type EmployeeOrderByWithAggregationInput = {
@@ -443,6 +446,7 @@ export type EmployeeCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutEmployeeInput
+  assignedCustomers?: Prisma.CustomerCreateNestedManyWithoutAssignedSalesmanInput
 }
 
 export type EmployeeUncheckedCreateInput = {
@@ -464,6 +468,7 @@ export type EmployeeUncheckedCreateInput = {
   joinDate: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  assignedCustomers?: Prisma.CustomerUncheckedCreateNestedManyWithoutAssignedSalesmanInput
 }
 
 export type EmployeeUpdateInput = {
@@ -484,6 +489,7 @@ export type EmployeeUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutEmployeeNestedInput
+  assignedCustomers?: Prisma.CustomerUpdateManyWithoutAssignedSalesmanNestedInput
 }
 
 export type EmployeeUncheckedUpdateInput = {
@@ -505,6 +511,7 @@ export type EmployeeUncheckedUpdateInput = {
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignedCustomers?: Prisma.CustomerUncheckedUpdateManyWithoutAssignedSalesmanNestedInput
 }
 
 export type EmployeeCreateManyInput = {
@@ -694,6 +701,22 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type EmployeeCreateNestedOneWithoutAssignedCustomersInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutAssignedCustomersInput, Prisma.EmployeeUncheckedCreateWithoutAssignedCustomersInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutAssignedCustomersInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+}
+
+export type EmployeeUpdateOneWithoutAssignedCustomersNestedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutAssignedCustomersInput, Prisma.EmployeeUncheckedCreateWithoutAssignedCustomersInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutAssignedCustomersInput
+  upsert?: Prisma.EmployeeUpsertWithoutAssignedCustomersInput
+  disconnect?: Prisma.EmployeeWhereInput | boolean
+  delete?: Prisma.EmployeeWhereInput | boolean
+  connect?: Prisma.EmployeeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutAssignedCustomersInput, Prisma.EmployeeUpdateWithoutAssignedCustomersInput>, Prisma.EmployeeUncheckedUpdateWithoutAssignedCustomersInput>
+}
+
 export type EmployeeCreateWithoutUserInput = {
   id?: string
   empCode?: number
@@ -712,6 +735,7 @@ export type EmployeeCreateWithoutUserInput = {
   joinDate: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  assignedCustomers?: Prisma.CustomerCreateNestedManyWithoutAssignedSalesmanInput
 }
 
 export type EmployeeUncheckedCreateWithoutUserInput = {
@@ -732,6 +756,7 @@ export type EmployeeUncheckedCreateWithoutUserInput = {
   joinDate: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  assignedCustomers?: Prisma.CustomerUncheckedCreateNestedManyWithoutAssignedSalesmanInput
 }
 
 export type EmployeeCreateOrConnectWithoutUserInput = {
@@ -767,6 +792,7 @@ export type EmployeeUpdateWithoutUserInput = {
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignedCustomers?: Prisma.CustomerUpdateManyWithoutAssignedSalesmanNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutUserInput = {
@@ -787,8 +813,137 @@ export type EmployeeUncheckedUpdateWithoutUserInput = {
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignedCustomers?: Prisma.CustomerUncheckedUpdateManyWithoutAssignedSalesmanNestedInput
 }
 
+export type EmployeeCreateWithoutAssignedCustomersInput = {
+  id?: string
+  empCode?: number
+  fullName: string
+  role: string
+  department?: string | null
+  territory?: string | null
+  mobile: string
+  email?: string | null
+  pan?: string | null
+  aadhar?: string | null
+  bankAccNo?: string | null
+  IFSC?: string | null
+  salary?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  isActive?: boolean
+  joinDate: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user?: Prisma.UserCreateNestedOneWithoutEmployeeInput
+}
+
+export type EmployeeUncheckedCreateWithoutAssignedCustomersInput = {
+  id?: string
+  empCode?: number
+  fullName: string
+  role: string
+  department?: string | null
+  territory?: string | null
+  mobile: string
+  email?: string | null
+  pan?: string | null
+  aadhar?: string | null
+  bankAccNo?: string | null
+  IFSC?: string | null
+  salary?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  isActive?: boolean
+  userId?: string | null
+  joinDate: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type EmployeeCreateOrConnectWithoutAssignedCustomersInput = {
+  where: Prisma.EmployeeWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutAssignedCustomersInput, Prisma.EmployeeUncheckedCreateWithoutAssignedCustomersInput>
+}
+
+export type EmployeeUpsertWithoutAssignedCustomersInput = {
+  update: Prisma.XOR<Prisma.EmployeeUpdateWithoutAssignedCustomersInput, Prisma.EmployeeUncheckedUpdateWithoutAssignedCustomersInput>
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutAssignedCustomersInput, Prisma.EmployeeUncheckedCreateWithoutAssignedCustomersInput>
+  where?: Prisma.EmployeeWhereInput
+}
+
+export type EmployeeUpdateToOneWithWhereWithoutAssignedCustomersInput = {
+  where?: Prisma.EmployeeWhereInput
+  data: Prisma.XOR<Prisma.EmployeeUpdateWithoutAssignedCustomersInput, Prisma.EmployeeUncheckedUpdateWithoutAssignedCustomersInput>
+}
+
+export type EmployeeUpdateWithoutAssignedCustomersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  territory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadhar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  IFSC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salary?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneWithoutEmployeeNestedInput
+}
+
+export type EmployeeUncheckedUpdateWithoutAssignedCustomersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  empCode?: Prisma.IntFieldUpdateOperationsInput | number
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  territory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadhar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  IFSC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salary?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type EmployeeCountOutputType
+ */
+
+export type EmployeeCountOutputType = {
+  assignedCustomers: number
+}
+
+export type EmployeeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  assignedCustomers?: boolean | EmployeeCountOutputTypeCountAssignedCustomersArgs
+}
+
+/**
+ * EmployeeCountOutputType without action
+ */
+export type EmployeeCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EmployeeCountOutputType
+   */
+  select?: Prisma.EmployeeCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * EmployeeCountOutputType without action
+ */
+export type EmployeeCountOutputTypeCountAssignedCustomersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CustomerWhereInput
+}
 
 
 export type EmployeeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -811,6 +966,8 @@ export type EmployeeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.Employee$userArgs<ExtArgs>
+  assignedCustomers?: boolean | Prisma.Employee$assignedCustomersArgs<ExtArgs>
+  _count?: boolean | Prisma.EmployeeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["employee"]>
 
 export type EmployeeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -881,6 +1038,8 @@ export type EmployeeSelectScalar = {
 export type EmployeeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "empCode" | "fullName" | "role" | "department" | "territory" | "mobile" | "email" | "pan" | "aadhar" | "bankAccNo" | "IFSC" | "salary" | "isActive" | "userId" | "joinDate" | "createdAt" | "updatedAt", ExtArgs["result"]["employee"]>
 export type EmployeeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.Employee$userArgs<ExtArgs>
+  assignedCustomers?: boolean | Prisma.Employee$assignedCustomersArgs<ExtArgs>
+  _count?: boolean | Prisma.EmployeeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EmployeeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.Employee$userArgs<ExtArgs>
@@ -893,6 +1052,7 @@ export type $EmployeePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   name: "Employee"
   objects: {
     user: Prisma.$UserPayload<ExtArgs> | null
+    assignedCustomers: Prisma.$CustomerPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1308,6 +1468,7 @@ readonly fields: EmployeeFieldRefs;
 export interface Prisma__EmployeeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.Employee$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  assignedCustomers<T extends Prisma.Employee$assignedCustomersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$assignedCustomersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1772,6 +1933,30 @@ export type Employee$userArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Employee.assignedCustomers
+ */
+export type Employee$assignedCustomersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Customer
+   */
+  select?: Prisma.CustomerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Customer
+   */
+  omit?: Prisma.CustomerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CustomerInclude<ExtArgs> | null
+  where?: Prisma.CustomerWhereInput
+  orderBy?: Prisma.CustomerOrderByWithRelationInput | Prisma.CustomerOrderByWithRelationInput[]
+  cursor?: Prisma.CustomerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CustomerScalarFieldEnum | Prisma.CustomerScalarFieldEnum[]
 }
 
 /**

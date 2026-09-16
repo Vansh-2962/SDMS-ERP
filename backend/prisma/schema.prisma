@@ -25,7 +25,6 @@ model User {
 
   products      Product[]
   employee      Employee?
-  customer      Customer?
   sessions      Session[]
   accounts      Account[]
   @@map("users")
@@ -117,6 +116,8 @@ model Employee {
   isActive        Boolean     @default(true)
   userId          String?     @unique
   user            User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  assignedCustomers Customer[]
 
   joinDate        DateTime
   createdAt       DateTime @default(now())
@@ -384,6 +385,7 @@ enum CustomerStatus {
 
 model Customer {
   id                String                    @id                                 @default(uuid())
+  customerCode         Int                    @unique @default(autoincrement())
 
   shopName          String
   ownerName         String
@@ -407,7 +409,7 @@ model Customer {
 
   salesTerritory     String?
   assignedSalesmanId String?                   @unique
-  assignedSalesman   User?                     @relation(fields: [assignedSalesmanId], references: [id])
+  assignedSalesman   Employee?                 @relation(fields: [assignedSalesmanId], references: [id])
 
   creditLimit       Decimal                    @default(0)
   paymentTerms      Int                        @default(0)

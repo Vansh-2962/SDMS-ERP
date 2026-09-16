@@ -2,97 +2,111 @@ import type { Customer, Prisma } from "@/generated/prisma/client.js";
 import type { CreateCustomerDto } from "../dto/customer.dto.js";
 
 export class CustomerMapper {
-    static toPersistence(data: CreateCustomerDto): Prisma.CustomerCreateInput {
-        return {
-            shopName: data.shopName,
-            ownerName: data.ownerName,
-            type: data.type,
-            mobile: data.mobile,
+  static toPersistence(
+    data: CreateCustomerDto["body"],
+  ): Prisma.CustomerCreateInput {
+    return {
+      shopName: data.shopName,
+      ownerName: data.ownerName,
+      type: data.type,
+      mobile: data.mobile,
 
-            ...(data.gstNumber !== undefined && {
-                gstNumber: data.gstNumber,
-            }),
+      ...(data.gstNumber !== undefined && {
+        gstNumber: data.gstNumber,
+      }),
 
-            ...(data.pan !== undefined && {
-                pan: data.pan,
-            }),
+      ...(data.pan !== undefined && {
+        pan: data.pan,
+      }),
 
-            ...(data.fssai !== undefined && {
-                fssai: data.fssai,
-            }),
+      ...(data.fssai !== undefined && {
+        fssai: data.fssai,
+      }),
 
-            status: data.status ?? "ACTIVE",
+      status: data.status ?? "ACTIVE",
 
-            ...(data.whatsapp !== undefined && {
-                whatsapp: data.whatsapp,
-            }),
+      ...(data.whatsapp !== undefined && {
+        whatsapp: data.whatsapp,
+      }),
 
-            ...(data.email !== undefined && {
-                email: data.email,
-            }),
+      ...(data.email !== undefined && {
+        email: data.email,
+      }),
 
-            ...(data.street !== undefined && {
-                street: data.street,
-            }),
+      ...(data.street !== undefined && {
+        street: data.street,
+      }),
 
-            ...(data.state !== undefined && {
-                state: data.state,
-            }),
+      ...(data.state !== undefined && {
+        state: data.state,
+      }),
 
-            ...(data.stateCode !== undefined && {
-                stateCode: data.stateCode,
-            }),
+      ...(data.stateCode !== undefined && {
+        stateCode: data.stateCode,
+      }),
 
-            ...(data.district !== undefined && {
-                district: data.district,
-            }),
+      ...(data.district !== undefined && {
+        district: data.district,
+      }),
 
-            ...(data.pincode !== undefined && {
-                pincode: data.pincode,
-            }),
+      ...(data.pincode !== undefined && {
+        pincode: data.pincode,
+      }),
 
-            ...(data.latitude !== undefined && {
-                latitude: data.latitude,
-            }),
+      ...(data.latitude !== undefined && {
+        latitude: data.latitude,
+      }),
 
-            ...(data.longitude !== undefined && {
-                longitude: data.longitude,
-            }),
+      ...(data.longitude !== undefined && {
+        longitude: data.longitude,
+      }),
 
-            ...(data.salesTerritory !== undefined && {
-                salesTerritory: data.salesTerritory,
-            }),
+      ...(data.salesTerritory !== undefined && {
+        salesTerritory: data.salesTerritory,
+      }),
 
-            ...(data.assignedSalesmanId !== undefined && {
-                assignedSalesman: {
-                    connect: {
-                        id: data.assignedSalesmanId,
-                    },
-                },
-            }),
+      ...(data.assignedSalesmanId !== undefined && {
+        assignedSalesman: {
+          connect: {
+            id: data.assignedSalesmanId,
+          },
+        },
+      }),
 
-            ...(data.creditLimit !== undefined && {
-                creditLimit: data.creditLimit,
-            }),
+      ...(data.creditLimit !== undefined && {
+        creditLimit: data.creditLimit,
+      }),
 
-            ...(data.paymentTerms !== undefined && {
-                paymentTerms: data.paymentTerms,
-            }),
+      ...(data.paymentTerms !== undefined && {
+        paymentTerms: data.paymentTerms,
+      }),
 
-            ...(data.openingBal !== undefined && {
-                openingBal: data.openingBal,
-            }),
-        }
+      ...(data.openingBal !== undefined && {
+        openingBal: data.openingBal,
+      }),
+    };
+  }
 
-    }
+  static toResponse(data: Customer) {
+    return {
+      id: data.id,
+      createdAt: data.createdAt,
+    };
+  }
 
-
-    static toResponse(data: Customer) {
-        return {
-            id: data.id,
-            createdAt: data.createdAt
-        }
-    }
-
-
+  static toList(data: Customer[]) {
+    return data.map((d: Customer) => {
+      return {
+        id: d.id,
+        customerCode: d.customerCode,
+        shopName: d.shopName,
+        ownerName: d.ownerName,
+        type: d.type,
+        salesman: d.assignedSalesmanId,
+        mobile: d.mobile,
+        creditLimit: d.creditLimit,
+        createdAt: d.createdAt,
+      };
+    });
+  }
 }
