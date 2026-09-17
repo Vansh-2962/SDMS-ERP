@@ -41,6 +41,14 @@ export class CustomerService {
   }
 
   async getAll(): Promise<Customer[] | null> {
-    return this.customerRepository.getAllCustomers();
+    return await this.customerRepository.getAllCustomers();
+  }
+
+  async delete(id: string): Promise<Customer | null> {
+    return await this.customerRepository.deactivateCustomer(id);
+  }
+
+  async getById(id: string): Promise<Customer | null> {
+    return await this.customerRepository.getCustomerById(id);
   }
 }

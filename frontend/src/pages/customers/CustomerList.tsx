@@ -1,65 +1,85 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppStore } from '../../store/appStore';
-import { Badge } from '../../components/ui/badge';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Card, CardContent } from '../../components/ui/card';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Badge } from "../../components/ui/badge";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Card, CardContent } from "../../components/ui/card";
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
-} from '../../components/ui/table';
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../components/ui/table";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from '../../components/ui/select';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
-} from '../../components/ui/alert-dialog';
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "../../components/ui/alert-dialog";
 import {
-  IconUsers, IconBuildingStore, IconPlus, IconSearch,
-  IconEdit, IconTrash, IconBuildingWarehouse, IconTruckDelivery,
-  IconShoppingBag, IconPhone, IconMapPin,
-} from '@tabler/icons-react';
-
-const typeConfig: Record<string, { color: string; bg: string }> = {
-  Distributor: { color: 'text-violet-700', bg: 'bg-violet-100' },
-  'Super Stockist': { color: 'text-blue-700', bg: 'bg-blue-100' },
-  Retailer: { color: 'text-emerald-700', bg: 'bg-emerald-100' },
-  Wholesaler: { color: 'text-amber-700', bg: 'bg-amber-100' },
-  'Modern Trade': { color: 'text-rose-700', bg: 'bg-rose-100' },
-};
+  IconPlus,
+  IconSearch,
+  IconEdit,
+  IconTrash,
+  IconPhone,
+  IconMapPin,
+} from "@tabler/icons-react";
+import { useGetCustomers } from "@/features/customers/hooks/useGetCustomers";
+import { getSummary } from "@/features/customers/helpers/summary";
+import {
+  Customer,
+  CustomerType,
+} from "@/features/customers/types/customer.types";
+import { getColor } from "@/features/customers/helpers/customerTypeColor";
+import { customerTypes } from "@/features/customers/constants/customerType";
+import { useDeleteCustomer } from "@/features/customers/hooks/useDeleteCustomer";
+import ButtonLoader from "@/components/ButtonLoader";
 
 export default function CustomerList() {
   const navigate = useNavigate();
-  const { customers, deleteCustomer } = useAppStore();
-  const [search, setSearch] = useState('');
-  const [typeFilter, setTypeFilter] = useState('All');
-  const [statusFilter, setStatusFilter] = useState('All');
+
+  const { data } = useGetCustomers();
+  const { mutate, isPending } = useDeleteCustomer();
+  const allCustomers = data?.data ?? [];
+  const summaryCards = getSummary(allCustomers);
+
+  const [search, setSearch] = useState("");
+  const [typeFilter, setTypeFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("All");
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const filtered = customers.filter((c) => {
+  const filtered = allCustomers?.filter((c: Customer) => {
     const matchSearch =
       c.shopName.toLowerCase().includes(search.toLowerCase()) ||
       c.ownerName.toLowerCase().includes(search.toLowerCase()) ||
       c.id.toLowerCase().includes(search.toLowerCase()) ||
       c.mobile.includes(search);
-    const matchType = typeFilter === 'All' || c.type === typeFilter;
-    const matchStatus = statusFilter === 'All' || c.status === statusFilter;
+    const matchType = typeFilter === "All" || c.type === typeFilter;
+    const matchStatus = statusFilter === "All" || c.status === statusFilter;
     return matchSearch && matchType && matchStatus;
   });
 
-  const typeCounts = customers.reduce<Record<string, number>>((acc, c) => {
-    acc[c.type] = (acc[c.type] || 0) + 1;
-    return acc;
-  }, {});
-
-  const summaryCards = [
-    { label: 'Distributors', count: typeCounts['Distributor'] || 0, icon: IconTruckDelivery, color: 'text-violet-600', bg: 'bg-violet-50' },
-    { label: 'Super Stockists', count: typeCounts['Super Stockist'] || 0, icon: IconBuildingWarehouse, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Retailers', count: typeCounts['Retailer'] || 0, icon: IconBuildingStore, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    { label: 'Wholesalers', count: typeCounts['Wholesaler'] || 0, icon: IconShoppingBag, color: 'text-amber-600', bg: 'bg-amber-50' },
-    { label: 'Modern Trade', count: typeCounts['Modern Trade'] || 0, icon: IconUsers, color: 'text-rose-600', bg: 'bg-rose-50' },
-  ];
+  const handleDelete = () => {
+    if (!deleteId) return;
+    mutate(deleteId, {
+      onSuccess: () => {
+        setDeleteId(null);
+      },
+    });
+  };
 
   return (
     <div className="space-y-5">
@@ -68,12 +88,19 @@ export default function CustomerList() {
         {summaryCards.map((s) => {
           const Icon = s.icon;
           return (
-            <Card key={s.label} className="border border-border shadow-sm">
+            <Card
+              key={s.label}
+              className="border border-border shadow-sm overflow-hidden"
+            >
               <CardContent className={`p-4 ${s.bg}`}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-2xl font-heading font-bold text-foreground">{s.count}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
+                    <p className="text-2xl font-heading font-bold text-foreground">
+                      {s.count}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {s.label}
+                    </p>
                   </div>
                   <Icon size={22} className={s.color} />
                 </div>
@@ -86,7 +113,10 @@ export default function CustomerList() {
       {/* Filter Bar */}
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[200px]">
-          <IconSearch size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <IconSearch
+            size={15}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+          />
           <Input
             placeholder="Search by name, ID, mobile..."
             value={search}
@@ -99,9 +129,14 @@ export default function CustomerList() {
             <SelectValue placeholder="Customer Type" />
           </SelectTrigger>
           <SelectContent>
-            {['All', 'Distributor', 'Super Stockist', 'Retailer', 'Wholesaler', 'Modern Trade'].map((t) => (
-              <SelectItem key={t} value={t}>{t}</SelectItem>
+            {customerTypes.map((t: CustomerType) => (
+              <SelectItem key={t.value} value={t.value}>
+                {t.label}
+              </SelectItem>
             ))}
+            <SelectItem key={"All"} value={"All"}>
+              {"All"}
+            </SelectItem>
           </SelectContent>
         </Select>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -110,11 +145,14 @@ export default function CustomerList() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="All">All Status</SelectItem>
-            <SelectItem value="Active">Active</SelectItem>
-            <SelectItem value="Inactive">Inactive</SelectItem>
+            <SelectItem value="ACTIVE">Active</SelectItem>
+            <SelectItem value="INACTIVE">Inactive</SelectItem>
           </SelectContent>
         </Select>
-        <Button onClick={() => navigate('/customers/new')} className="h-9 gap-1.5">
+        <Button
+          onClick={() => navigate("/customers/new")}
+          className="h-9 gap-1.5"
+        >
           <IconPlus size={15} />
           Add Customer
         </Button>
@@ -126,40 +164,68 @@ export default function CustomerList() {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50 hover:bg-muted/50">
-                {['Customer ID', 'Shop / Owner', 'Type', 'Territory', 'Salesman', 'Contact', 'Credit Limit', 'Status', 'Actions'].map((h) => (
-                  <TableHead key={h} className="text-xs font-semibold whitespace-nowrap">{h}</TableHead>
+                {[
+                  "Customer ID",
+                  "Shop / Owner",
+                  "Type",
+                  "Territory",
+                  "Salesman",
+                  "Contact",
+                  "Credit Limit",
+                  "Status",
+                  "Actions",
+                ].map((h) => (
+                  <TableHead
+                    key={h}
+                    className="text-xs font-semibold whitespace-nowrap"
+                  >
+                    {h}
+                  </TableHead>
                 ))}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.length === 0 ? (
+              {filtered?.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={9} className="text-center py-12 text-muted-foreground">
+                  <TableCell
+                    colSpan={9}
+                    className="text-center py-12 text-muted-foreground"
+                  >
                     No customers found.
                   </TableCell>
                 </TableRow>
               ) : (
-                filtered.map((c) => {
-                  const tc = typeConfig[c.type] || { color: 'text-gray-700', bg: 'bg-gray-100' };
+                filtered?.map((c: Customer) => {
+                  const { color, bgColor } = getColor(c.type);
                   return (
                     <TableRow key={c.id} className="hover:bg-muted/30">
-                      <TableCell className="font-mono text-xs text-muted-foreground">{c.id}</TableCell>
-                      <TableCell>
-                        <p className="font-medium text-sm text-foreground">{c.shopName}</p>
-                        <p className="text-xs text-muted-foreground">{c.ownerName}</p>
+                      <TableCell className="font-mono text-xs text-muted-foreground">
+                        {c.customerCode}
                       </TableCell>
                       <TableCell>
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${tc.bg} ${tc.color}`}>
+                        <p className="font-medium text-sm text-foreground">
+                          {c.shopName}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {c.ownerName}
+                        </p>
+                      </TableCell>
+                      <TableCell>
+                        <span
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${bgColor} ${color} `}
+                        >
                           {c.type}
                         </span>
                       </TableCell>
                       <TableCell className="text-xs text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <IconMapPin size={11} />
-                          {c.territory}
+                          {c.territory ?? "N/A"}
                         </div>
                       </TableCell>
-                      <TableCell className="text-xs text-foreground">{c.salesman}</TableCell>
+                      <TableCell className="text-xs text-foreground">
+                        {c.salesman ?? "N/A"}
+                      </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1 text-xs text-muted-foreground">
                           <IconPhone size={11} />
@@ -167,13 +233,15 @@ export default function CustomerList() {
                         </div>
                       </TableCell>
                       <TableCell className="font-medium text-sm">
-                        ₹{c.creditLimit.toLocaleString('en-IN')}
+                        ₹{c.creditLimit}
                       </TableCell>
                       <TableCell>
                         <Badge
-                          className={c.status === 'Active'
-                            ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100 text-xs'
-                            : 'bg-gray-100 text-gray-500 hover:bg-gray-100 text-xs'}
+                          className={
+                            c.status === "ACTIVE"
+                              ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-100 text-xs"
+                              : "bg-gray-100 text-gray-500 hover:bg-gray-100 text-xs"
+                          }
                         >
                           {c.status}
                         </Badge>
@@ -206,25 +274,30 @@ export default function CustomerList() {
           </Table>
         </div>
         <div className="px-4 py-2 border-t border-border bg-muted/20 text-xs text-muted-foreground">
-          Showing {filtered.length} of {customers.length} customers
+          Showing {filtered?.length} of {filtered?.length} customers
         </div>
       </Card>
 
-      <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
+      <AlertDialog
+        open={!!deleteId || isPending}
+        onOpenChange={() => setDeleteId(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Customer</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently remove this customer. This action cannot be undone.
+              This will permanently remove this customer. This action cannot be
+              undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={() => { if (deleteId) deleteCustomer(deleteId); setDeleteId(null); }}
+              disabled={isPending}
+              onClick={handleDelete}
             >
-              Delete
+              {isPending ? <ButtonLoader text="Deleting..." /> : "Delete"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

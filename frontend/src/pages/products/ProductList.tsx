@@ -154,7 +154,6 @@ export default function ProductList() {
         <Button
           onClick={() => navigate("/products/new")}
           className="h-9 gap-1.5"
-          disabled={isLoading}
         >
           <IconPlus size={15} />
           Add Product

@@ -114,14 +114,13 @@ const CreateEmployeeForm = ({ addOpen, setAddOpen }: Props) => {
 
             {/* Email */}
             <div className="space-y-1.5">
-              <Label className="text-xs">Email</Label>
+              <Label className="text-xs">
+                Email <span className="text-red-500">*</span>
+              </Label>
 
               <Input
                 {...register("email", {
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Enter a valid email address",
-                  },
+                  required: "Enter a valid email address",
                 })}
                 placeholder="email@company.com"
                 type="email"

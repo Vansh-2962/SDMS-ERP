@@ -1,6 +1,10 @@
 import { validate } from "@/middlewares/validate.middleware.js";
 import { Router } from "express";
-import { customerSchema } from "./validators/customer.validator.js";
+import {
+  customerSchema,
+  deleteCustomerSchema,
+  getCustomerByIdSchema,
+} from "./validators/customer.validator.js";
 import { authenticate } from "@/middlewares/authenticate.middleware.js";
 import { asyncHandler } from "@/middlewares/asyncHandler.middleware.js";
 import { CustomerRepository } from "@/modules/customer/customer.repository.js";
@@ -21,5 +25,18 @@ customerRouter.post(
   asyncHandler(customerConstroller.create),
 );
 customerRouter.get("/", authenticate, asyncHandler(customerConstroller.getAll));
+customerRouter.get(
+  "/:id",
+  authenticate,
+  validate(getCustomerByIdSchema),
+  asyncHandler(customerConstroller.getById),
+);
+
+customerRouter.delete(
+  "/:id",
+  authenticate,
+  validate(deleteCustomerSchema),
+  asyncHandler(customerConstroller.delete),
+);
 
 export { customerRouter };

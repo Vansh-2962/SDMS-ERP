@@ -1,5 +1,6 @@
 import type { Customer, Prisma } from "@/generated/prisma/client.js";
 import type { CreateCustomerDto } from "../dto/customer.dto.js";
+import type { CustomerWithSalesman } from "../customer.types.js";
 
 export class CustomerMapper {
   static toPersistence(
@@ -94,17 +95,18 @@ export class CustomerMapper {
     };
   }
 
-  static toList(data: Customer[]) {
-    return data.map((d: Customer) => {
+  static toList(data: CustomerWithSalesman[]) {
+    return data.map((d: CustomerWithSalesman) => {
       return {
         id: d.id,
         customerCode: d.customerCode,
         shopName: d.shopName,
         ownerName: d.ownerName,
         type: d.type,
-        salesman: d.assignedSalesmanId,
+        salesman: d.assignedSalesman?.fullName,
         mobile: d.mobile,
         creditLimit: d.creditLimit,
+        status: d.status,
         createdAt: d.createdAt,
       };
     });
