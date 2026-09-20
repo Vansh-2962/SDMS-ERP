@@ -47,11 +47,13 @@ import { getColor } from "@/features/customers/helpers/customerTypeColor";
 import { customerTypes } from "@/features/customers/constants/customerType";
 import { useDeleteCustomer } from "@/features/customers/hooks/useDeleteCustomer";
 import ButtonLoader from "@/components/ButtonLoader";
+import ProductListSkeleton from "@/features/product/component/ProductListSkeleton";
+import CustomerNotFound from "@/features/customers/components/CustomerNotFound";
 
 export default function CustomerList() {
   const navigate = useNavigate();
 
-  const { data } = useGetCustomers();
+  const { data, isLoading } = useGetCustomers();
   const { mutate, isPending } = useDeleteCustomer();
   const allCustomers = data?.data ?? [];
   const summaryCards = getSummary(allCustomers);
@@ -159,124 +161,122 @@ export default function CustomerList() {
       </div>
 
       {/* Table */}
-      <Card className="border border-border shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/50 hover:bg-muted/50">
-                {[
-                  "Customer ID",
-                  "Shop / Owner",
-                  "Type",
-                  "Territory",
-                  "Salesman",
-                  "Contact",
-                  "Credit Limit",
-                  "Status",
-                  "Actions",
-                ].map((h) => (
-                  <TableHead
-                    key={h}
-                    className="text-xs font-semibold whitespace-nowrap"
-                  >
-                    {h}
-                  </TableHead>
-                ))}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered?.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={9}
-                    className="text-center py-12 text-muted-foreground"
-                  >
-                    No customers found.
-                  </TableCell>
-                </TableRow>
-              ) : (
-                filtered?.map((c: Customer) => {
-                  const { color, bgColor } = getColor(c.type);
-                  return (
-                    <TableRow key={c.id} className="hover:bg-muted/30">
-                      <TableCell className="font-mono text-xs text-muted-foreground">
-                        {c.customerCode}
-                      </TableCell>
-                      <TableCell>
-                        <p className="font-medium text-sm text-foreground">
-                          {c.shopName}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {c.ownerName}
-                        </p>
-                      </TableCell>
-                      <TableCell>
-                        <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${bgColor} ${color} `}
-                        >
-                          {c.type}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-xs text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <IconMapPin size={11} />
-                          {c.territory ?? "N/A"}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-xs text-foreground">
-                        {c.salesman ?? "N/A"}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <IconPhone size={11} />
-                          {c.mobile}
-                        </div>
-                      </TableCell>
-                      <TableCell className="font-medium text-sm">
-                        ₹{c.creditLimit}
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          className={
-                            c.status === "ACTIVE"
-                              ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-100 text-xs"
-                              : "bg-gray-100 text-gray-500 hover:bg-gray-100 text-xs"
-                          }
-                        >
-                          {c.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-7 w-7 text-muted-foreground hover:text-primary"
-                            onClick={() => navigate(`/customers/${c.id}/edit`)}
+      {
+        <Card className="border border-border shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            {isLoading ? (
+              <ProductListSkeleton />
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/50 hover:bg-muted/50">
+                    {[
+                      "Customer ID",
+                      "Shop / Owner",
+                      "Type",
+                      "Territory",
+                      "Salesman",
+                      "Contact",
+                      "Credit Limit",
+                      "Status",
+                      "Actions",
+                    ].map((h) => (
+                      <TableHead
+                        key={h}
+                        className="text-xs font-semibold whitespace-nowrap"
+                      >
+                        {h}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filtered?.map((c: Customer) => {
+                    const { color, bgColor } = getColor(c.type);
+                    return (
+                      <TableRow key={c.id} className="hover:bg-muted/30">
+                        <TableCell className="font-mono text-xs text-muted-foreground">
+                          {c.customerCode}
+                        </TableCell>
+                        <TableCell>
+                          <p className="font-medium text-sm text-foreground">
+                            {c.shopName}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {c.ownerName}
+                          </p>
+                        </TableCell>
+                        <TableCell>
+                          <span
+                            className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${bgColor} ${color} `}
                           >
-                            <IconEdit size={14} />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-7 w-7 text-muted-foreground hover:text-destructive"
-                            onClick={() => setDeleteId(c.id)}
+                            {c.type}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-xs text-muted-foreground">
+                          <div className="flex items-center gap-1">
+                            <IconMapPin size={11} />
+                            {c.territory ?? "N/A"}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-xs text-foreground">
+                          {c.salesman ?? "N/A"}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <IconPhone size={11} />
+                            {c.mobile}
+                          </div>
+                        </TableCell>
+                        <TableCell className="font-medium text-sm">
+                          ₹{c.creditLimit}
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            className={
+                              c.status === "ACTIVE"
+                                ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-100 text-xs"
+                                : "bg-gray-100 text-gray-500 hover:bg-gray-100 text-xs"
+                            }
                           >
-                            <IconTrash size={14} />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        <div className="px-4 py-2 border-t border-border bg-muted/20 text-xs text-muted-foreground">
-          Showing {filtered?.length} of {filtered?.length} customers
-        </div>
-      </Card>
+                            {c.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7 text-muted-foreground hover:text-primary"
+                              onClick={() =>
+                                navigate(`/customers/${c.id}/edit`)
+                              }
+                            >
+                              <IconEdit size={14} />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                              onClick={() => setDeleteId(c.id)}
+                            >
+                              <IconTrash size={14} />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            )}
+          </div>
+          {filtered.length === 0 && !isLoading && <CustomerNotFound />}
+          <div className="px-4 py-2 border-t border-border bg-muted/20 text-xs text-muted-foreground">
+            Showing {filtered?.length} of {filtered?.length} customers
+          </div>
+        </Card>
+      }
 
       <AlertDialog
         open={!!deleteId || isPending}

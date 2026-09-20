@@ -397,6 +397,7 @@ export type CustomerWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   assignedSalesman?: Prisma.XOR<Prisma.EmployeeNullableScalarRelationFilter, Prisma.EmployeeWhereInput> | null
+  saleOrders?: Prisma.SaleOrderListRelationFilter
 }
 
 export type CustomerOrderByWithRelationInput = {
@@ -427,6 +428,7 @@ export type CustomerOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   assignedSalesman?: Prisma.EmployeeOrderByWithRelationInput
+  saleOrders?: Prisma.SaleOrderOrderByRelationAggregateInput
 }
 
 export type CustomerWhereUniqueInput = Prisma.AtLeast<{
@@ -460,6 +462,7 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   assignedSalesman?: Prisma.XOR<Prisma.EmployeeNullableScalarRelationFilter, Prisma.EmployeeWhereInput> | null
+  saleOrders?: Prisma.SaleOrderListRelationFilter
 }, "id" | "customerCode" | "gstNumber" | "pan" | "assignedSalesmanId">
 
 export type CustomerOrderByWithAggregationInput = {
@@ -555,6 +558,7 @@ export type CustomerCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   assignedSalesman?: Prisma.EmployeeCreateNestedOneWithoutAssignedCustomersInput
+  saleOrders?: Prisma.SaleOrderCreateNestedManyWithoutCustomerInput
 }
 
 export type CustomerUncheckedCreateInput = {
@@ -584,6 +588,7 @@ export type CustomerUncheckedCreateInput = {
   openingBal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  saleOrders?: Prisma.SaleOrderUncheckedCreateNestedManyWithoutCustomerInput
 }
 
 export type CustomerUpdateInput = {
@@ -612,6 +617,7 @@ export type CustomerUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignedSalesman?: Prisma.EmployeeUpdateOneWithoutAssignedCustomersNestedInput
+  saleOrders?: Prisma.SaleOrderUpdateManyWithoutCustomerNestedInput
 }
 
 export type CustomerUncheckedUpdateInput = {
@@ -641,6 +647,7 @@ export type CustomerUncheckedUpdateInput = {
   openingBal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  saleOrders?: Prisma.SaleOrderUncheckedUpdateManyWithoutCustomerNestedInput
 }
 
 export type CustomerCreateManyInput = {
@@ -839,6 +846,11 @@ export type CustomerSumOrderByAggregateInput = {
   openingBal?: Prisma.SortOrder
 }
 
+export type CustomerScalarRelationFilter = {
+  is?: Prisma.CustomerWhereInput
+  isNot?: Prisma.CustomerWhereInput
+}
+
 export type CustomerCreateNestedManyWithoutAssignedSalesmanInput = {
   create?: Prisma.XOR<Prisma.CustomerCreateWithoutAssignedSalesmanInput, Prisma.CustomerUncheckedCreateWithoutAssignedSalesmanInput> | Prisma.CustomerCreateWithoutAssignedSalesmanInput[] | Prisma.CustomerUncheckedCreateWithoutAssignedSalesmanInput[]
   connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutAssignedSalesmanInput | Prisma.CustomerCreateOrConnectWithoutAssignedSalesmanInput[]
@@ -889,6 +901,20 @@ export type EnumCustomerStatusFieldUpdateOperationsInput = {
   set?: $Enums.CustomerStatus
 }
 
+export type CustomerCreateNestedOneWithoutSaleOrdersInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutSaleOrdersInput, Prisma.CustomerUncheckedCreateWithoutSaleOrdersInput>
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutSaleOrdersInput
+  connect?: Prisma.CustomerWhereUniqueInput
+}
+
+export type CustomerUpdateOneRequiredWithoutSaleOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutSaleOrdersInput, Prisma.CustomerUncheckedCreateWithoutSaleOrdersInput>
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutSaleOrdersInput
+  upsert?: Prisma.CustomerUpsertWithoutSaleOrdersInput
+  connect?: Prisma.CustomerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CustomerUpdateToOneWithWhereWithoutSaleOrdersInput, Prisma.CustomerUpdateWithoutSaleOrdersInput>, Prisma.CustomerUncheckedUpdateWithoutSaleOrdersInput>
+}
+
 export type CustomerCreateWithoutAssignedSalesmanInput = {
   id?: string
   customerCode?: number
@@ -915,6 +941,7 @@ export type CustomerCreateWithoutAssignedSalesmanInput = {
   openingBal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  saleOrders?: Prisma.SaleOrderCreateNestedManyWithoutCustomerInput
 }
 
 export type CustomerUncheckedCreateWithoutAssignedSalesmanInput = {
@@ -943,6 +970,7 @@ export type CustomerUncheckedCreateWithoutAssignedSalesmanInput = {
   openingBal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  saleOrders?: Prisma.SaleOrderUncheckedCreateNestedManyWithoutCustomerInput
 }
 
 export type CustomerCreateOrConnectWithoutAssignedSalesmanInput = {
@@ -1003,6 +1031,137 @@ export type CustomerScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
 }
 
+export type CustomerCreateWithoutSaleOrdersInput = {
+  id?: string
+  customerCode?: number
+  shopName: string
+  ownerName: string
+  type: $Enums.CustomerType
+  gstNumber?: string | null
+  pan?: string | null
+  fssai?: string | null
+  status?: $Enums.CustomerStatus
+  mobile: string
+  whatsapp?: string | null
+  email?: string | null
+  street?: string | null
+  state?: string | null
+  stateCode?: string | null
+  district?: string | null
+  pincode?: string | null
+  latitude?: string | null
+  longitude?: string | null
+  salesTerritory?: string | null
+  creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paymentTerms?: number
+  openingBal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  assignedSalesman?: Prisma.EmployeeCreateNestedOneWithoutAssignedCustomersInput
+}
+
+export type CustomerUncheckedCreateWithoutSaleOrdersInput = {
+  id?: string
+  customerCode?: number
+  shopName: string
+  ownerName: string
+  type: $Enums.CustomerType
+  gstNumber?: string | null
+  pan?: string | null
+  fssai?: string | null
+  status?: $Enums.CustomerStatus
+  mobile: string
+  whatsapp?: string | null
+  email?: string | null
+  street?: string | null
+  state?: string | null
+  stateCode?: string | null
+  district?: string | null
+  pincode?: string | null
+  latitude?: string | null
+  longitude?: string | null
+  salesTerritory?: string | null
+  assignedSalesmanId?: string | null
+  creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paymentTerms?: number
+  openingBal?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type CustomerCreateOrConnectWithoutSaleOrdersInput = {
+  where: Prisma.CustomerWhereUniqueInput
+  create: Prisma.XOR<Prisma.CustomerCreateWithoutSaleOrdersInput, Prisma.CustomerUncheckedCreateWithoutSaleOrdersInput>
+}
+
+export type CustomerUpsertWithoutSaleOrdersInput = {
+  update: Prisma.XOR<Prisma.CustomerUpdateWithoutSaleOrdersInput, Prisma.CustomerUncheckedUpdateWithoutSaleOrdersInput>
+  create: Prisma.XOR<Prisma.CustomerCreateWithoutSaleOrdersInput, Prisma.CustomerUncheckedCreateWithoutSaleOrdersInput>
+  where?: Prisma.CustomerWhereInput
+}
+
+export type CustomerUpdateToOneWithWhereWithoutSaleOrdersInput = {
+  where?: Prisma.CustomerWhereInput
+  data: Prisma.XOR<Prisma.CustomerUpdateWithoutSaleOrdersInput, Prisma.CustomerUncheckedUpdateWithoutSaleOrdersInput>
+}
+
+export type CustomerUpdateWithoutSaleOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  shopName?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCustomerTypeFieldUpdateOperationsInput | $Enums.CustomerType
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fssai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCustomerStatusFieldUpdateOperationsInput | $Enums.CustomerStatus
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  street?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stateCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  longitude?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salesTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  creditLimit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paymentTerms?: Prisma.IntFieldUpdateOperationsInput | number
+  openingBal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignedSalesman?: Prisma.EmployeeUpdateOneWithoutAssignedCustomersNestedInput
+}
+
+export type CustomerUncheckedUpdateWithoutSaleOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  customerCode?: Prisma.IntFieldUpdateOperationsInput | number
+  shopName?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCustomerTypeFieldUpdateOperationsInput | $Enums.CustomerType
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fssai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCustomerStatusFieldUpdateOperationsInput | $Enums.CustomerStatus
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  street?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stateCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  longitude?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salesTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedSalesmanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  creditLimit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paymentTerms?: Prisma.IntFieldUpdateOperationsInput | number
+  openingBal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type CustomerCreateManyAssignedSalesmanInput = {
   id?: string
   customerCode?: number
@@ -1056,6 +1215,7 @@ export type CustomerUpdateWithoutAssignedSalesmanInput = {
   openingBal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  saleOrders?: Prisma.SaleOrderUpdateManyWithoutCustomerNestedInput
 }
 
 export type CustomerUncheckedUpdateWithoutAssignedSalesmanInput = {
@@ -1084,6 +1244,7 @@ export type CustomerUncheckedUpdateWithoutAssignedSalesmanInput = {
   openingBal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  saleOrders?: Prisma.SaleOrderUncheckedUpdateManyWithoutCustomerNestedInput
 }
 
 export type CustomerUncheckedUpdateManyWithoutAssignedSalesmanInput = {
@@ -1115,6 +1276,35 @@ export type CustomerUncheckedUpdateManyWithoutAssignedSalesmanInput = {
 }
 
 
+/**
+ * Count Type CustomerCountOutputType
+ */
+
+export type CustomerCountOutputType = {
+  saleOrders: number
+}
+
+export type CustomerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  saleOrders?: boolean | CustomerCountOutputTypeCountSaleOrdersArgs
+}
+
+/**
+ * CustomerCountOutputType without action
+ */
+export type CustomerCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CustomerCountOutputType
+   */
+  select?: Prisma.CustomerCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * CustomerCountOutputType without action
+ */
+export type CustomerCountOutputTypeCountSaleOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SaleOrderWhereInput
+}
+
 
 export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1144,6 +1334,8 @@ export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   createdAt?: boolean
   updatedAt?: boolean
   assignedSalesman?: boolean | Prisma.Customer$assignedSalesmanArgs<ExtArgs>
+  saleOrders?: boolean | Prisma.Customer$saleOrdersArgs<ExtArgs>
+  _count?: boolean | Prisma.CustomerCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["customer"]>
 
 export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1238,6 +1430,8 @@ export type CustomerSelectScalar = {
 export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerCode" | "shopName" | "ownerName" | "type" | "gstNumber" | "pan" | "fssai" | "status" | "mobile" | "whatsapp" | "email" | "street" | "state" | "stateCode" | "district" | "pincode" | "latitude" | "longitude" | "salesTerritory" | "assignedSalesmanId" | "creditLimit" | "paymentTerms" | "openingBal" | "createdAt" | "updatedAt", ExtArgs["result"]["customer"]>
 export type CustomerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignedSalesman?: boolean | Prisma.Customer$assignedSalesmanArgs<ExtArgs>
+  saleOrders?: boolean | Prisma.Customer$saleOrdersArgs<ExtArgs>
+  _count?: boolean | Prisma.CustomerCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CustomerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignedSalesman?: boolean | Prisma.Customer$assignedSalesmanArgs<ExtArgs>
@@ -1250,6 +1444,7 @@ export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   name: "Customer"
   objects: {
     assignedSalesman: Prisma.$EmployeePayload<ExtArgs> | null
+    saleOrders: Prisma.$SaleOrderPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1673,6 +1868,7 @@ readonly fields: CustomerFieldRefs;
 export interface Prisma__CustomerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   assignedSalesman<T extends Prisma.Customer$assignedSalesmanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$assignedSalesmanArgs<ExtArgs>>): Prisma.Prisma__EmployeeClient<runtime.Types.Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  saleOrders<T extends Prisma.Customer$saleOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$saleOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SaleOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2145,6 +2341,30 @@ export type Customer$assignedSalesmanArgs<ExtArgs extends runtime.Types.Extensio
    */
   include?: Prisma.EmployeeInclude<ExtArgs> | null
   where?: Prisma.EmployeeWhereInput
+}
+
+/**
+ * Customer.saleOrders
+ */
+export type Customer$saleOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SaleOrder
+   */
+  select?: Prisma.SaleOrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SaleOrder
+   */
+  omit?: Prisma.SaleOrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SaleOrderInclude<ExtArgs> | null
+  where?: Prisma.SaleOrderWhereInput
+  orderBy?: Prisma.SaleOrderOrderByWithRelationInput | Prisma.SaleOrderOrderByWithRelationInput[]
+  cursor?: Prisma.SaleOrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SaleOrderScalarFieldEnum | Prisma.SaleOrderScalarFieldEnum[]
 }
 
 /**

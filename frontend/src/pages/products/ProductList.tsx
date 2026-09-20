@@ -46,6 +46,7 @@ import { useDeleteProduct } from "@/features/product/hooks/useDeleteProduct";
 import ButtonLoader from "@/components/ButtonLoader";
 import ProductSummaryCards from "@/features/product/component/ProductSummaryCards";
 import ProductListSkeleton from "@/features/product/component/ProductListSkeleton";
+import ProductNotFound from "@/features/product/component/ProductNotFound";
 
 const categoryColors: Record<string, string> = {
   "Powder Spices": "bg-amber-100 text-amber-700",
@@ -160,48 +161,39 @@ export default function ProductList() {
         </Button>
       </div>
 
-      <Card className="border border-border shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          {isLoading ? (
-            <ProductListSkeleton />
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/50 hover:bg-muted/50">
-                  {[
-                    "Code",
-                    "Product Name",
-                    "Category",
-                    "Brand",
-                    "HSN",
-                    "GST%",
-                    "MRP",
-                    "Dist. Price",
-                    "Stock",
-                    "Batch",
-                    "Actions",
-                  ].map((h) => (
-                    <TableHead
-                      key={h}
-                      className="text-xs font-semibold whitespace-nowrap"
-                    >
-                      {h}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {allProducts.length === 0 ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={11}
-                      className="text-center py-12 text-muted-foreground"
-                    >
-                      No products found.
-                    </TableCell>
+      {
+        <Card className="border border-border shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            {isLoading ? (
+              <ProductListSkeleton />
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/50 hover:bg-muted/50">
+                    {[
+                      "Code",
+                      "Product Name",
+                      "Category",
+                      "Brand",
+                      "HSN",
+                      "GST%",
+                      "MRP",
+                      "Dist. Price",
+                      "Stock",
+                      "Batch",
+                      "Actions",
+                    ].map((h) => (
+                      <TableHead
+                        key={h}
+                        className="text-xs font-semibold whitespace-nowrap"
+                      >
+                        {h}
+                      </TableHead>
+                    ))}
                   </TableRow>
-                ) : (
-                  allProducts.map((p: ProductType) => (
+                </TableHeader>
+                <TableBody>
+                  {allProducts.map((p: ProductType) => (
                     <TableRow key={p.id} className="hover:bg-muted/30">
                       <TableCell>
                         <div>
@@ -270,16 +262,18 @@ export default function ProductList() {
                         </div>
                       </TableCell>
                     </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          )}
-        </div>
-        <div className="px-4 py-2 border-t border-border bg-muted/20 text-xs text-muted-foreground">
-          Showing {allProducts.length} of {allProducts.length} products
-        </div>
-      </Card>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </div>
+
+          {allProducts.length === 0 && !isLoading && <ProductNotFound />}
+          <div className="px-4 py-2 border-t border-border bg-muted/20 text-xs text-muted-foreground">
+            Showing {allProducts.length} of {allProducts.length} products
+          </div>
+        </Card>
+      }
 
       <AlertDialog open={!!deleteId}>
         <AlertDialogContent>

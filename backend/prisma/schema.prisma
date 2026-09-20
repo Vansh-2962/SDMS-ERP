@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -9,7 +8,7 @@ datasource db {
 }
 
 model User {
- id             String    @id @default(uuid())
+  id            String    @id @default(uuid())
   name          String
   email         String    @unique
   emailVerified Boolean   @default(false)
@@ -23,13 +22,13 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  products      Product[]
-  employee      Employee?
-  sessions      Session[]
-  accounts      Account[]
+  products Product[]
+  employee Employee?
+  sessions Session[]
+  accounts Account[]
+
   @@map("users")
 }
-
 
 model Session {
   id             String   @id
@@ -49,34 +48,32 @@ model Session {
 }
 
 model Account {
-  id                     String   @id
+  id String @id
 
-  accountId              String
-  providerId             String
+  accountId  String
+  providerId String
 
-  issuer                 String
+  issuer String
 
-  userId                 String
+  userId String
 
-  user                   User     @relation(fields: [userId],references: [id],onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  accessToken            String?
-  refreshToken           String?
-  idToken                String?
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
 
-  accessTokenExpiresAt   DateTime?
-  refreshTokenExpiresAt  DateTime?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
 
-  scope                  String?
-  password               String?
+  scope    String?
+  password String?
 
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
-
-  @@index([userId])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([issuer, accountId])
-
+  @@index([userId])
   @@map("account")
 }
 
@@ -93,35 +90,36 @@ model Verification {
 }
 
 model Employee {
-  id              String      @id         @default(uuid())
-  empCode         Int      @unique @default(autoincrement())
-  
-  fullName        String
-  role            String
-  
-  department      String?
-  territory       String?
-  
-  mobile          String
-  email           String?     
-  
-  pan             String?     
-  aadhar          String?     
-  
-  bankAccNo       String?
-  IFSC            String?
-  
-  salary          Decimal?     @db.Decimal(12, 2)
+  id      String @id @default(uuid())
+  empCode Int    @unique @default(autoincrement())
 
-  isActive        Boolean     @default(true)
-  userId          String?     @unique
-  user            User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  fullName String
+  role     String
+
+  department String?
+  territory  String?
+
+  mobile String
+  email  String?
+
+  pan    String?
+  aadhar String?
+
+  bankAccNo String?
+  IFSC      String?
+
+  salary Decimal? @db.Decimal(12, 2)
+
+  isActive Boolean @default(true)
+  userId   String? @unique
+  user     User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   assignedCustomers Customer[]
+  saleOrders SaleOrder[]
 
-  joinDate        DateTime
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  joinDate  DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([empCode])
   @@index([email])
@@ -154,52 +152,54 @@ enum VegNonVeg {
 }
 
 model Product {
-  id          String          @id         @default(cuid())
-  code        String          @unique
-  barcode     String?         @unique
-  name        String
-  commonName  String?
+  id            String       @id @default(cuid())
+  code          String       @unique
+  barcode       String?      @unique
+  name          String
+  commonName    String?
   botanicalName String?
   brand         String?
-  category    String
-  type        ProductType     @default(FINISHED_GOOD)
-  grade       String?
-  form        ProductForm?
+  category      String
+  type          ProductType  @default(FINISHED_GOOD)
+  grade         String?
+  form          ProductForm?
 
-  hsn         String?
-  unit        String
+  hsn  String?
+  unit String
 
-  packagingType  String?
-  packSize     String?
-  netWeight   String?
+  packagingType String?
+  packSize      String?
+  netWeight     String?
 
   shelfLife Int?
 
-  processingMethod String?
+  processingMethod  String?
   rawMaterialSource String?
-  plantId String?
+  plantId           String?
 
-  moistureContent Decimal? @db.Decimal(5, 2)
-  purityTest String?
+  moistureContent  Decimal? @db.Decimal(5, 2)
+  purityTest       String?
   adulterationTest String?
   pesticideTestRef String?
 
-  ingredients String? @db.Text
-  allergenInfo String? @db.Text
-  storageInstructions String? @db.Text
-  vegNonVeg VegNonVeg @default(VEG)
-  countryOfOrigin String?
+  ingredients         String?   @db.Text
+  allergenInfo        String?   @db.Text
+  storageInstructions String?   @db.Text
+  vegNonVeg           VegNonVeg @default(VEG)
+  countryOfOrigin     String?
 
   createdById String
   createdBy   User   @relation(fields: [createdById], references: [id])
 
-  batches ProductBatch[]
-  prices ProductPrice[]
-  inventories Inventory[]
-  certifications ProductCertification[]
+  batches             ProductBatch[]
+  prices              ProductPrice[]
+  inventories         Inventory[]
+  certifications      ProductCertification[]
   productManufacturer ProductManufacturer[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  saleOrderItems      SaleOrderItems[]
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+
   @@index([name])
   @@index([category])
   @@index([brand])
@@ -210,19 +210,19 @@ model ProductBatch {
   id String @id @default(uuid())
 
   productId String
-  product Product @relation(fields: [productId],references: [id],onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  batchNo String
+  batchNo        String
   productionDate DateTime?
-  mfgDate DateTime?
-  expiryDate DateTime?
-  bestBefore String?
+  mfgDate        DateTime?
+  expiryDate     DateTime?
+  bestBefore     String?
 
-  plantId String?
+  plantId          String?
   processingMethod String?
 
-  moistureContent Decimal? @db.Decimal(5, 2)
-  purityTest String?
+  moistureContent  Decimal? @db.Decimal(5, 2)
+  purityTest       String?
   adulterationTest String?
   pesticideTestRef String?
 
@@ -230,6 +230,7 @@ model ProductBatch {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   @@unique([productId, batchNo])
   @@index([batchNo])
   @@index([expiryDate])
@@ -240,19 +241,19 @@ model ProductPrice {
   id String @id @default(uuid())
 
   productId String
-  product Product @relation(fields: [productId], references: [id],onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  mrp Decimal? @db.Decimal(12, 2)
-  distributorPrice Decimal? @db.Decimal(12, 2)
-  retailerPrice Decimal? @db.Decimal(12, 2)
-  dealerPrice Decimal? @db.Decimal(12, 2)
-  purchaseCost Decimal? @db.Decimal(12, 2)
-  manufacturingCost Decimal? @db.Decimal(12, 2)
-  gst Decimal? @db.Decimal(5, 2)
-  discountScheme String?
-  effectiveFrom DateTime @default(now())
-  effectiveTo DateTime?
-  
+  mrp               Decimal?  @db.Decimal(12, 2)
+  distributorPrice  Decimal?  @db.Decimal(12, 2)
+  retailerPrice     Decimal?  @db.Decimal(12, 2)
+  dealerPrice       Decimal?  @db.Decimal(12, 2)
+  purchaseCost      Decimal?  @db.Decimal(12, 2)
+  manufacturingCost Decimal?  @db.Decimal(12, 2)
+  gst               Decimal?  @db.Decimal(5, 2)
+  discountScheme    String?
+  effectiveFrom     DateTime  @default(now())
+  effectiveTo       DateTime?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -264,14 +265,14 @@ model Inventory {
   id String @id @default(uuid())
 
   productId String
-  product Product @relation(fields: [productId],references: [id],onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   batchId String?
 
-  batch ProductBatch? @relation( fields: [batchId],references: [id])
+  batch             ProductBatch? @relation(fields: [batchId], references: [id])
   warehouseLocation String
-  currentStock Decimal @default(0) @db.Decimal(14, 3)
-  reorderLevel Decimal? @db.Decimal(14, 3)
+  currentStock      Decimal       @default(0) @db.Decimal(14, 3)
+  reorderLevel      Decimal?      @db.Decimal(14, 3)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -283,28 +284,29 @@ model Inventory {
 }
 
 model Manufacturer {
-  id String @id @default(uuid())
-  name String
-  fssaiLicense String?
-  address String?
-  countryOfOrigin String?
+  id                String  @id @default(uuid())
+  name              String
+  fssaiLicense      String?
+  address           String?
+  countryOfOrigin   String?
   customerCarePhone String?
   customerCareEmail String?
 
-  products ProductManufacturer[]
-  createdAt DateTime @default(now())
+  products  ProductManufacturer[]
+  createdAt DateTime              @default(now())
 
   updatedAt DateTime @updatedAt
+
   @@map("manufacturers")
 }
 
 model ProductManufacturer {
   id String @id @default(uuid())
 
-  productId String
+  productId      String
   manufacturerId String
-  product Product @relation(fields: [productId],references: [id],onDelete: Cascade)
-  manufacturer Manufacturer @relation(fields: [manufacturerId],references: [id],onDelete: Cascade)
+  product        Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  manufacturer   Manufacturer @relation(fields: [manufacturerId], references: [id], onDelete: Cascade)
 
   @@unique([productId, manufacturerId])
   @@map("product_manufacturers")
@@ -314,32 +316,32 @@ model ProductCertification {
   id String @id @default(uuid())
 
   productId String
-  product Product @relation(fields: [productId],references: [id],onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  name String
+  name              String
   certificateNumber String?
-  issuedAt DateTime?
-  expiresAt DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  issuedAt          DateTime?
+  expiresAt         DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
   @@index([productId])
   @@map("product_certifications")
 }
 
 model Profile {
-  id             String                     @id                            @default(uuid())
-  companyName    String                     
-  GSTIN          String
-  pan            String?
-  fssai          String?
-  mobile         String?
-  email          String?
-  website        String?
-  address        String?
+  id          String  @id @default(uuid())
+  companyName String
+  GSTIN       String
+  pan         String?
+  fssai       String?
+  mobile      String?
+  email       String?
+  website     String?
+  address     String?
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum BankType {
@@ -348,27 +350,26 @@ enum BankType {
 }
 
 model BankDetails {
-  id            String                     @id                            @default(uuid())
-  bankName      String 
+  id            String   @id @default(uuid())
+  bankName      String
   accountNumber String
   ifsc          String
-  accountType   BankType                    @default(CURRENT)
+  accountType   BankType @default(CURRENT)
   upiId         String?
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model BillingSettings {
-  id             String                     @id                            @default(uuid())
-  invPrefix      String                     @default("INV")
-  finYearStart   DateTime
-  paymentTerms   Int?                        @default(30)
+  id           String   @id @default(uuid())
+  invPrefix    String   @default("INV")
+  finYearStart DateTime
+  paymentTerms Int?     @default(30)
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
-
 
 enum CustomerType {
   DISTRIBUTOR
@@ -384,41 +385,97 @@ enum CustomerStatus {
 }
 
 model Customer {
-  id                String                    @id                                 @default(uuid())
-  customerCode         Int                    @unique @default(autoincrement())
+  id           String @id @default(uuid())
+  customerCode Int    @unique @default(autoincrement())
 
-  shopName          String
-  ownerName         String
-  type              CustomerType
-  gstNumber         String?                   @unique
-  pan               String?                   @unique
-  fssai             String?
-  status            CustomerStatus            @default(ACTIVE)
+  shopName  String
+  ownerName String
+  type      CustomerType
+  gstNumber String?        @unique
+  pan       String?        @unique
+  fssai     String?
+  status    CustomerStatus @default(ACTIVE)
 
-  mobile            String
-  whatsapp          String?
-  email             String?
+  mobile   String
+  whatsapp String?
+  email    String?
 
-  street            String?
-  state             String?
-  stateCode         String?
-  district          String?
-  pincode           String?
-  latitude          String?
-  longitude         String?
+  street    String?
+  state     String?
+  stateCode String?
+  district  String?
+  pincode   String?
+  latitude  String?
+  longitude String?
 
   salesTerritory     String?
-  assignedSalesmanId String?                   @unique
-  assignedSalesman   Employee?                 @relation(fields: [assignedSalesmanId], references: [id])
+  assignedSalesmanId String? @unique
+  assignedSalesman   Employee? @relation(fields: [assignedSalesmanId],references: [id])
 
-  creditLimit       Decimal                    @default(0)
-  paymentTerms      Int                        @default(0)
-  openingBal        Decimal                    @default(0)
+  saleOrders SaleOrder[]
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  creditLimit  Decimal @default(0)
+  paymentTerms Int     @default(0)
+  openingBal   Decimal @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([gstNumber])
   @@index([pan])
-  
+}
+
+// SALE ORDERS
+
+enum SaleOrderStatus {
+  PENDING
+  PACKED
+  DISPATCHED
+  DELIVERED
+  CANCELLED
+}
+
+model SaleOrderItems {
+  id          String  @id @default(uuid())
+  gst         Decimal
+  price       Decimal
+  productId   String
+  productName String
+  qty         Decimal
+  total       Decimal
+
+  saleOrderId String
+  saleOrder   SaleOrder @relation(fields: [saleOrderId], references: [id], onDelete: Cascade)
+
+  product Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SaleOrder {
+  id            String @id @default(uuid())
+  saleOrderCode Int    @unique @default(autoincrement())
+
+  customerId    String
+  customer      Customer @relation(fields: [customerId], references: [id])
+
+  customerName String?
+  items        SaleOrderItems[]
+  date         DateTime         @default(now())
+  subtotal     Decimal
+  gstAmount    Decimal
+  total        Decimal
+  status       SaleOrderStatus  @default(PENDING)
+
+  salesmanId    String
+  salesman      Employee @relation(fields: [salesmanId], references: [id])
+
+  isActive     Boolean          @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([saleOrderCode])
+  @@index([customerName])
 }

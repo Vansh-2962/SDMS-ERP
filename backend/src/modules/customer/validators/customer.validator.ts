@@ -167,7 +167,7 @@ export const deleteCustomerSchema = z.object({
 
 export const getCustomerByIdSchema = z.object({
   params: z.object({
-    id: z.string().min(1, "Id is required"),
+    id: z.string().trim().min(1, "Id is required"),
   }),
 });
 

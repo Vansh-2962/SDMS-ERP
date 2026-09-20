@@ -97,3 +97,13 @@ export type BillingSettings = Prisma.BillingSettingsModel
  * 
  */
 export type Customer = Prisma.CustomerModel
+/**
+ * Model SaleOrderItems
+ * 
+ */
+export type SaleOrderItems = Prisma.SaleOrderItemsModel
+/**
+ * Model SaleOrder
+ * 
+ */
+export type SaleOrder = Prisma.SaleOrderModel

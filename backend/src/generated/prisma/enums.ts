@@ -65,3 +65,14 @@ export const CustomerStatus = {
 } as const
 
 export type CustomerStatus = (typeof CustomerStatus)[keyof typeof CustomerStatus]
+
+
+export const SaleOrderStatus = {
+  PENDING: 'PENDING',
+  PACKED: 'PACKED',
+  DISPATCHED: 'DISPATCHED',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type SaleOrderStatus = (typeof SaleOrderStatus)[keyof typeof SaleOrderStatus]

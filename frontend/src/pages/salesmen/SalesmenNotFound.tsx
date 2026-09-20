@@ -1,5 +1,4 @@
 import { IconRefresh, IconUsersGroup } from "@tabler/icons-react";
-import React from "react";
 
 const SalesmenNotFound = () => {
   return (

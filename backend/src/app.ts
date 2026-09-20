@@ -7,10 +7,11 @@ import { requestContextMiddleware } from "@/infrastructure/context/request-conte
 import { getLogger } from "@/infrastructure/context/request-context.js";
 import { errorMiddleware } from "@/middlewares/error.middleware.js";
 import { authRouter } from "@/route/auth.js";
-import { employeeRouter } from "./modules/employee/employee.routes.js";
-import { productRouter } from "./modules/product/product.routes.js";
-import { profileRouter } from "./modules/profile/routes.js";
-import { customerRouter } from "./modules/customer/customer.routes.js";
+import { employeeRouter } from "@/modules/employee/employee.routes.js";
+import { productRouter } from "@/modules/product/product.routes.js";
+import { profileRouter } from "@/modules/profile/routes.js";
+import { customerRouter } from "@/modules/customer/customer.routes.js";
+import { saleOrderRouter } from "@/modules/saleOrder/saleOrder.routes.js";
 
 const app: Application = express();
 
@@ -35,7 +36,8 @@ app.all("/api/auth/{*any}", authRouter);
 app.use("/api/v1/employees", employeeRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/profile", profileRouter);
-app.use("/api/v1/customer", customerRouter)
+app.use("/api/v1/customer", customerRouter);
+app.use("/api/v1/sale-order", saleOrderRouter);
 
 app.get("/health", (_, res) => {
   const logger = getLogger();

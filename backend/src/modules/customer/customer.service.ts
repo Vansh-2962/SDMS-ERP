@@ -3,7 +3,6 @@ import type { CustomerRepository } from "./customer.repository.js";
 import type { CreateCustomerDto } from "./dto/customer.dto.js";
 import { ConflictError } from "@/shared/errors/conflict.error.js";
 import { CustomerMapper } from "./mapper/customer.mapper.js";
-import { logger } from "@/config/logger/index.js";
 
 export class CustomerService {
   constructor(private readonly customerRepository: CustomerRepository) {}
