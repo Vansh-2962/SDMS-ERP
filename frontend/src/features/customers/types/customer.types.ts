@@ -4,7 +4,7 @@ export interface CreateCustomerInput {
   shopName: string;
   ownerName: string;
   type: string;
-  gst?: string;
+  gstNumber?: string;
   pan?: string;
   fssai?: string;
   mobile: string;
@@ -189,6 +189,11 @@ export type Customer = {
   mobile: string;
   creditLimit: string;
   status: string;
+  district: string;
+  state: string;
+  pincode: string;
   territory: string;
+  paymentTerms: string;
+  gstNumber: string;
   createdAt: Date | string;
 };

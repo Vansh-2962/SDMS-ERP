@@ -49,6 +49,7 @@ import { useDeleteCustomer } from "@/features/customers/hooks/useDeleteCustomer"
 import ButtonLoader from "@/components/ButtonLoader";
 import ProductListSkeleton from "@/features/product/component/ProductListSkeleton";
 import CustomerNotFound from "@/features/customers/components/CustomerNotFound";
+import { generateCustomeCode } from "@/features/customers/helpers/generateCustomerCode";
 
 export default function CustomerList() {
   const navigate = useNavigate();
@@ -196,7 +197,7 @@ export default function CustomerList() {
                     return (
                       <TableRow key={c.id} className="hover:bg-muted/30">
                         <TableCell className="font-mono text-xs text-muted-foreground">
-                          {c.customerCode}
+                          {generateCustomeCode(Number(c.customerCode))}
                         </TableCell>
                         <TableCell>
                           <p className="font-medium text-sm text-foreground">

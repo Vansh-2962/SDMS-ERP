@@ -92,7 +92,7 @@ export default function CustomerForm() {
       shopName: "",
       ownerName: "",
       type: "",
-      gst: "",
+      gstNumber: "",
       pan: "",
       fssai: "",
       mobile: "",
@@ -123,7 +123,7 @@ export default function CustomerForm() {
       ownerName: data.ownerName ?? "",
       type: data.type ?? "",
 
-      gst: data.gstNumber ?? "",
+      gstNumber: data.gstNumber ?? "",
       pan: data.pan ?? "",
       fssai: data.fssai ?? "",
 
@@ -242,13 +242,13 @@ export default function CustomerForm() {
               </Field>
               <Field label="GST Number">
                 <Input
-                  {...register("gst")}
+                  {...register("gstNumber")}
                   placeholder="29AABCU9603R1ZX"
                   className="uppercase"
                 />
-                {errors.gst && (
+                {errors.gstNumber && (
                   <p className="text-xs text-destructive">
-                    {errors.gst.message}
+                    {errors.gstNumber.message}
                   </p>
                 )}
               </Field>

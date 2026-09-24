@@ -19,71 +19,32 @@ import {
   IconArrowLeft,
   IconPlus,
   IconTrash,
-  IconFileInvoice,
-  IconTruckDelivery,
-  IconFileText,
-  IconReceiptRefund,
-  IconReceiptOff,
   IconCheck,
   IconPrinter,
   IconDownload,
   IconBrandWhatsapp,
   IconBuildingFactory,
 } from "@tabler/icons-react";
-
-type DocType = "invoice" | "challan" | "proforma" | "credit" | "debit";
-
-const DOC_CONFIG: Record<
+import { useGetCustomers } from "@/features/customers/hooks/useGetCustomers";
+import { Customer } from "@/features/customers/types/customer.types";
+import { DOC_CONFIG } from "@/features/invoice/constants/docConfig";
+import {
   DocType,
-  { label: string; prefix: string; icon: typeof IconFileInvoice; color: string }
-> = {
-  invoice: {
-    label: "Tax Invoice",
-    prefix: "INV",
-    icon: IconFileInvoice,
-    color: "text-violet-600 bg-violet-50",
-  },
-  challan: {
-    label: "Delivery Challan",
-    prefix: "DC",
-    icon: IconTruckDelivery,
-    color: "text-blue-600 bg-blue-50",
-  },
-  proforma: {
-    label: "Proforma Invoice",
-    prefix: "PI",
-    icon: IconFileText,
-    color: "text-emerald-600 bg-emerald-50",
-  },
-  credit: {
-    label: "Credit Note",
-    prefix: "CN",
-    icon: IconReceiptRefund,
-    color: "text-amber-600 bg-amber-50",
-  },
-  debit: {
-    label: "Debit Note",
-    prefix: "DN",
-    icon: IconReceiptOff,
-    color: "text-rose-600 bg-rose-50",
-  },
-};
-
-interface LineItem {
-  productId: string;
-  name: string;
-  hsn: string;
-  qty: number;
-  rate: number;
-  gst: number;
-  discount: number;
-  amount: number;
-}
+  InvoiceLineItem,
+} from "@/features/invoice/types/invoice.types";
+import { INDIAN_STATES, IndiaState } from "@/helpers/states";
+import { useGetAllProducts } from "@/features/product/hooks/useGetAllProducts";
+import { ProductType } from "@/features/product/types/product.types";
 
 export default function BillingEditor() {
   const navigate = useNavigate();
   const { type } = useParams<{ type: string }>();
-  const { customers, products } = useAppStore();
+
+  const { data } = useGetCustomers();
+  const customers = data?.data ?? [];
+
+  const { data: allProducts } = useGetAllProducts();
+  const products = allProducts?.data ?? [];
 
   const docType = (
     Object.keys(DOC_CONFIG).includes(type || "") ? type : "invoice"
@@ -98,24 +59,25 @@ export default function BillingEditor() {
   const [customerId, setCustomerId] = useState("");
   const [billingAddress, setBillingAddress] = useState("");
   const [shippingAddress, setShippingAddress] = useState("");
-  const [paymentTerms, setPaymentTerms] = useState("30 days");
+  const [paymentTerms, setPaymentTerms] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [transportMode, setTransportMode] = useState("Road");
   const [vehicleNo, setVehicleNo] = useState("");
   const [eWayBill, setEWayBill] = useState("");
   const [supplyType, setSupplyType] = useState("Taxable");
   const [reverseCharge, setReverseCharge] = useState(false);
-  const [placeOfSupply, setPlaceOfSupply] = useState("Karnataka (29)");
+  const [placeOfSupply, setPlaceOfSupply] = useState("");
   const [referenceNo, setReferenceNo] = useState("");
   const [referenceDate, setReferenceDate] = useState("");
   const [reason, setReason] = useState("");
-  const [items, setItems] = useState<LineItem[]>([]);
+  const [items, setItems] = useState<InvoiceLineItem[]>([]);
   const [notes, setNotes] = useState("");
   const [terms, setTerms] = useState(
     "Goods once sold will not be taken back. Subject to local jurisdiction only.",
   );
 
-  const customer = customers.find((c) => c.id === customerId);
+  const customer: Customer =
+    customers && customers?.find((c: Customer) => c.id === customerId);
 
   const addLine = () => {
     setItems([
@@ -135,7 +97,7 @@ export default function BillingEditor() {
 
   const updateLine = (
     i: number,
-    field: keyof LineItem,
+    field: keyof InvoiceLineItem,
     value: string | number,
   ) => {
     setItems((prev) =>
@@ -143,12 +105,14 @@ export default function BillingEditor() {
         if (idx !== i) return line;
         const updated = { ...line, [field]: value };
         if (field === "productId") {
-          const prod = products.find((p) => p.id === value);
+          const prod: ProductType = products.find(
+            (p: ProductType) => p.id === value,
+          );
           if (prod) {
-            updated.name = prod.name;
+            updated.name = prod.productName;
             updated.hsn = prod.hsn;
-            updated.rate = prod.distributorPrice;
-            updated.gst = prod.gst;
+            updated.rate = parseFloat(prod.distPrice);
+            updated.gst = parseFloat(prod.gst as string);
           }
         }
         const base = updated.qty * updated.rate;
@@ -202,16 +166,21 @@ export default function BillingEditor() {
 
   const handleCustomerChange = (id: string) => {
     setCustomerId(id);
-    const c = customers.find((x) => x.id === id);
+    const c: Customer = customers.find((x: Customer) => x.id === id);
     if (c) {
       setBillingAddress(
-        `${c.address}, ${c.district}, ${c.state} - ${c.pincode}`,
+        `${c.district ?? ""} ${c.state ?? ""} ${c.pincode ?? ""}`,
       );
       setShippingAddress(
-        `${c.address}, ${c.district}, ${c.state} - ${c.pincode}`,
+        `${c.district ?? ""} ${c.state ?? ""} ${c.pincode ?? ""}`,
       );
-      setPaymentTerms(c.paymentTerms);
+      setPaymentTerms(c.paymentTerms ?? "");
     }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
   };
 
   return (
@@ -281,13 +250,7 @@ export default function BillingEditor() {
         </TabsList>
       </Tabs>
 
-      <form
-        className="space-y-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          navigate("/billing");
-        }}
-      >
+      <form className="space-y-4" onSubmit={handleSubmit}>
         {/* Party Details */}
         <Card className="border border-border shadow-sm">
           <CardHeader className="pb-0 pt-5 px-6">
@@ -313,11 +276,12 @@ export default function BillingEditor() {
                     <SelectValue placeholder="Select customer" />
                   </SelectTrigger>
                   <SelectContent className="max-h-60">
-                    {customers.map((c) => (
-                      <SelectItem key={c.id} value={c.id}>
-                        {c.shopName}
-                      </SelectItem>
-                    ))}
+                    {customers &&
+                      customers?.map((c: Customer) => (
+                        <SelectItem key={c.id} value={c.id}>
+                          {c.shopName}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -345,27 +309,13 @@ export default function BillingEditor() {
               )}
               <div className="space-y-1.5">
                 <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                  Payment Terms
+                  Payment Terms (in days)
                 </Label>
-                <Select value={paymentTerms} onValueChange={setPaymentTerms}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {[
-                      "15 days",
-                      "30 days",
-                      "45 days",
-                      "60 days",
-                      "Immediate",
-                      "Advance",
-                    ].map((t) => (
-                      <SelectItem key={t} value={t}>
-                        {t}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Input
+                  value={paymentTerms}
+                  onChange={(e) => setPaymentTerms(e.target.value)}
+                  placeholder="30 days"
+                />
               </div>
             </div>
 
@@ -380,7 +330,7 @@ export default function BillingEditor() {
                     {billingAddress}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    GSTIN: {customer.gst}
+                    GSTIN: {customer.gstNumber ?? "-"}
                   </p>
                 </div>
                 <div className="p-3 rounded-lg bg-muted/50 border border-border space-y-1">
@@ -390,7 +340,7 @@ export default function BillingEditor() {
                   <Input
                     value={shippingAddress}
                     onChange={(e) => setShippingAddress(e.target.value)}
-                    className="h-8 text-xs mt-1"
+                    className="h-8 text-xs mt-1 bg-white"
                     placeholder="Shipping address"
                   />
                 </div>
@@ -490,22 +440,15 @@ export default function BillingEditor() {
                   </Label>
                   <Select
                     value={placeOfSupply}
-                    onValueChange={setPlaceOfSupply}
+                    onValueChange={(val) => setPlaceOfSupply(val)}
                   >
                     <SelectTrigger>
-                      <SelectValue />
+                      <SelectValue placeholder="Place of supply" />
                     </SelectTrigger>
                     <SelectContent className="max-h-52">
-                      {[
-                        "Karnataka (29)",
-                        "Tamil Nadu (33)",
-                        "Delhi (07)",
-                        "Gujarat (24)",
-                        "Telangana (36)",
-                        "Maharashtra (27)",
-                      ].map((s) => (
-                        <SelectItem key={s} value={s}>
-                          {s}
+                      {INDIAN_STATES.map((s: IndiaState) => (
+                        <SelectItem key={s.code} value={s.code}>
+                          {s.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -636,9 +579,9 @@ export default function BillingEditor() {
                           <SelectValue placeholder="Select product" />
                         </SelectTrigger>
                         <SelectContent className="max-h-52">
-                          {products.map((p) => (
+                          {products.map((p: ProductType) => (
                             <SelectItem key={p.id} value={p.id}>
-                              {p.name}
+                              {p.productName}
                             </SelectItem>
                           ))}
                         </SelectContent>
