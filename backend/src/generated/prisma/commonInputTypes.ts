@@ -388,6 +388,74 @@ export type EnumSaleOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumSaleOrderStatusFilter<$PrismaModel>
 }
 
+export type EnumInvoiceLabelFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceLabel | Prisma.EnumInvoiceLabelFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceLabel[] | Prisma.ListEnumInvoiceLabelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceLabel[] | Prisma.ListEnumInvoiceLabelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceLabelFilter<$PrismaModel> | $Enums.InvoiceLabel
+}
+
+export type EnumSupplyTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.SupplyType | Prisma.EnumSupplyTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SupplyType[] | Prisma.ListEnumSupplyTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SupplyType[] | Prisma.ListEnumSupplyTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSupplyTypeFilter<$PrismaModel> | $Enums.SupplyType
+}
+
+export type EnumTransportModeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.TransportMode | Prisma.EnumTransportModeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.TransportMode[] | Prisma.ListEnumTransportModeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.TransportMode[] | Prisma.ListEnumTransportModeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumTransportModeNullableFilter<$PrismaModel> | $Enums.TransportMode | null
+}
+
+export type EnumInvoiceStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceStatus | Prisma.EnumInvoiceStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceStatus[] | Prisma.ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceStatus[] | Prisma.ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceStatusFilter<$PrismaModel> | $Enums.InvoiceStatus
+}
+
+export type EnumInvoiceLabelWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceLabel | Prisma.EnumInvoiceLabelFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceLabel[] | Prisma.ListEnumInvoiceLabelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceLabel[] | Prisma.ListEnumInvoiceLabelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceLabelWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceLabel
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumInvoiceLabelFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumInvoiceLabelFilter<$PrismaModel>
+}
+
+export type EnumSupplyTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SupplyType | Prisma.EnumSupplyTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SupplyType[] | Prisma.ListEnumSupplyTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SupplyType[] | Prisma.ListEnumSupplyTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSupplyTypeWithAggregatesFilter<$PrismaModel> | $Enums.SupplyType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSupplyTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSupplyTypeFilter<$PrismaModel>
+}
+
+export type EnumTransportModeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TransportMode | Prisma.EnumTransportModeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.TransportMode[] | Prisma.ListEnumTransportModeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.TransportMode[] | Prisma.ListEnumTransportModeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumTransportModeNullableWithAggregatesFilter<$PrismaModel> | $Enums.TransportMode | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTransportModeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTransportModeNullableFilter<$PrismaModel>
+}
+
+export type EnumInvoiceStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceStatus | Prisma.EnumInvoiceStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceStatus[] | Prisma.ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceStatus[] | Prisma.ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceStatusWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumInvoiceStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumInvoiceStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -773,6 +841,74 @@ export type NestedEnumSaleOrderStatusWithAggregatesFilter<$PrismaModel = never> 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumSaleOrderStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumSaleOrderStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumInvoiceLabelFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceLabel | Prisma.EnumInvoiceLabelFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceLabel[] | Prisma.ListEnumInvoiceLabelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceLabel[] | Prisma.ListEnumInvoiceLabelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceLabelFilter<$PrismaModel> | $Enums.InvoiceLabel
+}
+
+export type NestedEnumSupplyTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.SupplyType | Prisma.EnumSupplyTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SupplyType[] | Prisma.ListEnumSupplyTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SupplyType[] | Prisma.ListEnumSupplyTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSupplyTypeFilter<$PrismaModel> | $Enums.SupplyType
+}
+
+export type NestedEnumTransportModeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.TransportMode | Prisma.EnumTransportModeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.TransportMode[] | Prisma.ListEnumTransportModeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.TransportMode[] | Prisma.ListEnumTransportModeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumTransportModeNullableFilter<$PrismaModel> | $Enums.TransportMode | null
+}
+
+export type NestedEnumInvoiceStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceStatus | Prisma.EnumInvoiceStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceStatus[] | Prisma.ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceStatus[] | Prisma.ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceStatusFilter<$PrismaModel> | $Enums.InvoiceStatus
+}
+
+export type NestedEnumInvoiceLabelWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceLabel | Prisma.EnumInvoiceLabelFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceLabel[] | Prisma.ListEnumInvoiceLabelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceLabel[] | Prisma.ListEnumInvoiceLabelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceLabelWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceLabel
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumInvoiceLabelFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumInvoiceLabelFilter<$PrismaModel>
+}
+
+export type NestedEnumSupplyTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SupplyType | Prisma.EnumSupplyTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SupplyType[] | Prisma.ListEnumSupplyTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SupplyType[] | Prisma.ListEnumSupplyTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSupplyTypeWithAggregatesFilter<$PrismaModel> | $Enums.SupplyType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSupplyTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSupplyTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumTransportModeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TransportMode | Prisma.EnumTransportModeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.TransportMode[] | Prisma.ListEnumTransportModeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.TransportMode[] | Prisma.ListEnumTransportModeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumTransportModeNullableWithAggregatesFilter<$PrismaModel> | $Enums.TransportMode | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTransportModeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTransportModeNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumInvoiceStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvoiceStatus | Prisma.EnumInvoiceStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.InvoiceStatus[] | Prisma.ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvoiceStatus[] | Prisma.ListEnumInvoiceStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvoiceStatusWithAggregatesFilter<$PrismaModel> | $Enums.InvoiceStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumInvoiceStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumInvoiceStatusFilter<$PrismaModel>
 }
 
 

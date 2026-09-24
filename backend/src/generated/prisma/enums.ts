@@ -76,3 +76,49 @@ export const SaleOrderStatus = {
 } as const
 
 export type SaleOrderStatus = (typeof SaleOrderStatus)[keyof typeof SaleOrderStatus]
+
+
+export const InvoiceLabel = {
+  TAX_INVOICE: 'TAX_INVOICE',
+  DELIVERY_CHALLAN: 'DELIVERY_CHALLAN',
+  PROFORMA_INVOICE: 'PROFORMA_INVOICE',
+  CREDIT_NOTE: 'CREDIT_NOTE',
+  DEBIT_NOTE: 'DEBIT_NOTE'
+} as const
+
+export type InvoiceLabel = (typeof InvoiceLabel)[keyof typeof InvoiceLabel]
+
+
+export const SupplyType = {
+  TAXABLE: 'TAXABLE',
+  EXEMPT: 'EXEMPT',
+  EXPORT: 'EXPORT',
+  SEZ: 'SEZ',
+  NON_GST: 'NON_GST'
+} as const
+
+export type SupplyType = (typeof SupplyType)[keyof typeof SupplyType]
+
+
+export const TransportMode = {
+  ROAD: 'ROAD',
+  RAIL: 'RAIL',
+  AIR: 'AIR',
+  SHIP: 'SHIP',
+  COURIER: 'COURIER'
+} as const
+
+export type TransportMode = (typeof TransportMode)[keyof typeof TransportMode]
+
+
+export const InvoiceStatus = {
+  DRAFT: 'DRAFT',
+  ISSUED: 'ISSUED',
+  PARTIALLY_PAID: 'PARTIALLY_PAID',
+  PAID: 'PAID',
+  OVERDUE: 'OVERDUE',
+  CANCELLED: 'CANCELLED',
+  VOID: 'VOID'
+} as const
+
+export type InvoiceStatus = (typeof InvoiceStatus)[keyof typeof InvoiceStatus]

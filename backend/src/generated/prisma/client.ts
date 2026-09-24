@@ -131,3 +131,18 @@ export type SaleOrderItems = Prisma.SaleOrderItemsModel
  * 
  */
 export type SaleOrder = Prisma.SaleOrderModel
+/**
+ * Model NumberSequence
+ * 
+ */
+export type NumberSequence = Prisma.NumberSequenceModel
+/**
+ * Model InvoiceItems
+ * 
+ */
+export type InvoiceItems = Prisma.InvoiceItemsModel
+/**
+ * Model Invoice
+ * 
+ */
+export type Invoice = Prisma.InvoiceModel

@@ -68,7 +68,10 @@ export const ModelName = {
   BillingSettings: 'BillingSettings',
   Customer: 'Customer',
   SaleOrderItems: 'SaleOrderItems',
-  SaleOrder: 'SaleOrder'
+  SaleOrder: 'SaleOrder',
+  NumberSequence: 'NumberSequence',
+  InvoiceItems: 'InvoiceItems',
+  Invoice: 'Invoice'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -416,6 +419,69 @@ export const SaleOrderScalarFieldEnum = {
 } as const
 
 export type SaleOrderScalarFieldEnum = (typeof SaleOrderScalarFieldEnum)[keyof typeof SaleOrderScalarFieldEnum]
+
+
+export const NumberSequenceScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  current: 'current',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NumberSequenceScalarFieldEnum = (typeof NumberSequenceScalarFieldEnum)[keyof typeof NumberSequenceScalarFieldEnum]
+
+
+export const InvoiceItemsScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  hsn: 'hsn',
+  qty: 'qty',
+  rate: 'rate',
+  discPer: 'discPer',
+  gstPer: 'gstPer',
+  amount: 'amount',
+  invoiceId: 'invoiceId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvoiceItemsScalarFieldEnum = (typeof InvoiceItemsScalarFieldEnum)[keyof typeof InvoiceItemsScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  label: 'label',
+  sequenceId: 'sequenceId',
+  docNo: 'docNo',
+  customerId: 'customerId',
+  docDate: 'docDate',
+  dueDate: 'dueDate',
+  paymentTerms: 'paymentTerms',
+  supplyType: 'supplyType',
+  placeOfSupply: 'placeOfSupply',
+  reverseCharge: 'reverseCharge',
+  transportMode: 'transportMode',
+  vehicleNo: 'vehicleNo',
+  ewayNo: 'ewayNo',
+  deliveryDate: 'deliveryDate',
+  notes: 'notes',
+  terms: 'terms',
+  subTotal: 'subTotal',
+  discount: 'discount',
+  roundOff: 'roundOff',
+  taxable: 'taxable',
+  igst: 'igst',
+  sgst: 'sgst',
+  cgst: 'cgst',
+  billingAddress: 'billingAddress',
+  shippingAddress: 'shippingAddress',
+  grandTotal: 'grandTotal',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
 
 
 export const SortOrder = {

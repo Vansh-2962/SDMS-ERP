@@ -197,6 +197,7 @@ model Product {
   certifications      ProductCertification[]
   productManufacturer ProductManufacturer[]
   saleOrderItems      SaleOrderItems[]
+  invoiceItems        InvoiceItems?
   createdAt           DateTime               @default(now())
   updatedAt           DateTime               @updatedAt
 
@@ -409,10 +410,11 @@ model Customer {
   longitude String?
 
   salesTerritory     String?
-  assignedSalesmanId String? @unique
+  assignedSalesmanId String? 
   assignedSalesman   Employee? @relation(fields: [assignedSalesmanId],references: [id])
 
   saleOrders SaleOrder[]
+  invoices   Invoice[]
 
   creditLimit  Decimal @default(0)
   paymentTerms Int     @default(0)
@@ -478,4 +480,116 @@ model SaleOrder {
 
   @@index([saleOrderCode])
   @@index([customerName])
+}
+
+
+model NumberSequence {
+  id            String      @id   @default(cuid())
+  key           String      @unique
+  invoices      Invoice[]
+  current       Int         @default(0)
+  updatedAt     DateTime    @updatedAt
+}
+
+enum InvoiceLabel {
+  TAX_INVOICE
+  DELIVERY_CHALLAN
+  PROFORMA_INVOICE
+  CREDIT_NOTE
+  DEBIT_NOTE
+}
+
+enum SupplyType {
+  TAXABLE
+  EXEMPT
+  EXPORT
+  SEZ
+  NON_GST
+}
+
+enum TransportMode {
+  ROAD
+  RAIL
+  AIR
+  SHIP
+  COURIER
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  CANCELLED
+  VOID
+}
+
+model InvoiceItems {
+  id            String @id  @default(cuid())
+  productId     String @unique
+  product       Product @relation(fields: [productId], references: [id])
+  hsn           String
+  qty           Decimal
+  rate          Decimal
+  discPer       Decimal
+  gstPer        Decimal
+  amount        Decimal
+
+  invoiceId     String
+  invoice       Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([invoiceId])
+  @@index([productId])
+}
+
+model Invoice {
+   id            String @id @default(cuid())
+   label         InvoiceLabel
+
+   sequenceId    String
+   sequence      NumberSequence @relation(fields: [sequenceId], references: [id])
+
+   docNo         String @unique
+   customerId    String
+   customer      Customer @relation(fields: [customerId], references: [id])
+   docDate       DateTime @default(now())
+   dueDate       DateTime
+   paymentTerms  String?
+   supplyType    SupplyType 
+   placeOfSupply String?
+   reverseCharge Boolean?
+   transportMode TransportMode?
+   vehicleNo     String?
+   ewayNo        String?
+   deliveryDate  DateTime?
+   notes         String?
+   terms         String?
+
+   items         InvoiceItems[]
+
+   subTotal      Decimal
+   discount      Decimal?
+   roundOff      Decimal?
+   taxable       Decimal
+   igst          Decimal
+   sgst          Decimal
+   cgst          Decimal
+
+   billingAddress String
+   shippingAddress String
+
+   grandTotal    Decimal
+
+   status        InvoiceStatus @default(DRAFT)
+
+   createdAt     DateTime @default(now())
+   updatedAt     DateTime @updatedAt
+
+   @@index([customerId])
+   @@index([sequenceId])
+   @@index([docDate])
 }

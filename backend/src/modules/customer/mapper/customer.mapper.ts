@@ -106,6 +106,11 @@ export class CustomerMapper {
         salesman: d.assignedSalesman?.fullName,
         mobile: d.mobile,
         creditLimit: d.creditLimit,
+        district: d.district,
+        state: d.state,
+        pincode: d.pincode,
+        paymentTerms: d.paymentTerms,
+        gstNumber: d.gstNumber,
         status: d.status,
         createdAt: d.createdAt,
       };
