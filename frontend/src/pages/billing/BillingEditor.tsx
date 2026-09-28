@@ -29,12 +29,16 @@ import { useGetCustomers } from "@/features/customers/hooks/useGetCustomers";
 import { Customer } from "@/features/customers/types/customer.types";
 import { DOC_CONFIG } from "@/features/invoice/constants/docConfig";
 import {
+  CreateInvoiceFormType,
   DocType,
   InvoiceLineItem,
 } from "@/features/invoice/types/invoice.types";
 import { INDIAN_STATES, IndiaState } from "@/helpers/states";
 import { useGetAllProducts } from "@/features/product/hooks/useGetAllProducts";
 import { ProductType } from "@/features/product/types/product.types";
+import { useCreateInvoice } from "@/features/invoice/hooks/useCreateInvoice";
+import { toast } from "sonner";
+import ButtonLoader from "@/components/ButtonLoader";
 
 export default function BillingEditor() {
   const navigate = useNavigate();
@@ -45,6 +49,8 @@ export default function BillingEditor() {
 
   const { data: allProducts } = useGetAllProducts();
   const products = allProducts?.data ?? [];
+
+  const { mutate, isPending } = useCreateInvoice();
 
   const docType = (
     Object.keys(DOC_CONFIG).includes(type || "") ? type : "invoice"
@@ -61,6 +67,7 @@ export default function BillingEditor() {
   const [shippingAddress, setShippingAddress] = useState("");
   const [paymentTerms, setPaymentTerms] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [deliveryDate, setDeliveryDate] = useState("");
   const [transportMode, setTransportMode] = useState("Road");
   const [vehicleNo, setVehicleNo] = useState("");
   const [eWayBill, setEWayBill] = useState("");
@@ -88,6 +95,7 @@ export default function BillingEditor() {
         hsn: "",
         qty: 1,
         rate: 0,
+        stock: 0,
         gst: 5,
         discount: 0,
         amount: 0,
@@ -111,6 +119,7 @@ export default function BillingEditor() {
           if (prod) {
             updated.name = prod.productName;
             updated.hsn = prod.hsn;
+            updated.stock = prod.stock;
             updated.rate = parseFloat(prod.distPrice);
             updated.gst = parseFloat(prod.gst as string);
           }
@@ -146,7 +155,8 @@ export default function BillingEditor() {
     (taxableValue + cgst + sgst + igst);
   const grandTotal = taxableValue + cgst + sgst + igst + roundOff;
 
-  const isInterState = customer && customer.state !== "Karnataka";
+  const isInterState = placeOfSupply !== "20";
+
   const gstBreakdown = isInterState
     ? { igst, cgst: 0, sgst: 0 }
     : { igst: 0, cgst, sgst };
@@ -180,7 +190,48 @@ export default function BillingEditor() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
+    const payload: CreateInvoiceFormType = {
+      label: docType,
+      customerId: customerId,
+      docDate: new Date(date),
+      dueDate: new Date(dueDate),
+      paymentTerms: paymentTerms,
+      supplyType: supplyType,
+      placeOfSupply: placeOfSupply,
+      reverseCharge: reverseCharge,
+      transportMode: transportMode,
+      vehicleNo,
+      ewayNo: eWayBill,
+      deliveryDate: new Date(deliveryDate),
+      notes,
+      terms,
+      subTotal: subtotal,
+      discount: discountTotal,
+      roundOff,
+      taxable: taxableValue,
+      cgst: gstBreakdown.cgst,
+      sgst: gstBreakdown.sgst,
+      igst: gstBreakdown.igst,
+      grandTotal,
+      items: items.map((item: InvoiceLineItem) => {
+        return {
+          productId: item.productId,
+          hsn: item.hsn,
+          qty: item.qty,
+          rate: item.rate,
+          discPer: item.discount,
+          gstPer: item.gst,
+        };
+      }),
+    };
+
+    if (!canSave) {
+      toast.error("Please select a customer or add few items");
+      return;
+    }
+
+    mutate(payload);
   };
 
   return (
@@ -519,8 +570,8 @@ export default function BillingEditor() {
                     </Label>
                     <Input
                       type="date"
-                      value={dueDate}
-                      onChange={(e) => setDueDate(e.target.value)}
+                      value={deliveryDate}
+                      onChange={(e) => setDeliveryDate(e.target.value)}
                     />
                   </div>
                 </div>
@@ -556,7 +607,7 @@ export default function BillingEditor() {
               <div className="overflow-x-auto">
                 <div className="min-w-[800px] space-y-2">
                   {/* Header row */}
-                  <div className="grid grid-cols-[2fr_0.8fr_0.7fr_0.7fr_0.6fr_0.8fr_0.8fr_auto] gap-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-wide pb-1 border-b border-border">
+                  <div className="grid grid-cols-[2.3fr_0.9fr_0.9fr_0.9fr_0.7fr_0.9fr_0.9fr_auto] gap-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-wide pb-1 border-b border-border">
                     <span>Product</span>
                     <span>HSN</span>
                     <span>Qty</span>
@@ -569,7 +620,7 @@ export default function BillingEditor() {
                   {items.map((line, i) => (
                     <div
                       key={i}
-                      className="grid grid-cols-[2fr_0.8fr_0.7fr_0.7fr_0.6fr_0.8fr_0.8fr_auto] gap-2 items-center"
+                      className="grid grid-cols-[2fr_0.8fr_0.7fr_0.7fr_0.6fr_0.8fr_0.8fr_auto] gap-2 items-center py-1"
                     >
                       <Select
                         value={line.productId}
@@ -591,15 +642,22 @@ export default function BillingEditor() {
                         readOnly
                         className="h-8 text-xs bg-muted"
                       />
-                      <Input
-                        type="number"
-                        min={1}
-                        value={line.qty}
-                        onChange={(e) =>
-                          updateLine(i, "qty", Number(e.target.value))
-                        }
-                        className="h-8 text-xs"
-                      />
+
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="number"
+                          min={1}
+                          value={line.qty}
+                          onChange={(e) =>
+                            updateLine(i, "qty", Number(e.target.value))
+                          }
+                          className="h-8 w-20 text-xs"
+                        />
+
+                        <span className="whitespace-nowrap text-[11px] text-muted-foreground">
+                          Stock: {line.stock}
+                        </span>
+                      </div>
                       <Input
                         type="number"
                         value={line.rate}
@@ -771,8 +829,18 @@ export default function BillingEditor() {
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={!canSave} className="gap-1.5 px-6">
-              <IconCheck size={16} /> Save {docLabel}
+            <Button
+              type="submit"
+              disabled={!canSave || isPending}
+              className="gap-1.5 px-6"
+            >
+              {isPending ? (
+                <ButtonLoader text="Saving..." />
+              ) : (
+                <>
+                  <IconCheck size={16} /> Save {docLabel}
+                </>
+              )}
             </Button>
           </div>
         </div>

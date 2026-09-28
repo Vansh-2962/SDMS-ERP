@@ -27,6 +27,7 @@ import Ledger from "./pages/ledger/Ledger";
 import Reports from "./pages/reports/Reports";
 import Analytics from "./pages/analytics/Analytics";
 import Settings from "./pages/settings/Settings";
+import InvoiceView from "./pages/orders/InvoiceView";
 
 export default function App() {
   return (
@@ -42,6 +43,7 @@ export default function App() {
           <Route index element={<BillingEditor />} />
           <Route path=":type" element={<BillingEditor />} />
         </Route>
+        <Route path="/invoice/:id" element={<InvoiceView />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="customers" element={<CustomerList />} />

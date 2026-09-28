@@ -28,8 +28,12 @@ export class CustomerRepository {
     });
   }
 
-  async getCustomerById(id: string): Promise<Customer | null> {
-    return await this.prisma.customer.findFirst({
+  async getCustomerById(
+    id: string,
+    tx?: Prisma.TransactionClient,
+  ): Promise<Customer | null> {
+    const client = tx ? tx : this.prisma;
+    return await client.customer.findFirst({
       where: {
         id,
       },

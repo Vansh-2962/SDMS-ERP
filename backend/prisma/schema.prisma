@@ -197,7 +197,7 @@ model Product {
   certifications      ProductCertification[]
   productManufacturer ProductManufacturer[]
   saleOrderItems      SaleOrderItems[]
-  invoiceItems        InvoiceItems?
+  invoiceItems        InvoiceItems[]
   createdAt           DateTime               @default(now())
   updatedAt           DateTime               @updatedAt
 
@@ -527,7 +527,7 @@ enum InvoiceStatus {
 
 model InvoiceItems {
   id            String @id  @default(cuid())
-  productId     String @unique
+  productId     String 
   product       Product @relation(fields: [productId], references: [id])
   hsn           String
   qty           Decimal
@@ -593,3 +593,12 @@ model Invoice {
    @@index([sequenceId])
    @@index([docDate])
 }
+
+
+
+
+
+
+
+
+

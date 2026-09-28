@@ -3,6 +3,7 @@ import type {
   Prisma,
   PrismaClient,
 } from "@/generated/prisma/client.js";
+import type { Decimal } from "@/generated/prisma/internal/prismaNamespace.js";
 
 export class InventoryRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -13,5 +14,61 @@ export class InventoryRepository {
     const client = tx ?? this.prisma;
     const batch = await client.inventory.create({ data });
     return batch;
+  }
+
+  async findInventoryById(
+    id: string,
+    tx?: Prisma.TransactionClient,
+  ): Promise<Inventory | null> {
+    const client = tx ? tx : this.prisma;
+    const result = await client.inventory.findFirst({
+      where: {
+        id,
+      },
+      orderBy: {
+        currentStock: "desc",
+      },
+    });
+    return result;
+  }
+
+  async getStockByProductId(
+    productId: string,
+    tx?: Prisma.TransactionClient,
+  ): Promise<{ id: string; productId: string; currentStock: Decimal } | null> {
+    const client = tx ? tx : this.prisma;
+    const result = await client.inventory.findFirst({
+      where: {
+        productId,
+      },
+      select: {
+        id: true,
+        productId: true,
+        currentStock: true,
+      },
+    });
+    return result;
+  }
+
+  async getStockForProductIds(
+    productIds: string[],
+    tx?: Prisma.TransactionClient,
+  ): Promise<
+    { id: string; productId: string; currentStock: Decimal }[] | null
+  > {
+    const client = tx ? tx : this.prisma;
+    const result = await client.inventory.findMany({
+      where: {
+        productId: {
+          in: productIds,
+        },
+      },
+      select: {
+        id: true,
+        productId: true,
+        currentStock: true,
+      },
+    });
+    return result;
   }
 }

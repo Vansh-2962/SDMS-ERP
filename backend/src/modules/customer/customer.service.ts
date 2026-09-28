@@ -47,7 +47,10 @@ export class CustomerService {
     return await this.customerRepository.deactivateCustomer(id);
   }
 
-  async getById(id: string): Promise<Customer | null> {
-    return await this.customerRepository.getCustomerById(id);
+  async getById(
+    id: string,
+    tx?: Prisma.TransactionClient,
+  ): Promise<Customer | null> {
+    return await this.customerRepository.getCustomerById(id, tx);
   }
 }

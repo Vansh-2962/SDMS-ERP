@@ -72,4 +72,23 @@ export class ProductRepository {
       },
     });
   }
+
+  async getAllInInvoice(
+    ids: string[],
+    tx?: Prisma.TransactionClient,
+  ): Promise<{ id: string; name: string; hsn: string | null }[]> {
+    const client = tx ? tx : this.prisma;
+    return await client.product.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        hsn: true,
+      },
+    });
+  }
 }

@@ -29,9 +29,6 @@ export default function BillingLayout() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground hidden sm:block">
-            Auto-saving draft...
-          </span>
           <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold">
             RN
           </div>

@@ -430,4 +430,11 @@ export class ProductService {
     }
     return response;
   }
+
+  async getAllInInvoice(
+    ids: string[],
+    tx?: Prisma.TransactionClient,
+  ): Promise<{ id: string; name: string; hsn: string | null }[]> {
+    return await this.productRepository.getAllInInvoice(ids, tx);
+  }
 }

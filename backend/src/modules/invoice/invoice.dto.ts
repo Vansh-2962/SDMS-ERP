@@ -45,6 +45,7 @@ export interface CreateInvoiceDTO {
   discount?: number;
   roundOff?: number;
   taxable: number;
+  grandTotal: number;
   igst: number;
   cgst: number;
   sgst: number;

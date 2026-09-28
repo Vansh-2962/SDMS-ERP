@@ -2,6 +2,8 @@ import type {
   Invoice,
   InvoiceLabel,
   InvoiceStatus,
+  NumberSequence,
+  Prisma,
   PrismaClient,
 } from "@/generated/prisma/client.js";
 import type {
@@ -12,12 +14,39 @@ import type {
 export class InvoiceRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async create(data: InvoiceCreateInput): Promise<Invoice> {
-    return await this.prisma.invoice.create({ data });
+  async create(
+    data: InvoiceCreateInput,
+    tx?: Prisma.TransactionClient,
+  ): Promise<Invoice> {
+    const client = tx ? tx : this.prisma;
+    const result = await client.invoice.create({ data });
+    return result;
   }
 
-  async getInvoiceById(id: string): Promise<Invoice | null> {
-    return await this.prisma.invoice.findFirst({
+  async updateSequence(
+    key: InvoiceLabel,
+    tx?: Prisma.TransactionClient,
+  ): Promise<NumberSequence> {
+    const client = tx ? tx : this.prisma;
+    const result = await client.numberSequence.update({
+      where: {
+        key,
+      },
+      data: {
+        current: {
+          increment: 1,
+        },
+      },
+    });
+    return result;
+  }
+
+  async getInvoiceById(
+    id: string,
+    tx?: Prisma.TransactionClient,
+  ): Promise<Invoice | null> {
+    const client = tx ? tx : this.prisma;
+    return await client.invoice.findFirst({
       where: { id },
       include: {
         customer: {
@@ -39,8 +68,12 @@ export class InvoiceRepository {
     });
   }
 
-  async getInvoiceByLabel(label: InvoiceLabel): Promise<Invoice | null> {
-    return await this.prisma.invoice.findFirst({
+  async getInvoiceByLabel(
+    label: InvoiceLabel,
+    tx?: Prisma.TransactionClient,
+  ): Promise<Invoice | null> {
+    const client = tx ? tx : this.prisma;
+    const result = await client.invoice.findFirst({
       where: {
         label,
       },
@@ -62,10 +95,15 @@ export class InvoiceRepository {
         },
       },
     });
+    return result;
   }
 
-  async getInvoiceByDocNo(docNo: string): Promise<Invoice | null> {
-    return await this.prisma.invoice.findFirst({
+  async getInvoiceByDocNo(
+    docNo: string,
+    tx?: Prisma.TransactionClient,
+  ): Promise<Invoice | null> {
+    const client = tx ? tx : this.prisma;
+    return await client.invoice.findFirst({
       where: {
         docNo,
       },
@@ -89,8 +127,11 @@ export class InvoiceRepository {
     });
   }
 
-  async getAllInvoices(): Promise<Invoice[] | null> {
-    return await this.prisma.invoice.findMany({
+  async getAllInvoices(
+    tx?: Prisma.TransactionClient,
+  ): Promise<Invoice[] | null> {
+    const client = tx ? tx : this.prisma;
+    return await client.invoice.findMany({
       orderBy: {
         createdAt: "desc",
       },
@@ -114,8 +155,12 @@ export class InvoiceRepository {
     });
   }
 
-  async cancelInvoice(id: string): Promise<Invoice | null> {
-    return await this.prisma.invoice.update({
+  async cancelInvoice(
+    id: string,
+    tx?: Prisma.TransactionClient,
+  ): Promise<Invoice | null> {
+    const client = tx ? tx : this.prisma;
+    return await client.invoice.update({
       where: {
         id,
       },
@@ -128,8 +173,10 @@ export class InvoiceRepository {
   async updateInvoiceStatus(
     id: string,
     status: InvoiceStatus,
+    tx?: Prisma.TransactionClient,
   ): Promise<Invoice | null> {
-    return await this.prisma.invoice.update({
+    const client = tx ? tx : this.prisma;
+    return await client.invoice.update({
       where: {
         id,
       },
@@ -142,8 +189,10 @@ export class InvoiceRepository {
   async updateInvoice(
     id: string,
     data: InvoiceUpdateInput,
+    tx?: Prisma.TransactionClient,
   ): Promise<Invoice | null> {
-    return await this.prisma.invoice.update({
+    const client = tx ? tx : this.prisma;
+    return await client.invoice.update({
       where: {
         id,
       },

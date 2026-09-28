@@ -443,7 +443,7 @@ export type ProductWhereInput = {
   certifications?: Prisma.ProductCertificationListRelationFilter
   productManufacturer?: Prisma.ProductManufacturerListRelationFilter
   saleOrderItems?: Prisma.SaleOrderItemsListRelationFilter
-  invoiceItems?: Prisma.XOR<Prisma.InvoiceItemsNullableScalarRelationFilter, Prisma.InvoiceItemsWhereInput> | null
+  invoiceItems?: Prisma.InvoiceItemsListRelationFilter
 }
 
 export type ProductOrderByWithRelationInput = {
@@ -486,7 +486,7 @@ export type ProductOrderByWithRelationInput = {
   certifications?: Prisma.ProductCertificationOrderByRelationAggregateInput
   productManufacturer?: Prisma.ProductManufacturerOrderByRelationAggregateInput
   saleOrderItems?: Prisma.SaleOrderItemsOrderByRelationAggregateInput
-  invoiceItems?: Prisma.InvoiceItemsOrderByWithRelationInput
+  invoiceItems?: Prisma.InvoiceItemsOrderByRelationAggregateInput
 }
 
 export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -532,7 +532,7 @@ export type ProductWhereUniqueInput = Prisma.AtLeast<{
   certifications?: Prisma.ProductCertificationListRelationFilter
   productManufacturer?: Prisma.ProductManufacturerListRelationFilter
   saleOrderItems?: Prisma.SaleOrderItemsListRelationFilter
-  invoiceItems?: Prisma.XOR<Prisma.InvoiceItemsNullableScalarRelationFilter, Prisma.InvoiceItemsWhereInput> | null
+  invoiceItems?: Prisma.InvoiceItemsListRelationFilter
 }, "id" | "code" | "barcode">
 
 export type ProductOrderByWithAggregationInput = {
@@ -652,7 +652,7 @@ export type ProductCreateInput = {
   certifications?: Prisma.ProductCertificationCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateInput = {
@@ -694,7 +694,7 @@ export type ProductUncheckedCreateInput = {
   certifications?: Prisma.ProductCertificationUncheckedCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductUpdateInput = {
@@ -736,7 +736,7 @@ export type ProductUpdateInput = {
   certifications?: Prisma.ProductCertificationUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateInput = {
@@ -778,7 +778,7 @@ export type ProductUncheckedUpdateInput = {
   certifications?: Prisma.ProductCertificationUncheckedUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateManyInput = {
@@ -1213,7 +1213,7 @@ export type ProductCreateWithoutCreatedByInput = {
   certifications?: Prisma.ProductCertificationCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutCreatedByInput = {
@@ -1254,7 +1254,7 @@ export type ProductUncheckedCreateWithoutCreatedByInput = {
   certifications?: Prisma.ProductCertificationUncheckedCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutCreatedByInput = {
@@ -1359,7 +1359,7 @@ export type ProductCreateWithoutBatchesInput = {
   certifications?: Prisma.ProductCertificationCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutBatchesInput = {
@@ -1400,7 +1400,7 @@ export type ProductUncheckedCreateWithoutBatchesInput = {
   certifications?: Prisma.ProductCertificationUncheckedCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutBatchesInput = {
@@ -1457,7 +1457,7 @@ export type ProductUpdateWithoutBatchesInput = {
   certifications?: Prisma.ProductCertificationUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutBatchesInput = {
@@ -1498,7 +1498,7 @@ export type ProductUncheckedUpdateWithoutBatchesInput = {
   certifications?: Prisma.ProductCertificationUncheckedUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutPricesInput = {
@@ -1539,7 +1539,7 @@ export type ProductCreateWithoutPricesInput = {
   certifications?: Prisma.ProductCertificationCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutPricesInput = {
@@ -1580,7 +1580,7 @@ export type ProductUncheckedCreateWithoutPricesInput = {
   certifications?: Prisma.ProductCertificationUncheckedCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutPricesInput = {
@@ -1637,7 +1637,7 @@ export type ProductUpdateWithoutPricesInput = {
   certifications?: Prisma.ProductCertificationUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutPricesInput = {
@@ -1678,7 +1678,7 @@ export type ProductUncheckedUpdateWithoutPricesInput = {
   certifications?: Prisma.ProductCertificationUncheckedUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutInventoriesInput = {
@@ -1719,7 +1719,7 @@ export type ProductCreateWithoutInventoriesInput = {
   certifications?: Prisma.ProductCertificationCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutInventoriesInput = {
@@ -1760,7 +1760,7 @@ export type ProductUncheckedCreateWithoutInventoriesInput = {
   certifications?: Prisma.ProductCertificationUncheckedCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutInventoriesInput = {
@@ -1817,7 +1817,7 @@ export type ProductUpdateWithoutInventoriesInput = {
   certifications?: Prisma.ProductCertificationUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutInventoriesInput = {
@@ -1858,7 +1858,7 @@ export type ProductUncheckedUpdateWithoutInventoriesInput = {
   certifications?: Prisma.ProductCertificationUncheckedUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutProductManufacturerInput = {
@@ -1899,7 +1899,7 @@ export type ProductCreateWithoutProductManufacturerInput = {
   inventories?: Prisma.InventoryCreateNestedManyWithoutProductInput
   certifications?: Prisma.ProductCertificationCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutProductManufacturerInput = {
@@ -1940,7 +1940,7 @@ export type ProductUncheckedCreateWithoutProductManufacturerInput = {
   inventories?: Prisma.InventoryUncheckedCreateNestedManyWithoutProductInput
   certifications?: Prisma.ProductCertificationUncheckedCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutProductManufacturerInput = {
@@ -1997,7 +1997,7 @@ export type ProductUpdateWithoutProductManufacturerInput = {
   inventories?: Prisma.InventoryUpdateManyWithoutProductNestedInput
   certifications?: Prisma.ProductCertificationUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutProductManufacturerInput = {
@@ -2038,7 +2038,7 @@ export type ProductUncheckedUpdateWithoutProductManufacturerInput = {
   inventories?: Prisma.InventoryUncheckedUpdateManyWithoutProductNestedInput
   certifications?: Prisma.ProductCertificationUncheckedUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutCertificationsInput = {
@@ -2079,7 +2079,7 @@ export type ProductCreateWithoutCertificationsInput = {
   inventories?: Prisma.InventoryCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutCertificationsInput = {
@@ -2120,7 +2120,7 @@ export type ProductUncheckedCreateWithoutCertificationsInput = {
   inventories?: Prisma.InventoryUncheckedCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedCreateNestedManyWithoutProductInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutCertificationsInput = {
@@ -2177,7 +2177,7 @@ export type ProductUpdateWithoutCertificationsInput = {
   inventories?: Prisma.InventoryUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutCertificationsInput = {
@@ -2218,7 +2218,7 @@ export type ProductUncheckedUpdateWithoutCertificationsInput = {
   inventories?: Prisma.InventoryUncheckedUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutSaleOrderItemsInput = {
@@ -2259,7 +2259,7 @@ export type ProductCreateWithoutSaleOrderItemsInput = {
   inventories?: Prisma.InventoryCreateNestedManyWithoutProductInput
   certifications?: Prisma.ProductCertificationCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutSaleOrderItemsInput = {
@@ -2300,7 +2300,7 @@ export type ProductUncheckedCreateWithoutSaleOrderItemsInput = {
   inventories?: Prisma.InventoryUncheckedCreateNestedManyWithoutProductInput
   certifications?: Prisma.ProductCertificationUncheckedCreateNestedManyWithoutProductInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedCreateNestedManyWithoutProductInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedOneWithoutProductInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutSaleOrderItemsInput = {
@@ -2357,7 +2357,7 @@ export type ProductUpdateWithoutSaleOrderItemsInput = {
   inventories?: Prisma.InventoryUpdateManyWithoutProductNestedInput
   certifications?: Prisma.ProductCertificationUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutSaleOrderItemsInput = {
@@ -2398,7 +2398,7 @@ export type ProductUncheckedUpdateWithoutSaleOrderItemsInput = {
   inventories?: Prisma.InventoryUncheckedUpdateManyWithoutProductNestedInput
   certifications?: Prisma.ProductCertificationUncheckedUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutInvoiceItemsInput = {
@@ -2653,7 +2653,7 @@ export type ProductUpdateWithoutCreatedByInput = {
   certifications?: Prisma.ProductCertificationUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutCreatedByInput = {
@@ -2694,7 +2694,7 @@ export type ProductUncheckedUpdateWithoutCreatedByInput = {
   certifications?: Prisma.ProductCertificationUncheckedUpdateManyWithoutProductNestedInput
   productManufacturer?: Prisma.ProductManufacturerUncheckedUpdateManyWithoutProductNestedInput
   saleOrderItems?: Prisma.SaleOrderItemsUncheckedUpdateManyWithoutProductNestedInput
-  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateOneWithoutProductNestedInput
+  invoiceItems?: Prisma.InvoiceItemsUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateManyWithoutCreatedByInput = {
@@ -2743,6 +2743,7 @@ export type ProductCountOutputType = {
   certifications: number
   productManufacturer: number
   saleOrderItems: number
+  invoiceItems: number
 }
 
 export type ProductCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2752,6 +2753,7 @@ export type ProductCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   certifications?: boolean | ProductCountOutputTypeCountCertificationsArgs
   productManufacturer?: boolean | ProductCountOutputTypeCountProductManufacturerArgs
   saleOrderItems?: boolean | ProductCountOutputTypeCountSaleOrderItemsArgs
+  invoiceItems?: boolean | ProductCountOutputTypeCountInvoiceItemsArgs
 }
 
 /**
@@ -2804,6 +2806,13 @@ export type ProductCountOutputTypeCountProductManufacturerArgs<ExtArgs extends r
  */
 export type ProductCountOutputTypeCountSaleOrderItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.SaleOrderItemsWhereInput
+}
+
+/**
+ * ProductCountOutputType without action
+ */
+export type ProductCountOutputTypeCountInvoiceItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvoiceItemsWhereInput
 }
 
 
@@ -2987,7 +2996,7 @@ export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     certifications: Prisma.$ProductCertificationPayload<ExtArgs>[]
     productManufacturer: Prisma.$ProductManufacturerPayload<ExtArgs>[]
     saleOrderItems: Prisma.$SaleOrderItemsPayload<ExtArgs>[]
-    invoiceItems: Prisma.$InvoiceItemsPayload<ExtArgs> | null
+    invoiceItems: Prisma.$InvoiceItemsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3423,7 +3432,7 @@ export interface Prisma__ProductClient<T, Null = never, ExtArgs extends runtime.
   certifications<T extends Prisma.Product$certificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Product$certificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductCertificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   productManufacturer<T extends Prisma.Product$productManufacturerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Product$productManufacturerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductManufacturerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   saleOrderItems<T extends Prisma.Product$saleOrderItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Product$saleOrderItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SaleOrderItemsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  invoiceItems<T extends Prisma.Product$invoiceItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Product$invoiceItemsArgs<ExtArgs>>): Prisma.Prisma__InvoiceItemsClient<runtime.Types.Result.GetResult<Prisma.$InvoiceItemsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  invoiceItems<T extends Prisma.Product$invoiceItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Product$invoiceItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoiceItemsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4046,6 +4055,11 @@ export type Product$invoiceItemsArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   include?: Prisma.InvoiceItemsInclude<ExtArgs> | null
   where?: Prisma.InvoiceItemsWhereInput
+  orderBy?: Prisma.InvoiceItemsOrderByWithRelationInput | Prisma.InvoiceItemsOrderByWithRelationInput[]
+  cursor?: Prisma.InvoiceItemsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvoiceItemsScalarFieldEnum | Prisma.InvoiceItemsScalarFieldEnum[]
 }
 
 /**
