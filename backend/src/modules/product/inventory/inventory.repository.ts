@@ -3,7 +3,10 @@ import type {
   Prisma,
   PrismaClient,
 } from "@/generated/prisma/client.js";
-import type { Decimal } from "@/generated/prisma/internal/prismaNamespace.js";
+import type {
+  Decimal,
+  NumberSequenceAvgAggregateInputType,
+} from "@/generated/prisma/internal/prismaNamespace.js";
 
 export class InventoryRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -70,5 +73,27 @@ export class InventoryRepository {
       },
     });
     return result;
+  }
+
+  async decrementStock(
+    inventoryId: string,
+    quantity: Decimal,
+    tx?: Prisma.TransactionClient,
+  ): Promise<number> {
+    const client = tx ? tx : this.prisma;
+    const result = await client.inventory.updateMany({
+      where: {
+        id: inventoryId,
+        currentStock: {
+          gte: quantity,
+        },
+      },
+      data: {
+        currentStock: {
+          decrement: quantity,
+        },
+      },
+    });
+    return result.count;
   }
 }

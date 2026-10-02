@@ -58,3 +58,46 @@ export interface CreateInvoiceFormType {
   cgst: number;
   sgst: number;
 }
+
+export type InvoiceLabel =
+  | "TAX_INVOICE"
+  | "PROFORMA_INVOICE"
+  | "DELIVERY_CHALLAN"
+  | "CREDIT_NOTE"
+  | "DEBIT_NOTE";
+
+export type InvoiceStatus =
+  | "DRAFT"
+  | "ISSUED"
+  | "PARTIALLY_PAID"
+  | "PAID"
+  | "OVERDUE"
+  | "CANCELLED"
+  | "VOID";
+
+export interface InvoiceType {
+  id: string;
+  docNo: string;
+  date: string;
+
+  customer: {
+    shopName: string;
+    gstNumber: string | null;
+  };
+
+  taxable: number;
+
+  gst: {
+    igst: number;
+    cgst: number;
+    sgst: number;
+  };
+
+  placeOfSupply: string | null;
+
+  grandTotal: number;
+
+  status: InvoiceStatus;
+
+  label: InvoiceLabel;
+}

@@ -39,6 +39,9 @@ import { ProductType } from "@/features/product/types/product.types";
 import { useCreateInvoice } from "@/features/invoice/hooks/useCreateInvoice";
 import { toast } from "sonner";
 import ButtonLoader from "@/components/ButtonLoader";
+import { getLabel } from "@/features/invoice/helpers/getLabel";
+import { getSupplyType } from "@/features/invoice/helpers/getSupplyType";
+import { getTransportMode } from "@/features/invoice/helpers/getTransportMode";
 
 export default function BillingEditor() {
   const navigate = useNavigate();
@@ -141,25 +144,42 @@ export default function BillingEditor() {
     0,
   );
   const taxableValue = subtotal - discountTotal;
-  const cgst = items.reduce((s, l) => {
-    const base = l.qty * l.rate - (l.qty * l.rate * l.discount) / 100;
-    return s + (base * l.gst) / 200;
-  }, 0);
-  const sgst = cgst;
-  const igst = items.reduce((s, l) => {
-    const base = l.qty * l.rate - (l.qty * l.rate * l.discount) / 100;
-    return s + (base * l.gst) / 100;
-  }, 0);
-  const roundOff =
-    Math.round(taxableValue + cgst + sgst + igst) -
-    (taxableValue + cgst + sgst + igst);
-  const grandTotal = taxableValue + cgst + sgst + igst + roundOff;
-
   const isInterState = placeOfSupply !== "20";
 
-  const gstBreakdown = isInterState
-    ? { igst, cgst: 0, sgst: 0 }
-    : { igst: 0, cgst, sgst };
+  let cgst = 0;
+  let sgst = 0;
+  let igst = 0;
+
+  if (isInterState) {
+    igst = items.reduce((sum, item) => {
+      const base =
+        item.qty * item.rate - (item.qty * item.rate * item.discount) / 100;
+
+      return sum + (base * item.gst) / 100;
+    }, 0);
+  } else {
+    cgst = items.reduce((sum, item) => {
+      const base =
+        item.qty * item.rate - (item.qty * item.rate * item.discount) / 100;
+
+      return sum + (base * item.gst) / 200;
+    }, 0);
+
+    sgst = cgst;
+  }
+
+  const gstBreakdown = {
+    igst,
+    cgst,
+    sgst,
+  };
+
+  const totalBeforeRoundOff =
+    taxableValue + gstBreakdown.igst + gstBreakdown.cgst + gstBreakdown.sgst;
+
+  const roundOff = Math.round(totalBeforeRoundOff) - totalBeforeRoundOff;
+
+  const grandTotal = totalBeforeRoundOff + roundOff;
 
   const showTransport = docType === "challan" || docType === "invoice";
   const showReference = docType === "credit" || docType === "debit";
@@ -192,15 +212,15 @@ export default function BillingEditor() {
     e.preventDefault();
 
     const payload: CreateInvoiceFormType = {
-      label: docType,
+      label: getLabel(docType) as string,
       customerId: customerId,
       docDate: new Date(date),
       dueDate: new Date(dueDate),
-      paymentTerms: paymentTerms,
-      supplyType: supplyType,
+      paymentTerms: String(paymentTerms),
+      supplyType: getSupplyType(supplyType) as string,
       placeOfSupply: placeOfSupply,
       reverseCharge: reverseCharge,
-      transportMode: transportMode,
+      transportMode: getTransportMode(transportMode),
       vehicleNo,
       ewayNo: eWayBill,
       deliveryDate: new Date(deliveryDate),
@@ -222,12 +242,20 @@ export default function BillingEditor() {
           rate: item.rate,
           discPer: item.discount,
           gstPer: item.gst,
+          amount: item.amount,
         };
       }),
     };
 
     if (!canSave) {
       toast.error("Please select a customer or add few items");
+      return;
+    }
+
+    const productsWithoutHSN = items.filter((item) => !item.hsn);
+
+    if (productsWithoutHSN.length > 0) {
+      toast.error("Please select products with valid HSN codes");
       return;
     }
 

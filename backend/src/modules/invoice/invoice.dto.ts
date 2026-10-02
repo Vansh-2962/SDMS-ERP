@@ -13,6 +13,7 @@ export interface CreateInvoiceItemDTO {
 
   discPer: number;
   gstPer: number;
+  amount: number;
 }
 
 export interface CreateInvoiceDTO {
@@ -38,6 +39,9 @@ export interface CreateInvoiceDTO {
 
   notes?: string;
   terms?: string;
+  billingAddress?: string;
+  shippingAddress?: string;
+  status?: string;
 
   items: CreateInvoiceItemDTO[];
 

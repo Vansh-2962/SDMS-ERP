@@ -579,8 +579,8 @@ model Invoice {
    sgst          Decimal
    cgst          Decimal
 
-   billingAddress String
-   shippingAddress String
+   billingAddress String?
+   shippingAddress String?
 
    grandTotal    Decimal
 

@@ -382,8 +382,8 @@ export type InvoiceGroupByOutputType = {
   igst: runtime.Decimal
   sgst: runtime.Decimal
   cgst: runtime.Decimal
-  billingAddress: string
-  shippingAddress: string
+  billingAddress: string | null
+  shippingAddress: string | null
   grandTotal: runtime.Decimal
   status: $Enums.InvoiceStatus
   createdAt: Date
@@ -438,8 +438,8 @@ export type InvoiceWhereInput = {
   igst?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFilter<"Invoice"> | string
-  shippingAddress?: Prisma.StringFilter<"Invoice"> | string
+  billingAddress?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  shippingAddress?: Prisma.StringNullableFilter<"Invoice"> | string | null
   grandTotal?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
@@ -474,8 +474,8 @@ export type InvoiceOrderByWithRelationInput = {
   igst?: Prisma.SortOrder
   sgst?: Prisma.SortOrder
   cgst?: Prisma.SortOrder
-  billingAddress?: Prisma.SortOrder
-  shippingAddress?: Prisma.SortOrder
+  billingAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  shippingAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   grandTotal?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -513,8 +513,8 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   igst?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFilter<"Invoice"> | string
-  shippingAddress?: Prisma.StringFilter<"Invoice"> | string
+  billingAddress?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  shippingAddress?: Prisma.StringNullableFilter<"Invoice"> | string | null
   grandTotal?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
@@ -549,8 +549,8 @@ export type InvoiceOrderByWithAggregationInput = {
   igst?: Prisma.SortOrder
   sgst?: Prisma.SortOrder
   cgst?: Prisma.SortOrder
-  billingAddress?: Prisma.SortOrder
-  shippingAddress?: Prisma.SortOrder
+  billingAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  shippingAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   grandTotal?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -590,8 +590,8 @@ export type InvoiceScalarWhereWithAggregatesInput = {
   igst?: Prisma.DecimalWithAggregatesFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalWithAggregatesFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalWithAggregatesFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
-  shippingAddress?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
+  billingAddress?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
+  shippingAddress?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   grandTotal?: Prisma.DecimalWithAggregatesFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusWithAggregatesFilter<"Invoice"> | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Invoice"> | Date | string
@@ -621,8 +621,8 @@ export type InvoiceCreateInput = {
   igst: runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst: runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst: runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress: string
-  shippingAddress: string
+  billingAddress?: string | null
+  shippingAddress?: string | null
   grandTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.InvoiceStatus
   createdAt?: Date | string
@@ -657,8 +657,8 @@ export type InvoiceUncheckedCreateInput = {
   igst: runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst: runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst: runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress: string
-  shippingAddress: string
+  billingAddress?: string | null
+  shippingAddress?: string | null
   grandTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.InvoiceStatus
   createdAt?: Date | string
@@ -689,8 +689,8 @@ export type InvoiceUpdateInput = {
   igst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFieldUpdateOperationsInput | string
-  shippingAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  billingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grandTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -725,8 +725,8 @@ export type InvoiceUncheckedUpdateInput = {
   igst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFieldUpdateOperationsInput | string
-  shippingAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  billingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grandTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -759,8 +759,8 @@ export type InvoiceCreateManyInput = {
   igst: runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst: runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst: runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress: string
-  shippingAddress: string
+  billingAddress?: string | null
+  shippingAddress?: string | null
   grandTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.InvoiceStatus
   createdAt?: Date | string
@@ -790,8 +790,8 @@ export type InvoiceUpdateManyMutationInput = {
   igst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFieldUpdateOperationsInput | string
-  shippingAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  billingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grandTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -823,8 +823,8 @@ export type InvoiceUncheckedUpdateManyInput = {
   igst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFieldUpdateOperationsInput | string
-  shippingAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  billingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grandTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1104,8 +1104,8 @@ export type InvoiceCreateWithoutCustomerInput = {
   igst: runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst: runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst: runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress: string
-  shippingAddress: string
+  billingAddress?: string | null
+  shippingAddress?: string | null
   grandTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.InvoiceStatus
   createdAt?: Date | string
@@ -1138,8 +1138,8 @@ export type InvoiceUncheckedCreateWithoutCustomerInput = {
   igst: runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst: runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst: runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress: string
-  shippingAddress: string
+  billingAddress?: string | null
+  shippingAddress?: string | null
   grandTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.InvoiceStatus
   createdAt?: Date | string
@@ -1201,8 +1201,8 @@ export type InvoiceScalarWhereInput = {
   igst?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFilter<"Invoice"> | string
-  shippingAddress?: Prisma.StringFilter<"Invoice"> | string
+  billingAddress?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  shippingAddress?: Prisma.StringNullableFilter<"Invoice"> | string | null
   grandTotal?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
@@ -1232,8 +1232,8 @@ export type InvoiceCreateWithoutSequenceInput = {
   igst: runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst: runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst: runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress: string
-  shippingAddress: string
+  billingAddress?: string | null
+  shippingAddress?: string | null
   grandTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.InvoiceStatus
   createdAt?: Date | string
@@ -1266,8 +1266,8 @@ export type InvoiceUncheckedCreateWithoutSequenceInput = {
   igst: runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst: runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst: runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress: string
-  shippingAddress: string
+  billingAddress?: string | null
+  shippingAddress?: string | null
   grandTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.InvoiceStatus
   createdAt?: Date | string
@@ -1324,8 +1324,8 @@ export type InvoiceCreateWithoutItemsInput = {
   igst: runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst: runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst: runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress: string
-  shippingAddress: string
+  billingAddress?: string | null
+  shippingAddress?: string | null
   grandTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.InvoiceStatus
   createdAt?: Date | string
@@ -1359,8 +1359,8 @@ export type InvoiceUncheckedCreateWithoutItemsInput = {
   igst: runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst: runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst: runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress: string
-  shippingAddress: string
+  billingAddress?: string | null
+  shippingAddress?: string | null
   grandTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.InvoiceStatus
   createdAt?: Date | string
@@ -1406,8 +1406,8 @@ export type InvoiceUpdateWithoutItemsInput = {
   igst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFieldUpdateOperationsInput | string
-  shippingAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  billingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grandTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1441,8 +1441,8 @@ export type InvoiceUncheckedUpdateWithoutItemsInput = {
   igst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFieldUpdateOperationsInput | string
-  shippingAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  billingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grandTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1473,8 +1473,8 @@ export type InvoiceCreateManyCustomerInput = {
   igst: runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst: runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst: runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress: string
-  shippingAddress: string
+  billingAddress?: string | null
+  shippingAddress?: string | null
   grandTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.InvoiceStatus
   createdAt?: Date | string
@@ -1504,8 +1504,8 @@ export type InvoiceUpdateWithoutCustomerInput = {
   igst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFieldUpdateOperationsInput | string
-  shippingAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  billingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grandTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1538,8 +1538,8 @@ export type InvoiceUncheckedUpdateWithoutCustomerInput = {
   igst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFieldUpdateOperationsInput | string
-  shippingAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  billingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grandTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1571,8 +1571,8 @@ export type InvoiceUncheckedUpdateManyWithoutCustomerInput = {
   igst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFieldUpdateOperationsInput | string
-  shippingAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  billingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grandTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1603,8 +1603,8 @@ export type InvoiceCreateManySequenceInput = {
   igst: runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst: runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst: runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress: string
-  shippingAddress: string
+  billingAddress?: string | null
+  shippingAddress?: string | null
   grandTotal: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.InvoiceStatus
   createdAt?: Date | string
@@ -1634,8 +1634,8 @@ export type InvoiceUpdateWithoutSequenceInput = {
   igst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFieldUpdateOperationsInput | string
-  shippingAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  billingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grandTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1668,8 +1668,8 @@ export type InvoiceUncheckedUpdateWithoutSequenceInput = {
   igst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFieldUpdateOperationsInput | string
-  shippingAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  billingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grandTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1701,8 +1701,8 @@ export type InvoiceUncheckedUpdateManyWithoutSequenceInput = {
   igst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   cgst?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  billingAddress?: Prisma.StringFieldUpdateOperationsInput | string
-  shippingAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  billingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   grandTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1928,8 +1928,8 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     igst: runtime.Decimal
     sgst: runtime.Decimal
     cgst: runtime.Decimal
-    billingAddress: string
-    shippingAddress: string
+    billingAddress: string | null
+    shippingAddress: string | null
     grandTotal: runtime.Decimal
     status: $Enums.InvoiceStatus
     createdAt: Date

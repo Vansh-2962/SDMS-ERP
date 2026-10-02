@@ -12,6 +12,7 @@ import { productRouter } from "@/modules/product/product.routes.js";
 import { profileRouter } from "@/modules/profile/routes.js";
 import { customerRouter } from "@/modules/customer/customer.routes.js";
 import { saleOrderRouter } from "@/modules/saleOrder/saleOrder.routes.js";
+import { invoiceRouter } from "@/modules/invoice/invoice.routes.js";
 
 const app: Application = express();
 
@@ -38,6 +39,7 @@ app.use("/api/v1/products", productRouter);
 app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/customer", customerRouter);
 app.use("/api/v1/sale-order", saleOrderRouter);
+app.use("/api/v1/invoice", invoiceRouter);
 
 app.get("/health", (_, res) => {
   const logger = getLogger();

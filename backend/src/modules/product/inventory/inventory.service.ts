@@ -44,4 +44,17 @@ export class InventoryService {
     );
     return stocks;
   }
+
+  async decrementStock(
+    inventoryId: string,
+    quantity: Decimal,
+    tx?: Prisma.TransactionClient,
+  ): Promise<number> {
+    const stock = await this.inventoryRepository.decrementStock(
+      inventoryId,
+      quantity,
+      tx,
+    );
+    return stock;
+  }
 }

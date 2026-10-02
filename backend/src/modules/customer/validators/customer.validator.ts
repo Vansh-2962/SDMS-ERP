@@ -171,6 +171,6 @@ export const getCustomerByIdSchema = z.object({
   }),
 });
 
-export type GetCustomerByIdInput = z.infer<typeof deleteCustomerSchema>;
+export type GetCustomerByIdInput = z.infer<typeof getCustomerByIdSchema>;
 export type DeleteCustomerInput = z.infer<typeof deleteCustomerSchema>;
 export type CreateCustomerInput = z.infer<typeof customerSchema>;

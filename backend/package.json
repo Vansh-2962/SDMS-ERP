@@ -10,6 +10,9 @@
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write ."
   },
+  "prisma": {
+    "seed": "tsx src/config/database/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

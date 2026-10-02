@@ -15,7 +15,7 @@ import { prisma } from "@/config/database/prisma.js";
 const customerRouter: Router = Router();
 
 const customerRepository = new CustomerRepository(prisma);
-const customerService = new CustomerService(customerRepository);
+export const customerService = new CustomerService(customerRepository);
 const customerConstroller = new CustomerController(customerService);
 
 customerRouter.post(

@@ -43,6 +43,15 @@ import {
   IconFileText,
   IconReceiptRefund,
 } from "@tabler/icons-react";
+import { useGetInvoices } from "@/features/invoice/hooks/useGetInvoices";
+import InvoiceStats from "@/features/invoice/components/InvoiceStats";
+import {
+  InvoiceStatus,
+  InvoiceType,
+} from "@/features/invoice/types/invoice.types";
+import { formatDate } from "@/lib/helpers";
+import ProductListSkeleton from "@/features/product/component/ProductListSkeleton";
+import InvoicesNotFound from "@/features/invoice/components/InvoicesNotFound";
 
 const invoices = [
   {
@@ -140,30 +149,33 @@ const debitNotes = [
   },
 ];
 
-const statusColor: Record<string, string> = {
-  Paid: "bg-emerald-100 text-emerald-700",
-  Pending: "bg-amber-100 text-amber-700",
-  Overdue: "bg-red-100 text-red-700",
-  Draft: "bg-gray-100 text-gray-600",
-  Delivered: "bg-emerald-100 text-emerald-700",
-  "In Transit": "bg-blue-100 text-blue-700",
-  Issued: "bg-violet-100 text-violet-700",
+const statusColor: Record<InvoiceStatus, string> = {
+  DRAFT: "bg-pink-100 text-pink-700",
+  ISSUED: "bg-amber-100 text-amber-700",
+  OVERDUE: "bg-yellow-100 text-yellow-700",
+  CANCELLED: "bg-rose-100 text-rose-600",
+  PAID: "bg-emerald-100 text-emerald-700",
+  PARTIALLY_PAID: "bg-blue-100 text-blue-700",
+  VOID: "bg-violet-100 text-violet-700",
 };
 
 function DocTable({
-  data,
+  invoices,
   type,
   routeType,
+  loading,
 }: {
-  data: typeof invoices;
+  invoices: InvoiceType[];
   type: string;
   routeType: string;
+  loading: boolean;
 }) {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const filtered = data.filter(
+
+  const filtered = invoices.filter(
     (d) =>
-      d.customer.toLowerCase().includes(search.toLowerCase()) ||
+      d.customer.shopName.includes(search.toLowerCase()) ||
       d.id.toLowerCase().includes(search.toLowerCase()),
   );
   return (
@@ -190,96 +202,109 @@ function DocTable({
         </Button>
       </div>
       <div className="overflow-x-auto rounded-xl border border-border">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-muted/50 hover:bg-muted/50">
-              {[
-                "Doc No.",
-                "Date",
-                "Customer",
-                "Taxable",
-                "GST",
-                "Total",
-                "Status",
-                "Actions",
-              ].map((h) => (
-                <TableHead
-                  key={h}
-                  className="text-xs font-semibold whitespace-nowrap"
-                >
-                  {h}
-                </TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map((d) => (
-              <TableRow key={d.id} className="hover:bg-muted/30">
-                <TableCell className="font-mono text-xs text-primary font-medium">
-                  {d.id}
-                </TableCell>
-                <TableCell className="text-xs text-muted-foreground">
-                  {d.date}
-                </TableCell>
-                <TableCell className="font-medium text-sm">
-                  {d.customer}
-                </TableCell>
-                <TableCell className="text-sm">
-                  ₹{d.taxable.toLocaleString("en-IN")}
-                </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
-                  ₹{d.gst.toLocaleString("en-IN")}
-                </TableCell>
-                <TableCell className="font-semibold text-sm">
-                  ₹{d.total.toLocaleString("en-IN")}
-                </TableCell>
-                <TableCell>
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColor[d.status] || "bg-gray-100 text-gray-600"}`}
+        {loading ? (
+          <ProductListSkeleton />
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted/50 hover:bg-muted/50">
+                {[
+                  "Doc No.",
+                  "Date",
+                  "Customer",
+                  "Taxable",
+                  "GST",
+                  "Total",
+                  "Status",
+                  "Actions",
+                ].map((h) => (
+                  <TableHead
+                    key={h}
+                    className="text-xs font-semibold whitespace-nowrap"
                   >
-                    {d.status}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-1">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-7 w-7 text-muted-foreground hover:text-primary"
-                      title="View"
-                    >
-                      <IconEye size={13} />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-7 w-7 text-muted-foreground hover:text-primary"
-                      title="Download PDF"
-                    >
-                      <IconDownload size={13} />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-7 w-7 text-muted-foreground hover:text-emerald-600"
-                      title="Send WhatsApp"
-                    >
-                      <IconBrandWhatsapp size={13} />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-7 w-7 text-muted-foreground hover:text-blue-600"
-                      title="Send Email"
-                    >
-                      <IconMail size={13} />
-                    </Button>
-                  </div>
-                </TableCell>
+                    {h}
+                  </TableHead>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {filtered.map((d: InvoiceType) => (
+                <TableRow key={d.id} className="hover:bg-muted/30">
+                  <TableCell className="font-mono text-xs text-primary font-medium">
+                    {d.docNo}
+                  </TableCell>
+                  <TableCell className="text-xs text-muted-foreground">
+                    {formatDate(d.date)}
+                  </TableCell>
+                  <TableCell className="font-medium text-sm">
+                    {d.customer.shopName}
+                  </TableCell>
+                  <TableCell className="text-sm">
+                    ₹{d.taxable.toLocaleString("en-IN")}
+                  </TableCell>
+                  <TableCell className="text-sm text-muted-foreground">
+                    ₹
+                    {Number(
+                      Number(d.gst.igst) +
+                        Number(d.gst.cgst) +
+                        Number(d.gst.sgst),
+                    ).toLocaleString("en-IN")}
+                  </TableCell>
+                  <TableCell className="font-semibold text-sm">
+                    ₹{d.grandTotal.toLocaleString("en-IN")}
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColor[d.status] || "bg-gray-100 text-gray-600"}`}
+                    >
+                      {d.status}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 text-muted-foreground hover:text-primary"
+                        title="View"
+                      >
+                        <IconEye size={13} />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 text-muted-foreground hover:text-primary"
+                        title="Download PDF"
+                      >
+                        <IconDownload size={13} />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 text-muted-foreground hover:text-emerald-600"
+                        title="Send WhatsApp"
+                      >
+                        <IconBrandWhatsapp size={13} />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 text-muted-foreground hover:text-blue-600"
+                        title="Send Email"
+                      >
+                        <IconMail size={13} />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+        {filtered.length === 0 && !loading && <InvoicesNotFound />}
+        <div className="px-4 py-2 border-t border-border bg-muted/20 text-xs text-muted-foreground">
+          Showing {filtered.length} of {filtered.length} invoices
+        </div>
       </div>
     </div>
   );
@@ -287,68 +312,22 @@ function DocTable({
 
 export default function BillingList() {
   const [previewOpen, setPreviewOpen] = useState(false);
+  const { data, isLoading } = useGetInvoices();
 
-  const totalInvoiced = invoices.reduce((s, i) => s + i.total, 0);
-  const totalPaid = invoices
-    .filter((i) => i.status === "Paid")
-    .reduce((s, i) => s + i.total, 0);
-  const totalPending = invoices
-    .filter((i) => i.status === "Pending" || i.status === "Overdue")
-    .reduce((s, i) => s + i.total, 0);
+  const invoices =
+    data?.data.filter((d: InvoiceType) => d.label === "TAX_INVOICE") || [];
+  const challans =
+    data?.data.filter((d: InvoiceType) => d.label === "DELIVERY_CHALLAN") || [];
+  const proformas =
+    data?.data.filter((d: InvoiceType) => d.label === "PROFORMA_INVOICE") || [];
+  const creditNotes =
+    data?.data.filter((d: InvoiceType) => d.label === "CREDIT_NOTE") || [];
+  const debitNotes =
+    data?.data.filter((d: InvoiceType) => d.label === "DEBIT_NOTE") || [];
 
   return (
     <div className="space-y-5">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {[
-          {
-            label: "Total Invoiced",
-            value: `₹${(totalInvoiced / 1000).toFixed(0)}k`,
-            bg: "bg-violet-50",
-            color: "text-violet-600",
-            icon: IconFileInvoice,
-          },
-          {
-            label: "Amount Collected",
-            value: `₹${(totalPaid / 1000).toFixed(0)}k`,
-            bg: "bg-emerald-50",
-            color: "text-emerald-600",
-            icon: IconFileText,
-          },
-          {
-            label: "Pending Amount",
-            value: `₹${(totalPending / 1000).toFixed(0)}k`,
-            bg: "bg-amber-50",
-            color: "text-amber-600",
-            icon: IconFileText,
-          },
-          {
-            label: "Total Documents",
-            value: invoices.length + challans.length + proformas.length,
-            bg: "bg-blue-50",
-            color: "text-blue-600",
-            icon: IconReceiptRefund,
-          },
-        ].map((s) => {
-          const Icon = s.icon;
-          return (
-            <Card key={s.label} className="border border-border shadow-sm">
-              <CardContent className={`p-4 ${s.bg}`}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-2xl font-heading font-bold text-foreground">
-                      {s.value}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      {s.label}
-                    </p>
-                  </div>
-                  <Icon size={22} className={s.color} />
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+      <InvoiceStats invoices={data?.data} />
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -388,19 +367,44 @@ export default function BillingList() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="invoice" className="mt-4">
-          <DocTable data={invoices} type="Invoice" routeType="invoice" />
+          <DocTable
+            invoices={invoices}
+            type="Invoice"
+            routeType="invoice"
+            loading={isLoading}
+          />
         </TabsContent>
         <TabsContent value="challan" className="mt-4">
-          <DocTable data={challans} type="Challan" routeType="challan" />
+          <DocTable
+            invoices={challans}
+            type="Challan"
+            routeType="challan"
+            loading={isLoading}
+          />
         </TabsContent>
         <TabsContent value="proforma" className="mt-4">
-          <DocTable data={proformas} type="Proforma" routeType="proforma" />
+          <DocTable
+            invoices={proformas}
+            type="Proforma"
+            routeType="proforma"
+            loading={isLoading}
+          />
         </TabsContent>
         <TabsContent value="credit" className="mt-4">
-          <DocTable data={creditNotes} type="Credit Note" routeType="credit" />
+          <DocTable
+            invoices={creditNotes}
+            type="Credit Note"
+            routeType="credit"
+            loading={isLoading}
+          />
         </TabsContent>
         <TabsContent value="debit" className="mt-4">
-          <DocTable data={debitNotes} type="Debit Note" routeType="debit" />
+          <DocTable
+            invoices={debitNotes}
+            type="Debit Note"
+            routeType="debit"
+            loading={isLoading}
+          />
         </TabsContent>
       </Tabs>
 

@@ -1,7 +1,10 @@
 import { authenticate } from "@/middlewares/authenticate.middleware.js";
 import { validate } from "@/middlewares/validate.middleware.js";
 import { Router } from "express";
-import { createProductSchema, deleteProductSchema } from "./validators/product.schema.js";
+import {
+  createProductSchema,
+  deleteProductSchema,
+} from "./validators/product.schema.js";
 import { asyncHandler } from "@/middlewares/asyncHandler.middleware.js";
 import { ProductController } from "./product.controller.js";
 import { ProductRepository } from "./product.repository.js";
@@ -21,7 +24,7 @@ const inventoryRepository = new InventoryRepository(prisma);
 const priceRepository = new PriceRepository(prisma);
 const manufacturerRepository = new ManufacturerRepository(prisma);
 const certificationRepository = new CertificationRepository(prisma);
-const productService = new ProductService(
+export const productService = new ProductService(
   productRepository,
   prisma,
   batchRepository,

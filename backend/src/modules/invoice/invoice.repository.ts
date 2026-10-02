@@ -10,6 +10,7 @@ import type {
   InvoiceCreateInput,
   InvoiceUpdateInput,
 } from "@/generated/prisma/models.js";
+import type { InvoiceWithRelations } from "./invoice.types.js";
 
 export class InvoiceRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -129,7 +130,7 @@ export class InvoiceRepository {
 
   async getAllInvoices(
     tx?: Prisma.TransactionClient,
-  ): Promise<Invoice[] | null> {
+  ): Promise<InvoiceWithRelations[]> {
     const client = tx ? tx : this.prisma;
     return await client.invoice.findMany({
       orderBy: {
