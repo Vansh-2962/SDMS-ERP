@@ -1,0 +1,46 @@
+import { Router } from "express";
+import { prisma } from "@/config/database/prisma.js";
+import { authenticate } from "@/middlewares/authenticate.middleware.js";
+import { asyncHandler } from "@/middlewares/asyncHandler.middleware.js";
+import { validate } from "@/middlewares/validate.middleware.js";
+import { PaymentController } from "./payment.controller.js";
+import { PaymentRepository } from "./payment.repository.js";
+import { PaymentService } from "./payment.service.js";
+import {
+  createPaymentSchema,
+  paymentIdSchema,
+  updatePaymentSchema,
+} from "./payment.validators.js";
+
+const paymentRouter: Router = Router();
+const paymentRepository = new PaymentRepository(prisma);
+const paymentService = new PaymentService(paymentRepository);
+const paymentController = new PaymentController(paymentService);
+
+paymentRouter.post(
+  "/",
+  authenticate,
+  validate(createPaymentSchema),
+  asyncHandler(paymentController.create),
+);
+paymentRouter.get("/", authenticate, asyncHandler(paymentController.getAll));
+paymentRouter.get(
+  "/:id",
+  authenticate,
+  validate(paymentIdSchema),
+  asyncHandler(paymentController.getById),
+);
+paymentRouter.patch(
+  "/:id",
+  authenticate,
+  validate(updatePaymentSchema),
+  asyncHandler(paymentController.update),
+);
+paymentRouter.delete(
+  "/:id",
+  authenticate,
+  validate(paymentIdSchema),
+  asyncHandler(paymentController.delete),
+);
+
+export { paymentRouter };

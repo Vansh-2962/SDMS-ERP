@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { CreateEmployeeInput } from "../types/employee.types";
 import { useCreateEmployee } from "../hooks/useCreateEmployee";
-import { IconLoader2 } from "@tabler/icons-react";
 import ButtonLoader from "@/components/ButtonLoader";
 
 interface Props {
@@ -19,7 +18,7 @@ interface Props {
 }
 
 const CreateEmployeeForm = ({ addOpen, setAddOpen }: Props) => {
-  const { mutate, isPending, isSuccess } = useCreateEmployee();
+  const { mutate, isPending } = useCreateEmployee();
   const {
     register,
     handleSubmit,

@@ -41,6 +41,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useAuth } from "@/features/auth/hooks/use-auth";
+import {
+  useGetProductStocks,
+  useGetStockroomItems,
+} from "@/features/inventory/hooks/useInventory";
 
 const formatINR = (val: number) => "₹" + val.toLocaleString("en-IN");
 
@@ -110,8 +114,45 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function Dashboard() {
-  const { inventory, salesmen } = useAppStore();
-  const lowStockItems = inventory.filter((i) => i.status === "Low");
+  const { salesmen } = useAppStore();
+  const {
+    data: stockroomData,
+    isLoading: stockroomLoading,
+    isError: stockroomError,
+  } = useGetStockroomItems();
+  const {
+    data: productStockData,
+    isLoading: productStockLoading,
+    isError: productStockError,
+  } = useGetProductStocks();
+  const lowStockItems = [
+    ...(stockroomData?.data ?? [])
+      .filter(
+        (item) =>
+          item.currentStock > 0 && item.currentStock <= item.reorderLevel,
+      )
+      .map((item) => ({
+        id: item.id,
+        name: item.name,
+        type: item.type.replace(/_/g, " "),
+        currentStock: item.currentStock,
+        reorderLevel: item.reorderLevel,
+        unit: item.unit,
+      })),
+    ...(productStockData?.data ?? [])
+      .filter(
+        (item) =>
+          item.currentStock > 0 && item.currentStock <= item.reorderLevel,
+      )
+      .map((item) => ({
+        id: item.id,
+        name: item.name,
+        type: "Product stock",
+        currentStock: item.currentStock,
+        reorderLevel: item.reorderLevel,
+        unit: item.unit,
+      })),
+  ];
   return (
     <div className="p-6 space-y-6 animate-fade-in">
       {/* Header */}
@@ -358,7 +399,15 @@ export default function Dashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {lowStockItems.length === 0 ? (
+            {stockroomLoading || productStockLoading ? (
+              <p className="py-6 text-center text-sm text-muted-foreground">
+                Loading stock levels...
+              </p>
+            ) : stockroomError || productStockError ? (
+              <p className="py-6 text-center text-sm text-destructive">
+                Could not load stock levels.
+              </p>
+            ) : lowStockItems.length === 0 ? (
               <p className="text-muted-foreground text-sm text-center py-6">
                 All stock levels OK
               </p>

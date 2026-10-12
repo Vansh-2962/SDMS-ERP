@@ -4,22 +4,22 @@ export interface CreateEmployeeDto {
   fullName: string;
   mobile: string;
 
-  designation?: string | undefined;
-  department?: string | undefined;
-  territory?: string | undefined;
+  designation?: string | null | undefined;
+  department?: string | null | undefined;
+  territory?: string | null | undefined;
 
-  email?: string | undefined;
+  email?: string | null | undefined;
   password?: string | undefined;
-  role?: UserRole;
+  role: UserRole;
 
-  pan?: string | undefined;
-  aadhaar?: string | undefined;
+  pan?: string | null | undefined;
+  aadhaar?: string | null | undefined;
 
-  bankAccountNo?: string | undefined;
-  ifscCode?: string | undefined;
+  bankAccountNo?: string | null | undefined;
+  ifscCode?: string | null | undefined;
 
-  salary?: number | undefined;
-  joinDate?: Date | undefined;
+  salary?: number | null | undefined;
+  joinDate: Date;
 
   createLogin?: boolean | undefined;
 }

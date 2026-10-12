@@ -327,7 +327,7 @@ export default function BillingList() {
 
   return (
     <div className="space-y-5">
-      <InvoiceStats invoices={data?.data} />
+      <InvoiceStats invoices={data?.data ?? []} />
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">

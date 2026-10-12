@@ -65,7 +65,7 @@ export default function Sidebar() {
         </div>
         {!sidebarCollapsed && (
           <div>
-            <p className="font-heading font-bold text-white text-sm leading-tight">GoldSpice</p>
+            <p className="font-heading font-bold text-white text-sm leading-tight">ORO Spices</p>
             <p className="text-[10px] text-[hsl(82_28%_50%)] leading-tight">S&DMS Platform</p>
           </div>
         )}

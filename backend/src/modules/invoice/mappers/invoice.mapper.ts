@@ -134,6 +134,8 @@ export class InvoiceMapper {
       id: invoice.id,
       docNo: invoice.docNo,
       date: invoice.docDate,
+      dueDate: invoice.dueDate,
+      customerId: invoice.customerId,
       taxable: invoice.taxable,
       customer: {
         shopName: invoice.customer.shopName,

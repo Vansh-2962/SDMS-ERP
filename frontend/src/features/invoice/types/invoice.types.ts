@@ -79,6 +79,8 @@ export interface InvoiceType {
   id: string;
   docNo: string;
   date: string;
+  dueDate: string;
+  customerId: string;
 
   customer: {
     shopName: string;

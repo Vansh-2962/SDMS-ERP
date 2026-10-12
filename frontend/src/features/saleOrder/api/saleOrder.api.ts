@@ -1,5 +1,9 @@
 import { axiosInstance } from "@/config/axios";
-import { SaleOrderFormData, SaleOrderStatus } from "../types/saleOrder.type";
+import {
+  SaleOrderDetails,
+  SaleOrderFormData,
+  SaleOrderStatus,
+} from "../types/saleOrder.type";
 
 export const createSaleOrder = async (data: SaleOrderFormData) => {
   const res = await axiosInstance.post("/sale-order", data);
@@ -19,5 +23,12 @@ export const updateOrderStatus = async ({
 
 export const getAllSaleOrders = async () => {
   const res = await axiosInstance.get("/sale-order");
+  return res.data;
+};
+
+export const getSaleOrderById = async (id: string) => {
+  const res = await axiosInstance.get<{ data: SaleOrderDetails }>(
+    `/sale-order/${id}`,
+  );
   return res.data;
 };

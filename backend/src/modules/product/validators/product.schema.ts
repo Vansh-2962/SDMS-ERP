@@ -117,6 +117,60 @@ export const createProductSchema = z.object({
 
 export type CreateProductInput = z.infer<typeof createProductSchema>;
 
+const updateDate = z.preprocess(
+  (value) => (value === "" ? null : value),
+  z.coerce.date().nullable().optional(),
+);
+
+const updateOptionalPositiveNumber = z.preprocess(
+  (value) => (value === "" ? null : value),
+  z.coerce.number().positive().nullable().optional(),
+);
+
+export const updateProductSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, "Id is required"),
+  }),
+  body: createProductSchema.shape.body
+    .partial()
+    .extend({
+      productionDate: updateDate,
+      mfgDate: updateDate,
+      expiryDate: updateDate,
+      moistureContent: z.preprocess(
+        (value) => (value === "" ? null : value),
+        z.coerce.number().min(0).max(100).nullable().optional(),
+      ),
+      shelfLife: z.preprocess(
+        (value) => (value === "" ? null : value),
+        z.coerce.number().int().positive().nullable().optional(),
+      ),
+      currentStock: z.preprocess(
+        (value) => (value === "" ? undefined : value),
+        z.coerce.number().nonnegative().optional(),
+      ),
+      reorderLevel: z.preprocess(
+        (value) => (value === "" ? null : value),
+        z.coerce.number().nonnegative().nullable().optional(),
+      ),
+      mrp: updateOptionalPositiveNumber,
+      distributorPrice: updateOptionalPositiveNumber,
+      retailerPrice: updateOptionalPositiveNumber,
+      dealerPrice: updateOptionalPositiveNumber,
+      purchaseCost: updateOptionalPositiveNumber,
+      manufacturingCost: updateOptionalPositiveNumber,
+      gst: z.preprocess(
+        (value) => (value === "" ? null : value),
+        z.coerce.number().min(0).max(100).nullable().optional(),
+      ),
+    })
+    .refine((data) => Object.keys(data).length > 0, {
+      message: "At least one product field is required",
+    }),
+});
+
+export type UpdateProductInput = z.infer<typeof updateProductSchema>;
+
 export const deleteProductSchema = z.object({
   params: z.object({
     id: z.string().min(1, "Id is required"),

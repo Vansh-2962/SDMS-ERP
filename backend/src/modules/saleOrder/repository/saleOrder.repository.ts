@@ -7,6 +7,77 @@ import type {
   SaleOrderStatus,
 } from "@/generated/prisma/client.js";
 
+export type SaleOrderWithDetails = Prisma.SaleOrderGetPayload<{
+  include: {
+    customer: {
+      select: {
+        id: true;
+        customerCode: true;
+        shopName: true;
+        ownerName: true;
+        type: true;
+        gstNumber: true;
+        pan: true;
+        fssai: true;
+        status: true;
+        mobile: true;
+        whatsapp: true;
+        email: true;
+        street: true;
+        state: true;
+        stateCode: true;
+        district: true;
+        pincode: true;
+        latitude: true;
+        longitude: true;
+        salesTerritory: true;
+        assignedSalesmanId: true;
+        assignedSalesman: {
+          select: {
+            empCode: true;
+            fullName: true;
+          };
+        };
+        paymentTerms: true;
+        creditLimit: true;
+        openingBal: true;
+        createdAt: true;
+        updatedAt: true;
+      };
+    };
+    salesman: {
+      select: {
+        id: true;
+        empCode: true;
+        fullName: true;
+        role: true;
+        mobile: true;
+        email: true;
+      };
+    };
+    items: {
+      include: {
+        product: {
+          select: {
+            id: true;
+            code: true;
+            name: true;
+            hsn: true;
+            unit: true;
+            netWeight: true;
+            category: true;
+            brand: true;
+            barcode: true;
+            type: true;
+            form: true;
+            shelfLife: true;
+          };
+        };
+      };
+    };
+  };
+}>;
+
 export class SaleOrderRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
@@ -42,11 +113,80 @@ export class SaleOrderRepository {
     });
   }
 
-  async getSaleOrderById(id: string): Promise<SaleOrder | null> {
-    return await this.prisma.saleOrder.findFirst({
+  async getSaleOrderById(id: string): Promise<SaleOrderWithDetails | null> {
+    return this.prisma.saleOrder.findFirst({
       where: {
         id,
         isActive: true,
+      },
+      include: {
+        customer: {
+          select: {
+            id: true,
+            customerCode: true,
+            shopName: true,
+            ownerName: true,
+            type: true,
+            gstNumber: true,
+            pan: true,
+            fssai: true,
+            status: true,
+            mobile: true,
+            whatsapp: true,
+            email: true,
+            street: true,
+            state: true,
+            stateCode: true,
+            district: true,
+            pincode: true,
+            latitude: true,
+            longitude: true,
+            salesTerritory: true,
+            assignedSalesmanId: true,
+            assignedSalesman: {
+              select: {
+                empCode: true,
+                fullName: true,
+              },
+            },
+            paymentTerms: true,
+            creditLimit: true,
+            openingBal: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+        salesman: {
+          select: {
+            id: true,
+            empCode: true,
+            fullName: true,
+            role: true,
+            mobile: true,
+            email: true,
+          },
+        },
+        items: {
+          orderBy: { createdAt: "asc" },
+          include: {
+            product: {
+              select: {
+                id: true,
+                code: true,
+                name: true,
+                hsn: true,
+                unit: true,
+                netWeight: true,
+                category: true,
+                brand: true,
+                barcode: true,
+                type: true,
+                form: true,
+                shelfLife: true,
+              },
+            },
+          },
+        },
       },
     });
   }

@@ -4,7 +4,7 @@ export interface ProductFormData {
   fssaiLicense: string;
   commonName: string;
   ingredients: string;
-  netWeight: number;
+  netWeight: string;
 
   mfgDate: string;
   expiryDate: string;
@@ -70,7 +70,7 @@ export interface ProductFormData {
   //PACKAGING & INVENTORY
 
   packagingType: string;
-  packSize: number;
+  packSize: string;
   shelfLife: string;
 
   warehouseLocation: string;
@@ -93,6 +93,16 @@ export interface ProductFormData {
 
   certifications: string;
   exportCertNumber: string;
+}
+
+export interface ProductDetails extends ProductFormData {
+  id: string;
+}
+
+export interface ProductApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
 }
 
 export interface ProductType {

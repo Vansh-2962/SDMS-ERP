@@ -4,6 +4,7 @@ import {
   customerSchema,
   deleteCustomerSchema,
   getCustomerByIdSchema,
+  updateCustomerSchema,
 } from "./validators/customer.validator.js";
 import { authenticate } from "@/middlewares/authenticate.middleware.js";
 import { asyncHandler } from "@/middlewares/asyncHandler.middleware.js";
@@ -30,6 +31,13 @@ customerRouter.get(
   authenticate,
   validate(getCustomerByIdSchema),
   asyncHandler(customerConstroller.getById),
+);
+
+customerRouter.patch(
+  "/:id",
+  authenticate,
+  validate(updateCustomerSchema),
+  asyncHandler(customerConstroller.update),
 );
 
 customerRouter.delete(

@@ -1,0 +1,155 @@
+import { z } from "zod";
+export declare const createProductSchema: z.ZodObject<{
+    body: z.ZodObject<{
+        code: z.ZodString;
+        barcode: z.ZodOptional<z.ZodString>;
+        name: z.ZodString;
+        commonName: z.ZodOptional<z.ZodString>;
+        botanicalName: z.ZodOptional<z.ZodString>;
+        brand: z.ZodOptional<z.ZodString>;
+        category: z.ZodString;
+        type: z.ZodOptional<z.ZodEnum<{
+            FINISHED_GOOD: "FINISHED_GOOD";
+            PACKAGING_MATERIAL: "PACKAGING_MATERIAL";
+            RAW_MATERIAL: "RAW_MATERIAL";
+            SEMI_FINISHED_GOOD: "SEMI_FINISHED_GOOD";
+        }>>;
+        grade: z.ZodOptional<z.ZodString>;
+        form: z.ZodOptional<z.ZodEnum<{
+            CRUSHED: "CRUSHED";
+            GRANULES: "GRANULES";
+            LIQUID: "LIQUID";
+            OTHER: "OTHER";
+            PASTE: "PASTE";
+            POWDER: "POWDER";
+            WHOLE: "WHOLE";
+        }>>;
+        hsn: z.ZodOptional<z.ZodString>;
+        unit: z.ZodString;
+        fssaiLicense: z.ZodOptional<z.ZodString>;
+        ingredients: z.ZodOptional<z.ZodString>;
+        allergenInfo: z.ZodOptional<z.ZodString>;
+        storageInstructions: z.ZodOptional<z.ZodString>;
+        vegNonVeg: z.ZodOptional<z.ZodEnum<{
+            NON_VEG: "NON_VEG";
+            VEG: "VEG";
+        }>>;
+        countryOfOrigin: z.ZodOptional<z.ZodString>;
+        customerCarePhone: z.ZodOptional<z.ZodString>;
+        customerCareEmail: z.ZodUnion<[z.ZodOptional<z.ZodString>, z.ZodLiteral<"">]>;
+        manufacturerName: z.ZodOptional<z.ZodString>;
+        manufacturerAddress: z.ZodOptional<z.ZodString>;
+        rawMaterialSource: z.ZodOptional<z.ZodString>;
+        productionDate: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedDate<unknown>>>;
+        mfgDate: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedDate<unknown>>>;
+        expiryDate: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedDate<unknown>>>;
+        bestBefore: z.ZodOptional<z.ZodString>;
+        batchNo: z.ZodOptional<z.ZodString>;
+        plantId: z.ZodOptional<z.ZodString>;
+        moistureContent: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+        purityTest: z.ZodOptional<z.ZodString>;
+        adulterationTest: z.ZodOptional<z.ZodString>;
+        processingMethod: z.ZodOptional<z.ZodString>;
+        pesticideTestRef: z.ZodOptional<z.ZodString>;
+        packagingType: z.ZodOptional<z.ZodString>;
+        packSize: z.ZodOptional<z.ZodString>;
+        netWeight: z.ZodOptional<z.ZodString>;
+        shelfLife: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+        warehouseLocation: z.ZodOptional<z.ZodString>;
+        currentStock: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+        reorderLevel: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+        mrp: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+        distributorPrice: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+        retailerPrice: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+        dealerPrice: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+        purchaseCost: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+        manufacturingCost: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+        gst: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+        discountScheme: z.ZodOptional<z.ZodString>;
+        certifications: z.ZodOptional<z.ZodString>;
+        exportCertNumber: z.ZodOptional<z.ZodString>;
+    }, z.core.$strip>;
+}, z.core.$strip>;
+export type CreateProductInput = z.infer<typeof createProductSchema>;
+export declare const updateProductSchema: z.ZodObject<{
+    params: z.ZodObject<{
+        id: z.ZodString;
+    }, z.core.$strip>;
+    body: z.ZodObject<{
+        code: z.ZodOptional<z.ZodString>;
+        barcode: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        name: z.ZodOptional<z.ZodString>;
+        commonName: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        botanicalName: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        brand: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        category: z.ZodOptional<z.ZodString>;
+        type: z.ZodOptional<z.ZodOptional<z.ZodEnum<{
+            FINISHED_GOOD: "FINISHED_GOOD";
+            PACKAGING_MATERIAL: "PACKAGING_MATERIAL";
+            RAW_MATERIAL: "RAW_MATERIAL";
+            SEMI_FINISHED_GOOD: "SEMI_FINISHED_GOOD";
+        }>>>;
+        grade: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        form: z.ZodOptional<z.ZodOptional<z.ZodEnum<{
+            CRUSHED: "CRUSHED";
+            GRANULES: "GRANULES";
+            LIQUID: "LIQUID";
+            OTHER: "OTHER";
+            PASTE: "PASTE";
+            POWDER: "POWDER";
+            WHOLE: "WHOLE";
+        }>>>;
+        hsn: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        unit: z.ZodOptional<z.ZodString>;
+        fssaiLicense: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        ingredients: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        allergenInfo: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        storageInstructions: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        vegNonVeg: z.ZodOptional<z.ZodOptional<z.ZodEnum<{
+            NON_VEG: "NON_VEG";
+            VEG: "VEG";
+        }>>>;
+        countryOfOrigin: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        customerCarePhone: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        customerCareEmail: z.ZodOptional<z.ZodUnion<[z.ZodOptional<z.ZodString>, z.ZodLiteral<"">]>>;
+        manufacturerName: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        manufacturerAddress: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        rawMaterialSource: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        bestBefore: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        batchNo: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        plantId: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        purityTest: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        adulterationTest: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        processingMethod: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        pesticideTestRef: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        packagingType: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        packSize: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        netWeight: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        warehouseLocation: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        discountScheme: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        certifications: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        exportCertNumber: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        productionDate: z.ZodPreprocess<z.ZodOptional<z.ZodNullable<z.ZodCoercedDate<unknown>>>>;
+        mfgDate: z.ZodPreprocess<z.ZodOptional<z.ZodNullable<z.ZodCoercedDate<unknown>>>>;
+        expiryDate: z.ZodPreprocess<z.ZodOptional<z.ZodNullable<z.ZodCoercedDate<unknown>>>>;
+        moistureContent: z.ZodPreprocess<z.ZodOptional<z.ZodNullable<z.ZodCoercedNumber<unknown>>>>;
+        shelfLife: z.ZodPreprocess<z.ZodOptional<z.ZodNullable<z.ZodCoercedNumber<unknown>>>>;
+        currentStock: z.ZodPreprocess<z.ZodOptional<z.ZodCoercedNumber<unknown>>>;
+        reorderLevel: z.ZodPreprocess<z.ZodOptional<z.ZodNullable<z.ZodCoercedNumber<unknown>>>>;
+        mrp: z.ZodPreprocess<z.ZodOptional<z.ZodNullable<z.ZodCoercedNumber<unknown>>>>;
+        distributorPrice: z.ZodPreprocess<z.ZodOptional<z.ZodNullable<z.ZodCoercedNumber<unknown>>>>;
+        retailerPrice: z.ZodPreprocess<z.ZodOptional<z.ZodNullable<z.ZodCoercedNumber<unknown>>>>;
+        dealerPrice: z.ZodPreprocess<z.ZodOptional<z.ZodNullable<z.ZodCoercedNumber<unknown>>>>;
+        purchaseCost: z.ZodPreprocess<z.ZodOptional<z.ZodNullable<z.ZodCoercedNumber<unknown>>>>;
+        manufacturingCost: z.ZodPreprocess<z.ZodOptional<z.ZodNullable<z.ZodCoercedNumber<unknown>>>>;
+        gst: z.ZodPreprocess<z.ZodOptional<z.ZodNullable<z.ZodCoercedNumber<unknown>>>>;
+    }, z.core.$strip>;
+}, z.core.$strip>;
+export type UpdateProductInput = z.infer<typeof updateProductSchema>;
+export declare const deleteProductSchema: z.ZodObject<{
+    params: z.ZodObject<{
+        id: z.ZodString;
+    }, z.core.$strip>;
+}, z.core.$strip>;
+export type DeleteProductInput = z.infer<typeof deleteProductSchema>;
+//# sourceMappingURL=product.schema.d.ts.map

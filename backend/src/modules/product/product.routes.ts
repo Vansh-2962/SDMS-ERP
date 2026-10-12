@@ -4,6 +4,7 @@ import { Router } from "express";
 import {
   createProductSchema,
   deleteProductSchema,
+  updateProductSchema,
 } from "./validators/product.schema.js";
 import { asyncHandler } from "@/middlewares/asyncHandler.middleware.js";
 import { ProductController } from "./product.controller.js";
@@ -47,6 +48,19 @@ productRouter.delete(
   authenticate,
   validate(deleteProductSchema),
   asyncHandler(productController.deleteProduct),
+);
+
+productRouter.get(
+  "/:id",
+  authenticate,
+  asyncHandler(productController.getById),
+);
+
+productRouter.patch(
+  "/:id",
+  authenticate,
+  validate(updateProductSchema),
+  asyncHandler(productController.update),
 );
 
 productRouter.get("/", authenticate, asyncHandler(productController.getAll));

@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useAppStore } from "../../store/appStore";
 import { Card, CardContent, CardHeader } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
@@ -34,6 +33,7 @@ import { ProductFormData } from "@/features/product/types/product.types";
 import { useCreateProduct } from "@/features/product/hooks/useCreateProduct";
 import ButtonLoader from "@/components/ButtonLoader";
 import { useGetProductById } from "@/features/product/hooks/useGetProduct";
+import { useUpdateProduct } from "@/features/product/hooks/useUpdateProduct";
 
 function Field({
   label,
@@ -120,15 +120,20 @@ function SectionCard({
 export default function ProductForm() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { mutate, isPending } = useCreateProduct();
-  const { products } = useAppStore();
-  const existing = products.find((p) => p.id === id);
+  const { mutate: createProduct, isPending: isCreating } = useCreateProduct();
+  const { mutate: updateProduct, isPending: isUpdating } = useUpdateProduct();
+  const { data: existingResponse, isLoading: isLoadingExisting } =
+    useGetProductById(id ?? "");
+  const existing = existingResponse?.data;
+  const isEditing = Boolean(id);
+  const isPending = isCreating || isUpdating;
 
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<ProductFormData>({
     defaultValues: {
@@ -144,8 +149,18 @@ export default function ProductForm() {
     },
   });
 
+  useEffect(() => {
+    if (existing) {
+      reset(existing);
+    }
+  }, [existing, reset]);
+
   const onSubmit = (data: ProductFormData) => {
-    mutate(data);
+    if (id) {
+      updateProduct({ id, data });
+    } else {
+      createProduct(data);
+    }
   };
 
   const completedSections = 6;
@@ -166,11 +181,11 @@ export default function ProductForm() {
           </Button>
           <div>
             <h2 className="font-heading font-bold text-lg text-foreground">
-              {existing ? "Edit Product" : "Add New Product"}
+              {isEditing ? "Edit Product" : "Add New Product"}
             </h2>
             <p className="text-xs text-muted-foreground">
-              {existing
-                ? `Editing: ${existing.name}`
+              {isEditing
+                ? `Editing: ${existing?.name ?? "Product"}`
                 : "Fill in product details across all compliance sections"}
             </p>
           </div>
@@ -180,6 +195,19 @@ export default function ProductForm() {
           {completedSections}/{totalSections} sections
         </Badge>
       </div>
+
+      {isEditing && isLoadingExisting && (
+        <div className="flex items-center gap-2 rounded-md border px-4 py-3 text-sm text-muted-foreground">
+          <IconLoader2 size={16} className="animate-spin" />
+          Loading product details...
+        </div>
+      )}
+      {isEditing && !isLoadingExisting && !existing && (
+        <div className="rounded-md border border-destructive/30 px-4 py-3 text-sm text-destructive">
+          Product details could not be loaded. Return to the product list and
+          try again.
+        </div>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Section 1: Legal/Regulatory Label Info */}
@@ -267,7 +295,7 @@ export default function ProductForm() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="VEG">Veg (Green dot)</SelectItem>
-                  <SelectItem value="NON-VEG">Non-Veg (Brown dot)</SelectItem>
+                  <SelectItem value="NON_VEG">Non-Veg (Brown dot)</SelectItem>
                 </SelectContent>
               </Select>
             </Field>
@@ -790,14 +818,14 @@ export default function ProductForm() {
           <Button
             type="submit"
             className={`px-8 gap-1.5 ${isPending && "cursor-not-allowed"} `}
-            disabled={isPending}
+            disabled={isPending || (isEditing && (!existing || isLoadingExisting))}
           >
             {isPending ? (
               <ButtonLoader text="Adding..." />
             ) : (
               <div className="px-8 gap-1.5 flex items-center">
                 <IconCircleCheck size={16} />
-                {existing ? "Update Product" : "Add Product"}
+                {isEditing ? "Update Product" : "Add Product"}
               </div>
             )}
           </Button>

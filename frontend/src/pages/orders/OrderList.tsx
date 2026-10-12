@@ -200,6 +200,7 @@ export default function OrderList() {
                           <TableCell>
                             <div className="flex items-center gap-1">
                               <Button
+                                onClick={() => navigate(`/invoice/${o.id}`)}
                                 variant="ghost"
                                 size="icon"
                                 className="h-7 w-7 text-muted-foreground hover:text-primary"

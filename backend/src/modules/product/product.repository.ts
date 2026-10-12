@@ -4,7 +4,10 @@ import type {
   Product,
 } from "@/generated/prisma/client.js";
 import type { CreateProductInput } from "./validators/product.schema.js";
-import type { ProductWithRelations } from "./product.types.js";
+import type {
+  ProductDetailsWithRelations,
+  ProductWithRelations,
+} from "./product.types.js";
 
 export class ProductRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -13,6 +16,39 @@ export class ProductRepository {
     return this.prisma.product.findUnique({
       where: {
         id,
+      },
+    });
+  }
+
+  async findForUser(
+    id: string,
+    userId: string,
+    tx?: Prisma.TransactionClient,
+  ): Promise<ProductDetailsWithRelations | null> {
+    const client = tx ?? this.prisma;
+    return client.product.findFirst({
+      where: {
+        id,
+        createdById: userId,
+      },
+      include: {
+        prices: {
+          orderBy: { createdAt: "desc" },
+        },
+        batches: {
+          orderBy: { createdAt: "desc" },
+        },
+        inventories: {
+          orderBy: { createdAt: "desc" },
+        },
+        certifications: {
+          orderBy: { createdAt: "desc" },
+        },
+        productManufacturer: {
+          include: {
+            manufacturer: true,
+          },
+        },
       },
     });
   }

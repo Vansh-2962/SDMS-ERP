@@ -1,5 +1,14 @@
 import { axiosInstance } from "@/config/axios";
-import { CreateInvoiceFormType } from "../types/invoice.types";
+import type {
+  CreateInvoiceFormType,
+  InvoiceType,
+} from "../types/invoice.types";
+
+interface InvoiceListResponse {
+  status: boolean;
+  message: string;
+  data: InvoiceType[];
+}
 
 export const createInvoice = async (data: CreateInvoiceFormType) => {
   const res = await axiosInstance.post(`/invoice`, data);
@@ -21,7 +30,7 @@ export const getInvoiceByDocNo = async (docNo: string) => {
   return res.data;
 };
 
-export const getAllInvoices = async () => {
+export const getAllInvoices = async (): Promise<InvoiceListResponse> => {
   const res = await axiosInstance.get(`/invoice`);
   return res.data;
 };

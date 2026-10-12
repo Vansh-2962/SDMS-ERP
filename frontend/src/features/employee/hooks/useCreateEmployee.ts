@@ -8,13 +8,15 @@ export const useCreateEmployee = () => {
   return useMutation({
     mutationFn: createEmployee,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
       queryClient.invalidateQueries({ queryKey: ["salesmen"] });
+      toast.success("Employee created successfully");
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
-        toast.error(err.response?.data?.error?.message);
+        toast.error(err.response?.data?.error?.message ?? "Failed to create employee");
       } else {
-        toast.error("Something went wrong");
+        toast.error("Failed to create employee");
       }
     },
   });

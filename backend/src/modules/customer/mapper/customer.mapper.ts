@@ -1,6 +1,7 @@
 import type { Customer, Prisma } from "@/generated/prisma/client.js";
 import type { CreateCustomerDto } from "../dto/customer.dto.js";
 import type { CustomerWithSalesman } from "../customer.types.js";
+import type { UpdateCustomerInput } from "../validators/customer.validator.js";
 
 export class CustomerMapper {
   static toPersistence(
@@ -85,6 +86,37 @@ export class CustomerMapper {
       ...(data.openingBal !== undefined && {
         openingBal: data.openingBal,
       }),
+    };
+  }
+
+  static toUpdatePersistence(
+    data: UpdateCustomerInput["body"],
+  ): Prisma.CustomerUpdateInput {
+    return {
+      shopName: data.shopName,
+      ownerName: data.ownerName,
+      type: data.type,
+      mobile: data.mobile,
+      gstNumber: data.gstNumber ?? null,
+      pan: data.pan ?? null,
+      fssai: data.fssai ?? null,
+      status: data.status ?? "ACTIVE",
+      whatsapp: data.whatsapp ?? null,
+      email: data.email ?? null,
+      street: data.street ?? null,
+      state: data.state ?? null,
+      stateCode: data.stateCode ?? null,
+      district: data.district ?? null,
+      pincode: data.pincode ?? null,
+      latitude: data.latitude ?? null,
+      longitude: data.longitude ?? null,
+      salesTerritory: data.salesTerritory ?? null,
+      assignedSalesman: data.assignedSalesmanId
+        ? { connect: { id: data.assignedSalesmanId } }
+        : { disconnect: true },
+      creditLimit: data.creditLimit ?? 0,
+      paymentTerms: data.paymentTerms ?? 0,
+      openingBal: data.openingBal ?? 0,
     };
   }
 

@@ -29,6 +29,16 @@ export class SaleOrderController {
     });
   };
 
+  getById = async (req: Request, res: Response) => {
+    const { params } = req.validated as GetSaleOrderByIdInput;
+    const result = await this.saleOrderService.getById(params.id);
+    return res.status(200).json({
+      status: 200,
+      message: "Sale Order fetched successfully",
+      data: SaleOrderMapper.toDetails(result),
+    });
+  };
+
   delete = async (req: Request, res: Response) => {
     const { params } = req.validated as GetSaleOrderByIdInput;
     const result = await this.saleOrderService.delete(params.id);

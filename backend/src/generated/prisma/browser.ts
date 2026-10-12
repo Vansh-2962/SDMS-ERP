@@ -63,6 +63,16 @@ export type ProductPrice = Prisma.ProductPriceModel
  */
 export type Inventory = Prisma.InventoryModel
 /**
+ * Model StockroomItem
+ * 
+ */
+export type StockroomItem = Prisma.StockroomItemModel
+/**
+ * Model InventoryAdjustment
+ * 
+ */
+export type InventoryAdjustment = Prisma.InventoryAdjustmentModel
+/**
  * Model Manufacturer
  * 
  */
@@ -113,6 +123,11 @@ export type SaleOrder = Prisma.SaleOrderModel
  */
 export type NumberSequence = Prisma.NumberSequenceModel
 /**
+ * Model Expense
+ * 
+ */
+export type Expense = Prisma.ExpenseModel
+/**
  * Model InvoiceItems
  * 
  */
@@ -122,3 +137,8 @@ export type InvoiceItems = Prisma.InvoiceItemsModel
  * 
  */
 export type Invoice = Prisma.InvoiceModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel

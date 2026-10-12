@@ -3,8 +3,9 @@ import type { CreateEmployeeDto } from "./dto/CreateEmployee.js";
 import type { EmployeeRepository } from "./employee.repository.js";
 import { ConflictError } from "@/shared/errors/conflict.error.js";
 import { ValidationError } from "@/shared/errors/validation.error.js";
+import { NotFoundError } from "@/shared/errors/not-found.error.js";
 import { auth } from "@/lib/auth/auth.js";
-import type { UserRole } from "@/lib/auth/roles.js";
+import type { UpdateEmployeeInput } from "./validators/employee.validator.js";
 
 export class EmployeeService {
   constructor(private readonly employeeRepository: EmployeeRepository) {}
@@ -15,7 +16,7 @@ export class EmployeeService {
         data.email,
       );
       if (existingEmployee) {
-        throw new ConflictError("Employee already exisits with this email");
+        throw new ConflictError("An employee already exists with this email");
       }
     }
 
@@ -24,17 +25,11 @@ export class EmployeeService {
         data.mobile,
       );
       if (existingMobile) {
-        throw new ConflictError("Employee already exisits with this mobile");
+        throw new ConflictError("An employee already exists with this mobile");
       }
     }
 
-    const hasAnyLoginField =
-      Boolean(data.email) || Boolean(data.password) || Boolean(data.role);
-
-    const hasAllLoginFields =
-      Boolean(data.email) && Boolean(data.password) && Boolean(data.role);
-
-    if (hasAnyLoginField && !hasAllLoginFields) {
+    if (data.createLogin && (!data.email || !data.password || !data.role)) {
       throw new ValidationError(
         "Email, password and role are required to create a login account",
         "INVALID_LOGIN_DATA",
@@ -43,7 +38,7 @@ export class EmployeeService {
 
     let userId: string | undefined;
 
-    if (hasAllLoginFields) {
+    if (data.createLogin) {
       try {
         const result = await auth.api.createUser({
           body: {
@@ -64,22 +59,18 @@ export class EmployeeService {
       const employee = await this.employeeRepository.create({
         fullName: data.fullName,
         mobile: data.mobile,
-
-        department: data.department ? data.department : "",
-        territory: data.territory ? data.territory : "",
-
-        role: data.role as UserRole,
-
-        email: data.email ? data.email : "",
-
-        pan: data.pan ? data.pan : "",
-        aadhar: data.aadhaar ? data.aadhaar : "",
-
-        bankAccNo: data.bankAccountNo ? data.bankAccountNo : "",
-        IFSC: data.ifscCode ? data.ifscCode : "",
-
-        salary: data.salary ? data.salary : 0,
-        joinDate: data.joinDate as Date,
+        ...(data.department !== undefined && { department: data.department }),
+        ...(data.territory !== undefined && { territory: data.territory }),
+        role: data.role,
+        ...(data.email !== undefined && { email: data.email }),
+        ...(data.pan !== undefined && { pan: data.pan }),
+        ...(data.aadhaar !== undefined && { aadhar: data.aadhaar }),
+        ...(data.bankAccountNo !== undefined && {
+          bankAccNo: data.bankAccountNo,
+        }),
+        ...(data.ifscCode !== undefined && { IFSC: data.ifscCode }),
+        ...(data.salary !== undefined && { salary: data.salary }),
+        joinDate: data.joinDate,
 
         ...(userId
           ? {
@@ -120,5 +111,66 @@ export class EmployeeService {
 
   async fetchAllSalesman(): Promise<Employee[]> {
     return this.employeeRepository.fetchAllSalesman();
+  }
+
+  async fetchAll(): Promise<Employee[]> {
+    return this.employeeRepository.fetchAll();
+  }
+
+  async getById(id: string): Promise<Employee> {
+    const employee = await this.employeeRepository.findById(id);
+    if (!employee) {
+      throw new NotFoundError("Employee not found");
+    }
+
+    return employee;
+  }
+
+  async update(
+    id: string,
+    data: UpdateEmployeeInput["body"],
+  ): Promise<Employee> {
+    const employee = await this.getById(id);
+
+    if (data.email) {
+      const existingEmployee = await this.employeeRepository.findByEmail(
+        data.email,
+      );
+      if (existingEmployee && existingEmployee.id !== employee.id) {
+        throw new ConflictError("An employee already exists with this email");
+      }
+    }
+
+    if (data.mobile) {
+      const existingEmployee = await this.employeeRepository.findByMobile(
+        data.mobile,
+      );
+      if (existingEmployee && existingEmployee.id !== employee.id) {
+        throw new ConflictError("An employee already exists with this mobile");
+      }
+    }
+
+    return this.employeeRepository.update(id, {
+      ...(data.fullName !== undefined && { fullName: data.fullName }),
+      ...(data.mobile !== undefined && { mobile: data.mobile }),
+      ...(data.department !== undefined && { department: data.department }),
+      ...(data.territory !== undefined && { territory: data.territory }),
+      ...(data.email !== undefined && { email: data.email }),
+      ...(data.role !== undefined && { role: data.role }),
+      ...(data.pan !== undefined && { pan: data.pan }),
+      ...(data.aadhaar !== undefined && { aadhar: data.aadhaar }),
+      ...(data.bankAccountNo !== undefined && {
+        bankAccNo: data.bankAccountNo,
+      }),
+      ...(data.ifscCode !== undefined && { IFSC: data.ifscCode }),
+      ...(data.salary !== undefined && { salary: data.salary }),
+      ...(data.joinDate !== undefined && { joinDate: data.joinDate }),
+      ...(data.isActive !== undefined && { isActive: data.isActive }),
+    });
+  }
+
+  async deactivate(id: string): Promise<Employee> {
+    await this.getById(id);
+    return this.employeeRepository.deactivate(id);
   }
 }

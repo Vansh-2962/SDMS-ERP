@@ -159,6 +159,13 @@ export const customerSchema = z.object({
   }),
 });
 
+export const updateCustomerSchema = z.object({
+  params: z.object({
+    id: z.string().trim().min(1, "Id is required"),
+  }),
+  body: customerSchema.shape.body,
+});
+
 export const deleteCustomerSchema = z.object({
   params: z.object({
     id: z.string().min(1, "Id is required"),
@@ -174,3 +181,4 @@ export const getCustomerByIdSchema = z.object({
 export type GetCustomerByIdInput = z.infer<typeof getCustomerByIdSchema>;
 export type DeleteCustomerInput = z.infer<typeof deleteCustomerSchema>;
 export type CreateCustomerInput = z.infer<typeof customerSchema>;
+export type UpdateCustomerInput = z.infer<typeof updateCustomerSchema>;

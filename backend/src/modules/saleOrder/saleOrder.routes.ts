@@ -6,9 +6,11 @@ import { SaleOrderController } from "@/modules/saleOrder/controllers/saleOrder.c
 import { authenticate } from "@/middlewares/authenticate.middleware.js";
 import { validate } from "@/middlewares/validate.middleware.js";
 import {
+  getSaleOrderByIdSchema,
   saleOrderSchema,
   saleOrderUpdateStatusSchema,
 } from "@/modules/saleOrder/validators/saleOrder.validator.js";
+import { asyncHandler } from "@/middlewares/asyncHandler.middleware.js";
 
 const saleOrderRouter: Router = Router();
 
@@ -31,5 +33,12 @@ saleOrderRouter.put(
 );
 
 saleOrderRouter.get("/", authenticate, saleOrderController.getAll);
+
+saleOrderRouter.get(
+  "/:id",
+  authenticate,
+  validate(getSaleOrderByIdSchema),
+  asyncHandler(saleOrderController.getById),
+);
 
 export { saleOrderRouter };

@@ -77,7 +77,7 @@ export default function CustomerForm() {
   const { mutate: updateMutation, isPending: isUpdating } = useUpdateCustomer();
   const salesmen = data?.data || [];
 
-  const isEditing = customer?.status ? true : false;
+  const isEditing = Boolean(id);
 
   const {
     register,
@@ -151,13 +151,37 @@ export default function CustomerForm() {
   }, [customer, reset]);
 
   const onSubmit = (data: CreateCustomerInput) => {
-    if (isEditing) {
+    const customerData = {
+      shopName: data.shopName,
+      ownerName: data.ownerName,
+      type: data.type,
+      gstNumber: data.gstNumber,
+      pan: data.pan,
+      fssai: data.fssai,
+      mobile: data.mobile,
+      whatsapp: data.whatsapp,
+      email: data.email,
+      street: data.address,
+      state: data.state,
+      district: data.district,
+      pincode: data.pincode,
+      latitude: data.latitude,
+      longitude: data.longitude,
+      salesTerritory: data.territory,
+      assignedSalesmanId: data.assignedSalesmanId,
+      creditLimit: data.creditLimit,
+      paymentTerms: data.paymentTerms,
+      openingBal: data.openingBalance,
+      status: data.status,
+    };
+
+    if (id) {
       updateMutation({
         id,
-        ...data,
+        ...customerData,
       });
     } else {
-      mutate(data);
+      mutate(customerData);
     }
   };
 
@@ -516,8 +540,12 @@ export default function CustomerForm() {
           >
             Cancel
           </Button>
-          <Button type="submit" className="px-8" disabled={isPending}>
-            {isPending ? (
+          <Button
+            type="submit"
+            className="px-8"
+            disabled={isPending || isUpdating}
+          >
+            {isPending || isUpdating ? (
               <ButtonLoader
                 text={isEditing ? "Updating customer..." : "Adding customer..."}
               />

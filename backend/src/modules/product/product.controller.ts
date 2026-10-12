@@ -3,6 +3,7 @@ import type { ProductService } from "./product.service.js";
 import type {
   CreateProductInput,
   DeleteProductInput,
+  UpdateProductInput,
 } from "./validators/product.schema.js";
 import { ProductMapper } from "./mappers/product.mapper.js";
 
@@ -34,6 +35,30 @@ export class ProductController {
       success: true,
       message: "Products fetched successfully",
       data: ProductMapper.allProductsResponse(products),
+    });
+  };
+
+  getById = async (req: Request, res: Response) => {
+    const id = req.params.id as string;
+    const product = await this.productService.getById(id, req.auth.userId);
+    return res.status(200).json({
+      success: true,
+      message: "Product fetched successfully",
+      data: ProductMapper.detailsResponse(product),
+    });
+  };
+
+  update = async (req: Request, res: Response) => {
+    const { params, body } = req.validated as UpdateProductInput;
+    const product = await this.productService.update(
+      params.id,
+      body,
+      req.auth.userId,
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Product updated successfully",
+      data: ProductMapper.detailsResponse(product),
     });
   };
 

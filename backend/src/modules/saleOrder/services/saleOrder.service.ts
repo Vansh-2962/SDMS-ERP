@@ -1,6 +1,9 @@
 import type { SaleOrder, SaleOrderStatus } from "@/generated/prisma/client.js";
 import type { SaleOrderDTO } from "../dto/saleOrder.dto.js";
-import type { SaleOrderRepository } from "../repository/saleOrder.repository.js";
+import type {
+  SaleOrderRepository,
+  SaleOrderWithDetails,
+} from "../repository/saleOrder.repository.js";
 import { logger } from "@/config/logger/index.js";
 import { NotFoundError } from "@/shared/errors/not-found.error.js";
 
@@ -87,8 +90,12 @@ export class SaleOrderService {
     return await this.saleOrdeRepository.getAll();
   }
 
-  async getById(id: string): Promise<SaleOrder | null> {
-    return await this.saleOrdeRepository.getSaleOrderById(id);
+  async getById(id: string): Promise<SaleOrderWithDetails> {
+    const saleOrder = await this.saleOrdeRepository.getSaleOrderById(id);
+    if (!saleOrder) {
+      throw new NotFoundError("Sale order");
+    }
+    return saleOrder;
   }
 
   async delete(id: string): Promise<SaleOrder | null> {

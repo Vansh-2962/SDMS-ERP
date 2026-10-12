@@ -13,6 +13,9 @@ import { profileRouter } from "@/modules/profile/routes.js";
 import { customerRouter } from "@/modules/customer/customer.routes.js";
 import { saleOrderRouter } from "@/modules/saleOrder/saleOrder.routes.js";
 import { invoiceRouter } from "@/modules/invoice/invoice.routes.js";
+import { paymentRouter } from "@/modules/payment/payment.routes.js";
+import { inventoryRouter } from "@/modules/inventory/inventory.routes.js";
+import { expenseRouter } from "@/modules/expense/expense.routes.js";
 
 const app: Application = express();
 
@@ -40,6 +43,9 @@ app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/customer", customerRouter);
 app.use("/api/v1/sale-order", saleOrderRouter);
 app.use("/api/v1/invoice", invoiceRouter);
+app.use("/api/v1/payment", paymentRouter);
+app.use("/api/v1/inventory", inventoryRouter);
+app.use("/api/v1/expenses", expenseRouter);
 
 app.get("/health", (_, res) => {
   const logger = getLogger();

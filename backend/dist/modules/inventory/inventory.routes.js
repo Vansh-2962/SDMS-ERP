@@ -1,0 +1,24 @@
+import { Router } from "express";
+import { prisma } from "@/config/database/prisma.js";
+import { authenticate } from "@/middlewares/authenticate.middleware.js";
+import { asyncHandler } from "@/middlewares/asyncHandler.middleware.js";
+import { validate } from "@/middlewares/validate.middleware.js";
+import { InventoryController } from "./inventory.controller.js";
+import { InventoryRepository } from "./inventory.repository.js";
+import { InventoryService } from "./inventory.service.js";
+import { adjustProductStockSchema, adjustStockroomItemSchema, createProductStockSchema, createStockroomItemSchema, listProductStockSchema, stockroomItemIdSchema, updateStockroomItemSchema, } from "./inventory.validators.js";
+const inventoryRouter = Router();
+const inventoryRepository = new InventoryRepository(prisma);
+const inventoryService = new InventoryService(inventoryRepository);
+const inventoryController = new InventoryController(inventoryService);
+inventoryRouter.get("/products", authenticate, validate(listProductStockSchema), asyncHandler(inventoryController.getProductStocks));
+inventoryRouter.post("/products/:productId/stock", authenticate, validate(createProductStockSchema), asyncHandler(inventoryController.createProductStock));
+inventoryRouter.patch("/products/stock/:id", authenticate, validate(adjustProductStockSchema), asyncHandler(inventoryController.adjustProductStock));
+inventoryRouter.post("/", authenticate, validate(createStockroomItemSchema), asyncHandler(inventoryController.createItem));
+inventoryRouter.get("/", authenticate, asyncHandler(inventoryController.getAllItems));
+inventoryRouter.get("/:id", authenticate, validate(stockroomItemIdSchema), asyncHandler(inventoryController.getItemById));
+inventoryRouter.patch("/:id/adjust", authenticate, validate(adjustStockroomItemSchema), asyncHandler(inventoryController.adjustItem));
+inventoryRouter.patch("/:id", authenticate, validate(updateStockroomItemSchema), asyncHandler(inventoryController.updateItem));
+inventoryRouter.delete("/:id", authenticate, validate(stockroomItemIdSchema), asyncHandler(inventoryController.deleteItem));
+export { inventoryRouter };
+//# sourceMappingURL=inventory.routes.js.map

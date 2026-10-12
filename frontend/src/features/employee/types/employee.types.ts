@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 export const USER_ROLES = {
   OWNER: "OWNER",
   ACCOUNTANT: "ACCOUNTANT",
@@ -37,22 +35,26 @@ export interface CreateEmployeeInput {
 }
 
 export interface Employee {
+  id: string;
+  empCode: number;
   fullName: string;
   mobile: string;
   department: string | null;
   territory: string | null;
   email: string | null;
   pan: string | null;
-  salary: number | null;
-  joinDate: Date;
-  role: string;
-  id: string;
-  empCode: number;
   aadhar: string | null;
   bankAccNo: string | null;
   IFSC: string | null;
+  salary: number | null;
+  joinDate: string;
+  role: string;
   isActive: boolean;
   userId: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
+
+export type UpdateEmployeeInput = Partial<
+  Omit<CreateEmployeeInput, "password" | "createLogin">
+> & { isActive?: boolean };

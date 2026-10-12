@@ -1,0 +1,122 @@
+export class CustomerMapper {
+    static toPersistence(data) {
+        return {
+            shopName: data.shopName,
+            ownerName: data.ownerName,
+            type: data.type,
+            mobile: data.mobile,
+            ...(data.gstNumber !== undefined && {
+                gstNumber: data.gstNumber,
+            }),
+            ...(data.pan !== undefined && {
+                pan: data.pan,
+            }),
+            ...(data.fssai !== undefined && {
+                fssai: data.fssai,
+            }),
+            status: data.status ?? "ACTIVE",
+            ...(data.whatsapp !== undefined && {
+                whatsapp: data.whatsapp,
+            }),
+            ...(data.email !== undefined && {
+                email: data.email,
+            }),
+            ...(data.street !== undefined && {
+                street: data.street,
+            }),
+            ...(data.state !== undefined && {
+                state: data.state,
+            }),
+            ...(data.stateCode !== undefined && {
+                stateCode: data.stateCode,
+            }),
+            ...(data.district !== undefined && {
+                district: data.district,
+            }),
+            ...(data.pincode !== undefined && {
+                pincode: data.pincode,
+            }),
+            ...(data.latitude !== undefined && {
+                latitude: data.latitude,
+            }),
+            ...(data.longitude !== undefined && {
+                longitude: data.longitude,
+            }),
+            ...(data.salesTerritory !== undefined && {
+                salesTerritory: data.salesTerritory,
+            }),
+            ...(data.assignedSalesmanId !== undefined && {
+                assignedSalesman: {
+                    connect: {
+                        id: data.assignedSalesmanId,
+                    },
+                },
+            }),
+            ...(data.creditLimit !== undefined && {
+                creditLimit: data.creditLimit,
+            }),
+            ...(data.paymentTerms !== undefined && {
+                paymentTerms: data.paymentTerms,
+            }),
+            ...(data.openingBal !== undefined && {
+                openingBal: data.openingBal,
+            }),
+        };
+    }
+    static toUpdatePersistence(data) {
+        return {
+            shopName: data.shopName,
+            ownerName: data.ownerName,
+            type: data.type,
+            mobile: data.mobile,
+            gstNumber: data.gstNumber ?? null,
+            pan: data.pan ?? null,
+            fssai: data.fssai ?? null,
+            status: data.status ?? "ACTIVE",
+            whatsapp: data.whatsapp ?? null,
+            email: data.email ?? null,
+            street: data.street ?? null,
+            state: data.state ?? null,
+            stateCode: data.stateCode ?? null,
+            district: data.district ?? null,
+            pincode: data.pincode ?? null,
+            latitude: data.latitude ?? null,
+            longitude: data.longitude ?? null,
+            salesTerritory: data.salesTerritory ?? null,
+            assignedSalesman: data.assignedSalesmanId
+                ? { connect: { id: data.assignedSalesmanId } }
+                : { disconnect: true },
+            creditLimit: data.creditLimit ?? 0,
+            paymentTerms: data.paymentTerms ?? 0,
+            openingBal: data.openingBal ?? 0,
+        };
+    }
+    static toResponse(data) {
+        return {
+            id: data.id,
+            createdAt: data.createdAt,
+        };
+    }
+    static toList(data) {
+        return data.map((d) => {
+            return {
+                id: d.id,
+                customerCode: d.customerCode,
+                shopName: d.shopName,
+                ownerName: d.ownerName,
+                type: d.type,
+                salesman: d.assignedSalesman?.fullName,
+                mobile: d.mobile,
+                creditLimit: d.creditLimit,
+                district: d.district,
+                state: d.state,
+                pincode: d.pincode,
+                paymentTerms: d.paymentTerms,
+                gstNumber: d.gstNumber,
+                status: d.status,
+                createdAt: d.createdAt,
+            };
+        });
+    }
+}
+//# sourceMappingURL=customer.mapper.js.map

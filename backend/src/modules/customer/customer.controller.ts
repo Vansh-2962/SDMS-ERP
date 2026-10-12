@@ -8,6 +8,7 @@ import type { CustomerWithSalesman } from "./customer.types.js";
 import type {
   DeleteCustomerInput,
   GetCustomerByIdInput,
+  UpdateCustomerInput,
 } from "./validators/customer.validator.js";
 
 export class CustomerController {
@@ -19,6 +20,16 @@ export class CustomerController {
     return res.status(201).json({
       status: true,
       message: "Customer created successfully",
+      data: CustomerMapper.toResponse(result),
+    });
+  };
+
+  update = async (req: Request, res: Response) => {
+    const { params, body } = req.validated as UpdateCustomerInput;
+    const result = await this.customerService.update(params.id, body);
+    return res.status(200).json({
+      status: true,
+      message: "Customer updated successfully",
       data: CustomerMapper.toResponse(result),
     });
   };

@@ -1,6 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppStore } from "../../store/appStore";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
@@ -20,7 +19,9 @@ import {
   IconDownload,
   IconBrandWhatsapp,
   IconCheck,
+  IconLoader2,
 } from "@tabler/icons-react";
+import { useGetSaleOrderById } from "@/features/saleOrder/hooks/useGetSaleOrderById";
 
 const ACCENT_PRESETS = [
   { name: "Royal Blue", value: "#2563eb" },
@@ -38,7 +39,11 @@ const FONT_PRESETS = [
 ];
 
 function numToWords(num: number): string {
-  if (num === 0) return "Zero";
+  if (!Number.isFinite(num)) return "Zero";
+  const isNegative = num < 0;
+  const totalPaise = Math.round(Math.abs(num) * 100);
+  const rupees = Math.floor(totalPaise / 100);
+  const paise = totalPaise % 100;
   const ones = [
     "",
     "One",
@@ -85,13 +90,13 @@ function numToWords(num: number): string {
     if (r) str += (h ? " " : "") + twoDigits(r);
     return str;
   }
-  const rupees = Math.floor(num);
-  const paise = Math.round((num - rupees) * 100);
   let words = "";
-  if (rupees >= 100000) {
-    words += threeDigits(Math.floor(rupees / 100000)) + " Lakh ";
-  }
-  const rem = rupees % 100000;
+  const crore = Math.floor(rupees / 10000000);
+  if (crore) words += `${threeDigits(crore)} Crore `;
+  const afterCrore = rupees % 10000000;
+  const lakh = Math.floor(afterCrore / 100000);
+  if (lakh) words += `${threeDigits(lakh)} Lakh `;
+  const rem = afterCrore % 100000;
   if (rem >= 1000) {
     words += threeDigits(Math.floor(rem / 1000)) + " Thousand ";
   }
@@ -99,22 +104,20 @@ function numToWords(num: number): string {
   if (rem2 > 0) words += threeDigits(rem2);
   words = words.trim() || "Zero";
   if (paise > 0) words += ` and ${twoDigits(paise)} Paise`;
-  return words;
+  return `${isNegative ? "Minus " : ""}${words}`;
 }
 
 export default function InvoiceView() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { salesOrders, customers } = useAppStore();
-
-  const order = salesOrders.find((o) => o.id === id);
+  const { data: response, isLoading, isError } = useGetSaleOrderById(id ?? "");
+  const order = response?.data;
 
   // Customization state
   const [accentColor, setAccentColor] = useState("#2563eb");
   const [fontFamily, setFontFamily] = useState("'Inter', sans-serif");
   const [showLogo, setShowLogo] = useState(true);
   const [showGST, setShowGST] = useState(true);
-  const [showQR, setShowQR] = useState(true);
   const [showAmountWords, setShowAmountWords] = useState(true);
   const [showBankDetails, setShowBankDetails] = useState(true);
   const [showSignature, setShowSignature] = useState(true);
@@ -134,12 +137,18 @@ export default function InvoiceView() {
   );
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  const customer = useMemo(() => {
-    if (!order) return null;
-    return customers.find((c) => c.id === order.customerId) || null;
-  }, [order, customers]);
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <IconLoader2 size={18} className="animate-spin" />
+          Loading sale order and invoice details...
+        </div>
+      </div>
+    );
+  }
 
-  if (!order) {
+  if (isError || !order) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center space-y-3">
@@ -147,7 +156,9 @@ export default function InvoiceView() {
             Invoice not found
           </p>
           <p className="text-sm text-muted-foreground">
-            The order you're looking for doesn't exist.
+            {isError
+              ? "The order details could not be loaded."
+              : "The order you're looking for doesn't exist."}
           </p>
           <Button onClick={() => navigate("/orders")} className="gap-1.5">
             <IconArrowLeft size={16} /> Back to Orders
@@ -157,15 +168,49 @@ export default function InvoiceView() {
     );
   }
 
-  const isInterState = customer && customer.state !== "Karnataka";
+  const isInterState =
+    Boolean(order.customer.stateCode || order.customer.gstNumber) &&
+    Boolean(companyGST.slice(0, 2)) &&
+    (order.customer.stateCode || order.customer.gstNumber?.slice(0, 2)) !==
+      companyGST.slice(0, 2);
   const cgst = isInterState ? 0 : order.gstAmount / 2;
   const sgst = isInterState ? 0 : order.gstAmount / 2;
   const igst = isInterState ? order.gstAmount : 0;
+  const invoiceNumber = `INV-${String(order.saleOrderCode).padStart(5, "0")}`;
+  const orderNumber = `SO-${String(order.saleOrderCode).padStart(5, "0")}`;
+  const money = (value: number) =>
+    `₹${value.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const orderDate = new Date(order.date);
+  const formatDateTime = (date: string) =>
+    new Date(date).toLocaleString("en-IN", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+  const customerAddress = [
+    order.customer.street,
+    order.customer.district,
+    order.customer.state,
+    order.customer.pincode,
+  ]
+    .filter(Boolean)
+    .join(", ");
+  const openWhatsApp = () => {
+    const phone = (order.customer.whatsapp || order.customer.mobile).replace(
+      /\D/g,
+      "",
+    );
+    const message = `Invoice ${invoiceNumber} for sales order ${orderNumber}. Total: ${money(order.total)}.`;
+    window.open(
+      `https://wa.me/${phone}?text=${encodeURIComponent(message)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
+  };
 
   return (
     <div className="min-h-screen bg-muted/30 flex flex-col">
       {/* Top toolbar */}
-      <div className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 bg-background/95 backdrop-blur border-b border-border">
+      <div className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 bg-background/95 backdrop-blur border-b border-border print:hidden">
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
@@ -177,10 +222,10 @@ export default function InvoiceView() {
           </Button>
           <div>
             <h1 className="font-heading font-semibold text-sm text-foreground leading-tight">
-              Invoice — <span className="font-mono">{order.id}</span>
+              Invoice — <span className="font-mono">{invoiceNumber}</span>
             </h1>
             <p className="text-[10px] text-muted-foreground">
-              {order.customerName}
+              {order.customer.shopName} · {order.status}
             </p>
           </div>
         </div>
@@ -193,16 +238,27 @@ export default function InvoiceView() {
           >
             <IconAdjustments size={15} /> Customize
           </Button>
-          <Button variant="outline" size="sm" className="h-9 gap-1.5">
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-9 gap-1.5"
+            onClick={() => window.print()}
+          >
             <IconPrinter size={15} /> Print
           </Button>
-          <Button variant="outline" size="sm" className="h-9 gap-1.5">
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-9 gap-1.5"
+            onClick={() => window.print()}
+          >
             <IconDownload size={15} /> PDF
           </Button>
           <Button
             variant="outline"
             size="sm"
             className="h-9 gap-1.5 text-emerald-600 border-emerald-200"
+            onClick={openWhatsApp}
           >
             <IconBrandWhatsapp size={15} /> WhatsApp
           </Button>
@@ -210,9 +266,9 @@ export default function InvoiceView() {
       </div>
 
       {/* Invoice preview area */}
-      <div className="flex-1 overflow-y-auto p-4 md:p-8 flex justify-center">
+      <div className="flex-1 overflow-y-auto p-4 md:p-8 flex justify-center print:overflow-visible print:p-0">
         <div
-          className="bg-white shadow-lg rounded-lg w-full max-w-[800px] overflow-hidden"
+          className="bg-white shadow-lg rounded-lg w-full max-w-[800px] overflow-hidden print:max-w-none print:rounded-none print:shadow-none"
           style={{ fontFamily }}
         >
           {/* Accent top bar */}
@@ -249,20 +305,41 @@ export default function InvoiceView() {
                 <p className="text-xs text-gray-500 pt-1">
                   Invoice No:{" "}
                   <span className="font-mono font-medium text-gray-700">
-                    {order.id.replace("SO", "INV")}
+                    {invoiceNumber}
                   </span>
                 </p>
                 <p className="text-xs text-gray-500">
                   Date:{" "}
-                  {new Date(order.date).toLocaleDateString("en-IN", {
+                  {orderDate.toLocaleDateString("en-IN", {
                     day: "2-digit",
                     month: "short",
                     year: "numeric",
                   })}
                 </p>
                 <p className="text-xs text-gray-500">
-                  Salesman: {order.salesman}
+                  Order No: <span className="font-mono">{orderNumber}</span>
                 </p>
+                <p className="text-xs text-gray-500">
+                  Salesman: {order.salesman.fullName}
+                </p>
+                <p className="text-xs text-gray-500">
+                  Salesman ID: {order.salesman.empCode} · {order.salesman.role}
+                </p>
+                <p className="text-xs text-gray-500">
+                  Salesman contact: {order.salesman.mobile}
+                  {order.salesman.email ? ` · ${order.salesman.email}` : ""}
+                </p>
+                <p className="text-xs text-gray-500">
+                  Status: <span className="font-medium">{order.status}</span>
+                </p>
+                <p className="text-xs text-gray-500">
+                  Created: {formatDateTime(order.createdAt)}
+                </p>
+                {order.updatedAt !== order.createdAt && (
+                  <p className="text-xs text-gray-500">
+                    Last updated: {formatDateTime(order.updatedAt)}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -278,68 +355,97 @@ export default function InvoiceView() {
                 <p className="text-sm font-semibold text-gray-900">
                   {order.customerName}
                 </p>
-                {customer && (
-                  <>
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      {customer.address}, {customer.district}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {customer.state} — {customer.pincode}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      GSTIN: {customer.gst}
-                    </p>
-                  </>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  {order.customer.ownerName}
+                </p>
+                {customerAddress && (
+                  <p className="text-xs text-gray-500">{customerAddress}</p>
+                )}
+                {order.customer.gstNumber && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    GSTIN: {order.customer.gstNumber}
+                  </p>
+                )}
+                {order.customer.pan && (
+                  <p className="text-xs text-gray-500">
+                    PAN: {order.customer.pan}
+                  </p>
+                )}
+                <p className="text-xs text-gray-500">
+                  Phone: {order.customer.mobile}
+                  {order.customer.email ? ` · ${order.customer.email}` : ""}
+                </p>
+                {order.customer.fssai && (
+                  <p className="text-xs text-gray-500">
+                    FSSAI: {order.customer.fssai}
+                  </p>
+                )}
+                <p className="text-xs text-gray-500">
+                  Customer Code: {order.customer.customerCode}
+                </p>
+                {order.customer.whatsapp && (
+                  <p className="text-xs text-gray-500">
+                    WhatsApp: {order.customer.whatsapp}
+                  </p>
+                )}
+                <p className="text-xs text-gray-500">
+                  Account status: {order.customer.status}
+                </p>
+                {order.customer.latitude && order.customer.longitude && (
+                  <a
+                    href={`https://www.google.com/maps?q=${encodeURIComponent(`${order.customer.latitude},${order.customer.longitude}`)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-block text-xs underline"
+                    style={{ color: accentColor }}
+                  >
+                    View customer location
+                  </a>
                 )}
               </div>
-              {showQR && (
-                <div className="flex flex-col items-end justify-center p-4 rounded-lg bg-gray-50 border border-gray-100">
-                  <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center">
-                    <svg
-                      viewBox="0 0 100 100"
-                      className="w-16 h-16"
-                      fill="none"
-                    >
-                      <rect
-                        x="10"
-                        y="10"
-                        width="30"
-                        height="30"
-                        stroke="#999"
-                        strokeWidth="3"
-                        fill="none"
-                      />
-                      <rect
-                        x="60"
-                        y="10"
-                        width="30"
-                        height="30"
-                        stroke="#999"
-                        strokeWidth="3"
-                        fill="none"
-                      />
-                      <rect
-                        x="10"
-                        y="60"
-                        width="30"
-                        height="30"
-                        stroke="#999"
-                        strokeWidth="3"
-                        fill="none"
-                      />
-                      <rect x="20" y="20" width="10" height="10" fill="#999" />
-                      <rect x="70" y="20" width="10" height="10" fill="#999" />
-                      <rect x="20" y="70" width="10" height="10" fill="#999" />
-                      <rect x="55" y="55" width="8" height="8" fill="#999" />
-                      <rect x="70" y="60" width="6" height="6" fill="#999" />
-                      <rect x="60" y="72" width="6" height="6" fill="#999" />
-                    </svg>
-                  </div>
-                  <p className="text-[9px] text-gray-400 mt-1">
-                    Scan to verify
+              <div className="flex flex-col justify-center p-4 rounded-lg bg-gray-50 border border-gray-100">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider mb-2" style={{ color: accentColor }}>
+                    Order & Delivery
                   </p>
+                  <dl className="space-y-1 text-xs text-gray-600">
+                    <div className="flex justify-between gap-4">
+                      <dt>Order reference</dt>
+                      <dd className="font-mono font-medium">{orderNumber}</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt>Customer type</dt>
+                      <dd className="font-medium">{order.customer.type}</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt>Territory</dt>
+                      <dd className="font-medium">{order.customer.salesTerritory || "—"}</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt>Payment terms</dt>
+                      <dd className="font-medium">{order.customer.paymentTerms} days</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt>Credit limit</dt>
+                      <dd className="font-medium">{money(order.customer.creditLimit)}</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt>Opening balance</dt>
+                      <dd className="font-medium">{money(order.customer.openingBal)}</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt>State code</dt>
+                      <dd className="font-medium">{order.customer.stateCode || "—"}</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt>Assigned salesman</dt>
+                      <dd className="font-medium">
+                        {order.customer.assignedSalesman
+                          ? `${order.customer.assignedSalesman.fullName} (#${order.customer.assignedSalesman.empCode})`
+                          : "—"}
+                      </dd>
+                    </div>
+                  </dl>
                 </div>
-              )}
             </div>
 
             {/* Items table */}
@@ -351,7 +457,7 @@ export default function InvoiceView() {
                       #
                     </th>
                     <th className="px-3 py-2.5 text-left text-white font-semibold">
-                      Product
+                      Product / Description
                     </th>
                     {showHSN && (
                       <th className="px-3 py-2.5 text-left text-white font-semibold">
@@ -370,38 +476,76 @@ export default function InvoiceView() {
                       </th>
                     )}
                     <th className="px-3 py-2.5 text-right text-white font-semibold">
-                      Amount
+                      Taxable
+                    </th>
+                    {showGST && (
+                      <th className="px-3 py-2.5 text-right text-white font-semibold">
+                        GST Amt
+                      </th>
+                    )}
+                    <th className="px-3 py-2.5 text-right text-white font-semibold">
+                      Total
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {order.items.map((item, i) => (
                     <tr
-                      key={i}
+                      key={item.id}
                       className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}
                     >
                       <td className="px-3 py-2.5 text-gray-600">{i + 1}</td>
                       <td className="px-3 py-2.5 font-medium text-gray-900">
-                        {item.productName}
+                        <p>{item.productName}</p>
+                        <p className="mt-0.5 text-[10px] font-normal text-gray-500">
+                          {item.product.code}
+                          {item.product.category
+                            ? ` · ${item.product.category}`
+                            : ""}
+                          {item.product.type
+                            ? ` · ${item.product.type.replace(/_/g, " ")}`
+                            : ""}
+                          {item.product.brand ? ` · ${item.product.brand}` : ""}
+                          {item.product.netWeight
+                            ? ` · ${item.product.netWeight}`
+                            : ""}
+                          {item.product.barcode
+                            ? ` · Barcode ${item.product.barcode}`
+                            : ""}
+                          {item.product.form
+                            ? ` · ${item.product.form}`
+                            : ""}
+                          {item.product.shelfLife
+                            ? ` · ${item.product.shelfLife} month shelf life`
+                            : ""}
+                        </p>
                       </td>
                       {showHSN && (
                         <td className="px-3 py-2.5 text-gray-500 font-mono">
-                          {"0910"}
+                          {item.product.hsn || "—"}
                         </td>
                       )}
                       <td className="px-3 py-2.5 text-right text-gray-700">
-                        {item.qty}
+                        {item.qty.toLocaleString("en-IN")} {item.product.unit}
                       </td>
                       <td className="px-3 py-2.5 text-right text-gray-700">
-                        ₹{item.price}
+                        {money(item.price)}
                       </td>
                       {showGST && (
                         <td className="px-3 py-2.5 text-right text-gray-500">
                           {item.gst}%
                         </td>
                       )}
+                      <td className="px-3 py-2.5 text-right text-gray-700">
+                        {money(item.qty * item.price)}
+                      </td>
+                      {showGST && (
+                        <td className="px-3 py-2.5 text-right text-gray-700">
+                          {money(item.total - item.qty * item.price)}
+                        </td>
+                      )}
                       <td className="px-3 py-2.5 text-right font-semibold text-gray-900">
-                        ₹{item.total.toLocaleString("en-IN")}
+                        {money(item.total)}
                       </td>
                     </tr>
                   ))}
@@ -459,7 +603,7 @@ export default function InvoiceView() {
                 <div className="flex justify-between py-1">
                   <span className="text-gray-500">Subtotal</span>
                   <span className="font-medium text-gray-900">
-                    ₹{order.subtotal.toLocaleString("en-IN")}
+                    {money(order.subtotal)}
                   </span>
                 </div>
                 {showGST && (
@@ -468,7 +612,7 @@ export default function InvoiceView() {
                       <div className="flex justify-between py-1">
                         <span className="text-gray-500">IGST</span>
                         <span className="font-medium text-gray-900">
-                          ₹{igst.toLocaleString("en-IN")}
+                          {money(igst)}
                         </span>
                       </div>
                     ) : (
@@ -476,19 +620,29 @@ export default function InvoiceView() {
                         <div className="flex justify-between py-1">
                           <span className="text-gray-500">CGST</span>
                           <span className="font-medium text-gray-900">
-                            ₹{cgst.toLocaleString("en-IN")}
+                            {money(cgst)}
                           </span>
                         </div>
                         <div className="flex justify-between py-1">
                           <span className="text-gray-500">SGST</span>
                           <span className="font-medium text-gray-900">
-                            ₹{sgst.toLocaleString("en-IN")}
+                            {money(sgst)}
                           </span>
                         </div>
                       </>
                     )}
+                    <div className="flex justify-between py-1">
+                      <span className="text-gray-500">Total GST</span>
+                      <span className="font-medium text-gray-900">
+                        {money(order.gstAmount)}
+                      </span>
+                    </div>
                   </>
                 )}
+                <div className="flex justify-between py-1 text-[10px] text-gray-400">
+                  <span>Items</span>
+                  <span>{order.items.length} line(s)</span>
+                </div>
                 <Separator className="my-1" />
                 <div
                   className="flex justify-between py-2"
@@ -505,7 +659,7 @@ export default function InvoiceView() {
                     className="font-bold text-base"
                     style={{ color: accentColor }}
                   >
-                    ₹{order.total.toLocaleString("en-IN")}
+                    {money(order.total)}
                   </span>
                 </div>
                 {showAmountWords && (
@@ -544,7 +698,7 @@ export default function InvoiceView() {
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetContent
           side="right"
-          className="w-full sm:max-w-md overflow-y-auto"
+          className="w-full sm:max-w-md overflow-y-auto print:hidden"
         >
           <SheetHeader>
             <SheetTitle className="flex items-center gap-2">
@@ -735,7 +889,6 @@ export default function InvoiceView() {
                     value: showGST,
                     setter: setShowGST,
                   },
-                  { label: "QR Code", value: showQR, setter: setShowQR },
                   { label: "HSN Column", value: showHSN, setter: setShowHSN },
                   {
                     label: "Amount in Words",

@@ -40,6 +40,23 @@ export const VegNonVeg = {
 export type VegNonVeg = (typeof VegNonVeg)[keyof typeof VegNonVeg]
 
 
+export const StockroomItemType = {
+  RAW_MATERIAL: 'RAW_MATERIAL',
+  PACKAGING_MATERIAL: 'PACKAGING_MATERIAL',
+  OTHER: 'OTHER'
+} as const
+
+export type StockroomItemType = (typeof StockroomItemType)[keyof typeof StockroomItemType]
+
+
+export const InventoryAdjustmentDirection = {
+  ADD: 'ADD',
+  REMOVE: 'REMOVE'
+} as const
+
+export type InventoryAdjustmentDirection = (typeof InventoryAdjustmentDirection)[keyof typeof InventoryAdjustmentDirection]
+
+
 export const BankType = {
   SAVINGS: 'SAVINGS',
   CURRENT: 'CURRENT'
@@ -122,3 +139,30 @@ export const InvoiceStatus = {
 } as const
 
 export type InvoiceStatus = (typeof InvoiceStatus)[keyof typeof InvoiceStatus]
+
+
+export const PaymentMode = {
+  CASH: 'CASH',
+  UPI: 'UPI',
+  NEFT: 'NEFT',
+  CHEQUE: 'CHEQUE'
+} as const
+
+export type PaymentMode = (typeof PaymentMode)[keyof typeof PaymentMode]
+
+
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  RECEIVED: 'RECEIVED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const ExpenseStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type ExpenseStatus = (typeof ExpenseStatus)[keyof typeof ExpenseStatus]
