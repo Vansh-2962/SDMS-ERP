@@ -84,6 +84,14 @@ export const CustomerStatus = {
 export type CustomerStatus = (typeof CustomerStatus)[keyof typeof CustomerStatus]
 
 
+export const LedgerEntryType = {
+  DEBIT: 'DEBIT',
+  CREDIT: 'CREDIT'
+} as const
+
+export type LedgerEntryType = (typeof LedgerEntryType)[keyof typeof LedgerEntryType]
+
+
 export const SaleOrderStatus = {
   PENDING: 'PENDING',
   PACKED: 'PACKED',

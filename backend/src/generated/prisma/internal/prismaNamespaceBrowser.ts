@@ -69,6 +69,7 @@ export const ModelName = {
   BankDetails: 'BankDetails',
   BillingSettings: 'BillingSettings',
   Customer: 'Customer',
+  LedgerEntry: 'LedgerEntry',
   SaleOrderItems: 'SaleOrderItems',
   SaleOrder: 'SaleOrder',
   NumberSequence: 'NumberSequence',
@@ -422,6 +423,21 @@ export const CustomerScalarFieldEnum = {
 } as const
 
 export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
+
+
+export const LedgerEntryScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  date: 'date',
+  particulars: 'particulars',
+  type: 'type',
+  amount: 'amount',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LedgerEntryScalarFieldEnum = (typeof LedgerEntryScalarFieldEnum)[keyof typeof LedgerEntryScalarFieldEnum]
 
 
 export const SaleOrderItemsScalarFieldEnum = {

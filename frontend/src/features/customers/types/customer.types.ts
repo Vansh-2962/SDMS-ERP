@@ -194,6 +194,7 @@ export type Customer = {
   pincode: string;
   territory: string;
   paymentTerms: string;
+  openingBal: string | number;
   gstNumber: string;
   createdAt: Date | string;
 };

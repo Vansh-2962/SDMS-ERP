@@ -415,6 +415,7 @@ export const ModelName = {
   BankDetails: 'BankDetails',
   BillingSettings: 'BillingSettings',
   Customer: 'Customer',
+  LedgerEntry: 'LedgerEntry',
   SaleOrderItems: 'SaleOrderItems',
   SaleOrder: 'SaleOrder',
   NumberSequence: 'NumberSequence',
@@ -437,7 +438,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "employee" | "product" | "productBatch" | "productPrice" | "inventory" | "stockroomItem" | "inventoryAdjustment" | "manufacturer" | "productManufacturer" | "productCertification" | "profile" | "bankDetails" | "billingSettings" | "customer" | "saleOrderItems" | "saleOrder" | "numberSequence" | "expense" | "invoiceItems" | "invoice" | "payment"
+    modelProps: "user" | "session" | "account" | "verification" | "employee" | "product" | "productBatch" | "productPrice" | "inventory" | "stockroomItem" | "inventoryAdjustment" | "manufacturer" | "productManufacturer" | "productCertification" | "profile" | "bankDetails" | "billingSettings" | "customer" | "ledgerEntry" | "saleOrderItems" | "saleOrder" | "numberSequence" | "expense" | "invoiceItems" | "invoice" | "payment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1773,6 +1774,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LedgerEntry: {
+      payload: Prisma.$LedgerEntryPayload<ExtArgs>
+      fields: Prisma.LedgerEntryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LedgerEntryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerEntryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LedgerEntryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerEntryPayload>
+        }
+        findFirst: {
+          args: Prisma.LedgerEntryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerEntryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LedgerEntryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerEntryPayload>
+        }
+        findMany: {
+          args: Prisma.LedgerEntryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerEntryPayload>[]
+        }
+        create: {
+          args: Prisma.LedgerEntryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerEntryPayload>
+        }
+        createMany: {
+          args: Prisma.LedgerEntryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LedgerEntryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerEntryPayload>[]
+        }
+        delete: {
+          args: Prisma.LedgerEntryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerEntryPayload>
+        }
+        update: {
+          args: Prisma.LedgerEntryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerEntryPayload>
+        }
+        deleteMany: {
+          args: Prisma.LedgerEntryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LedgerEntryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LedgerEntryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerEntryPayload>[]
+        }
+        upsert: {
+          args: Prisma.LedgerEntryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerEntryPayload>
+        }
+        aggregate: {
+          args: Prisma.LedgerEntryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLedgerEntry>
+        }
+        groupBy: {
+          args: Prisma.LedgerEntryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LedgerEntryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LedgerEntryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LedgerEntryCountAggregateOutputType> | number
+        }
+      }
+    }
     SaleOrderItems: {
       payload: Prisma.$SaleOrderItemsPayload<ExtArgs>
       fields: Prisma.SaleOrderItemsFieldRefs
@@ -2660,6 +2735,21 @@ export const CustomerScalarFieldEnum = {
 export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
 
 
+export const LedgerEntryScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  date: 'date',
+  particulars: 'particulars',
+  type: 'type',
+  amount: 'amount',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LedgerEntryScalarFieldEnum = (typeof LedgerEntryScalarFieldEnum)[keyof typeof LedgerEntryScalarFieldEnum]
+
+
 export const SaleOrderItemsScalarFieldEnum = {
   id: 'id',
   gst: 'gst',
@@ -2996,6 +3086,20 @@ export type ListEnumCustomerStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'LedgerEntryType'
+ */
+export type EnumLedgerEntryTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LedgerEntryType'>
+    
+
+
+/**
+ * Reference to a field of type 'LedgerEntryType[]'
+ */
+export type ListEnumLedgerEntryTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LedgerEntryType[]'>
+    
+
+
+/**
  * Reference to a field of type 'SaleOrderStatus'
  */
 export type EnumSaleOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SaleOrderStatus'>
@@ -3289,6 +3393,7 @@ export type GlobalOmitConfig = {
   bankDetails?: Prisma.BankDetailsOmit
   billingSettings?: Prisma.BillingSettingsOmit
   customer?: Prisma.CustomerOmit
+  ledgerEntry?: Prisma.LedgerEntryOmit
   saleOrderItems?: Prisma.SaleOrderItemsOmit
   saleOrder?: Prisma.SaleOrderOmit
   numberSequence?: Prisma.NumberSequenceOmit

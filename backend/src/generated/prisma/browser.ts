@@ -108,6 +108,11 @@ export type BillingSettings = Prisma.BillingSettingsModel
  */
 export type Customer = Prisma.CustomerModel
 /**
+ * Model LedgerEntry
+ * 
+ */
+export type LedgerEntry = Prisma.LedgerEntryModel
+/**
  * Model SaleOrderItems
  * 
  */

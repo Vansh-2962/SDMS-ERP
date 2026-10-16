@@ -142,6 +142,7 @@ export class CustomerMapper {
         state: d.state,
         pincode: d.pincode,
         paymentTerms: d.paymentTerms,
+        openingBal: d.openingBal,
         gstNumber: d.gstNumber,
         status: d.status,
         createdAt: d.createdAt,

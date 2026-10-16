@@ -16,6 +16,7 @@ import { invoiceRouter } from "@/modules/invoice/invoice.routes.js";
 import { paymentRouter } from "@/modules/payment/payment.routes.js";
 import { inventoryRouter } from "@/modules/inventory/inventory.routes.js";
 import { expenseRouter } from "@/modules/expense/expense.routes.js";
+import { ledgerRouter } from "@/modules/ledger/ledger.routes.js";
 
 const app: Application = express();
 
@@ -46,6 +47,7 @@ app.use("/api/v1/invoice", invoiceRouter);
 app.use("/api/v1/payment", paymentRouter);
 app.use("/api/v1/inventory", inventoryRouter);
 app.use("/api/v1/expenses", expenseRouter);
+app.use("/api/v1/ledger", ledgerRouter);
 
 app.get("/health", (_, res) => {
   const logger = getLogger();
