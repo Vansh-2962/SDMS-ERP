@@ -13,12 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
@@ -207,8 +202,7 @@ export default function InventoryList() {
       (item) => stockStatus(item.currentStock, item.reorderLevel) === "Low",
     ).length +
     productStockRows.filter(
-      (row) =>
-        row.currentStock > 0 && row.currentStock <= row.reorderLevel,
+      (row) => row.currentStock > 0 && row.currentStock <= row.reorderLevel,
     ).length;
   const outItemCount =
     stockroomItems.filter((item) => item.currentStock <= 0).length +
@@ -291,7 +285,9 @@ export default function InventoryList() {
       !Number.isFinite(payload.purchasePrice) ||
       payload.purchasePrice < 0
     ) {
-      toast.error("Complete the required fields with valid non-negative values");
+      toast.error(
+        "Complete the required fields with valid non-negative values",
+      );
       return;
     }
 
@@ -587,10 +583,7 @@ export default function InventoryList() {
               </TableRow>
             ) : (
               rows.map((row) => {
-                const status = stockStatus(
-                  row.currentStock,
-                  row.reorderLevel,
-                );
+                const status = stockStatus(row.currentStock, row.reorderLevel);
                 return (
                   <TableRow key={row.id}>
                     <TableCell className="font-mono text-xs">
@@ -688,7 +681,10 @@ export default function InventoryList() {
         {summary.map((item) => {
           const Icon = item.icon;
           return (
-            <Card key={item.label} className="border border-border shadow-sm">
+            <Card
+              key={item.label}
+              className="border border-border shadow-sm overflow-auto "
+            >
               <CardContent className={`p-4 ${item.bg}`}>
                 <div className="flex items-center justify-between">
                   <div>
@@ -709,10 +705,7 @@ export default function InventoryList() {
 
       {lowItemCount > 0 && (
         <div className="flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 p-3">
-          <IconAlertTriangle
-            size={18}
-            className="shrink-0 text-amber-600"
-          />
+          <IconAlertTriangle size={18} className="shrink-0 text-amber-600" />
           <p className="text-sm font-medium text-amber-800">
             {lowItemCount} stock row{lowItemCount === 1 ? "" : "s"} below
             reorder level.
@@ -740,11 +733,21 @@ export default function InventoryList() {
 
       <Tabs defaultValue="all">
         <TabsList className="flex h-auto flex-wrap justify-start gap-1 bg-muted/60 p-1">
-          <TabsTrigger value="all" className="text-xs">Stockroom Items</TabsTrigger>
-          <TabsTrigger value="RAW_MATERIAL" className="text-xs">Raw Materials</TabsTrigger>
-          <TabsTrigger value="PACKAGING_MATERIAL" className="text-xs">Packaging</TabsTrigger>
-          <TabsTrigger value="OTHER" className="text-xs">Other</TabsTrigger>
-          <TabsTrigger value="products" className="text-xs">Product Stock</TabsTrigger>
+          <TabsTrigger value="all" className="text-xs">
+            Stockroom Items
+          </TabsTrigger>
+          <TabsTrigger value="RAW_MATERIAL" className="text-xs">
+            Raw Materials
+          </TabsTrigger>
+          <TabsTrigger value="PACKAGING_MATERIAL" className="text-xs">
+            Packaging
+          </TabsTrigger>
+          <TabsTrigger value="OTHER" className="text-xs">
+            Other
+          </TabsTrigger>
+          <TabsTrigger value="products" className="text-xs">
+            Product Stock
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="all" className="mt-4">
           <StockroomTable items={filteredItems()} />
@@ -760,9 +763,9 @@ export default function InventoryList() {
         </TabsContent>
         <TabsContent value="products" className="mt-4">
           <div className="mb-3 rounded-lg border border-blue-200 bg-blue-50 p-3 text-xs text-blue-800">
-            Product quantities below are read from the existing product inventory
-            records. Adjustments update those records directly; they are not
-            copied into stockroom items.
+            Product quantities below are read from the existing product
+            inventory records. Adjustments update those records directly; they
+            are not copied into stockroom items.
           </div>
           <ProductStockTable rows={filteredProductStocks} />
         </TabsContent>
@@ -796,7 +799,9 @@ export default function InventoryList() {
                   })
                 }
               >
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="RAW_MATERIAL">Raw Material</SelectItem>
                   <SelectItem value="PACKAGING_MATERIAL">
@@ -854,7 +859,10 @@ export default function InventoryList() {
                 step="0.01"
                 value={itemForm.purchasePrice}
                 onChange={(event) =>
-                  setItemForm({ ...itemForm, purchasePrice: event.target.value })
+                  setItemForm({
+                    ...itemForm,
+                    purchasePrice: event.target.value,
+                  })
                 }
               />
             </Field>
@@ -911,10 +919,7 @@ export default function InventoryList() {
           </div>
           <Separator />
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setItemDialogOpen(false)}
-            >
+            <Button variant="outline" onClick={() => setItemDialogOpen(false)}>
               Cancel
             </Button>
             <Button
@@ -932,10 +937,7 @@ export default function InventoryList() {
         </DialogContent>
       </Dialog>
 
-      <Dialog
-        open={adjustDialogOpen}
-        onOpenChange={setAdjustDialogOpen}
-      >
+      <Dialog open={adjustDialogOpen} onOpenChange={setAdjustDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="font-heading">
@@ -1000,7 +1002,9 @@ export default function InventoryList() {
                     setAdjustDirection(value as InventoryAdjustmentDirection)
                   }
                 >
-                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="ADD">Add Stock (+)</SelectItem>
                     <SelectItem value="REMOVE">Remove Stock (-)</SelectItem>

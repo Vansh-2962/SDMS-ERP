@@ -24,7 +24,11 @@ app.use(helmet());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://sdms-erp-front.onrender.com"],
+    origin: [
+      "http://localhost:5173",
+      "https://sdms-erp-front.onrender.com",
+      "https://erp.orofoodsindia.com",
+    ],
     credentials: true,
   }),
 );
